@@ -11,3 +11,10 @@
     outline: none;
     border: none;
 }
+
+body{
+    // To make the font look crisp
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; 
+    text-rendering: optimizeLegibility;
+}
