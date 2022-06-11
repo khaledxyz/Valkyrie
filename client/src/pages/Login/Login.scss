@@ -1,0 +1,31 @@
+@import '../../sass/utils/variables';
+@import '../../sass/utils/mixins';
+
+.Login{
+    @include flex-x-y;
+
+    width: 100vw;
+    height: 100vh;
+    
+    background-color: $ebony;
+}
+
+.Login__form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    padding: $base-padding;
+
+    min-width: 400px;
+    min-height: 400px;
+
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
+
+    background-color: $maastricht-blue;
+    
+    &-header{
+        text-align: center;
+    }
+}
