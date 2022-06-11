@@ -10,16 +10,12 @@
     --sun: #fcab10;
 }
 
-$colors: (
-    // main
-    azzure-radiance: var(--azzure-radiance),
-    charade: var(--charade),
-    bright-gray: var(--bright-gray),
-    kimberly: var(--kimberly),
-    ghost: var(--ghost),
-    // for components
-    white: var(--lavender-blush),
-    danger: var(--cinnabar),
-    success: var(--chateau-green),
-    warning: var(--sun)
-);
+$azzure-radiance: #0075f2;
+$charade: #272838;
+$bright-gray: #34354b ;
+$kimberly: #686b96;
+$ghost: #cacbd8; 
+$lavender-blush: #ffeaee; 
+$cinnabar: #e54b4b;
+$chateau-green: #44af69;
+$sun: #fcab10;
