@@ -17,9 +17,10 @@
     
     padding: $base-padding;
 
-    min-width: 400px;
-    min-height: 400px;
-
+    width: 400px;
+    height: 400px;
+    margin: 20px;
+    
     box-shadow: $box-shadow;
     border-radius: $border-radius;
 
