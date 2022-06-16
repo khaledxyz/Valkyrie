@@ -12,24 +12,23 @@ import toastr from 'toastr';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-
+    
     const options = {
-    "closeButton": true,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": false,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": true,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
     }
 
     const handleSubmit = async (e) => {
@@ -40,9 +39,10 @@ const Login = () => {
                 email,
                 password
             });
+
+            if(res.status === 200) console.log('Logged In Successfully');
         }
         catch(err) {
-            setError('error')
             toastr.error('Please try again.', err.response.data.msg , options)
         };
     };
@@ -61,18 +61,18 @@ const Login = () => {
                         label={'Email'} 
                         placeholder={'Email'} 
                         required={true} 
-                        error={error}
                         onChange={e => setEmail(e.target.value)} 
-                        email={email}>
-                    </Input>
+                        email={email}
+                        >
+                    </Input><br /><br />
                     <Input 
                         type={'password'} 
                         label={'password'} 
                         placeholder={'Password'} 
                         required={true} 
-                        error={error}
                         onChange={e => setPassword(e.target.value)} 
-                        password={password}>
+                        password={password}
+                        >
                     </Input>
                     <small><a>Forgot your password?</a></small>
                 </div>
