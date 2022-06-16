@@ -1,5 +1,6 @@
 @import '../../sass/utils/variables';
 @import '../../sass/utils/mixins';
+@import "toastr";
 
 .Login{
     @include flex-x-y;

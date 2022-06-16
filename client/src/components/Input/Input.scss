@@ -18,6 +18,10 @@
     }
 }
 
+.error, .error:focus{
+    outline: 3px solid red;
+}
+
 .label{
     text-align: left;
     margin-left: 3px;

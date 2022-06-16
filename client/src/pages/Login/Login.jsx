@@ -7,23 +7,44 @@ import './Login.scss';
 import '../../sass/index.scss'
 
 import axios from 'axios';
+import toastr from 'toastr';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         try{
             const res = await axios.post('http://localhost:8080/login', {
-                email: email,
-                password: password
+                email,
+                password
             });
-
-            if(res.status === 200) console.log('Login success');
         }
-        catch(err) {console.log(err)};
+        catch(err) {
+            setError('error')
+            toastr.error('Please try again.', err.response.data.msg , options)
+        };
     };
 
 
@@ -40,6 +61,7 @@ const Login = () => {
                         label={'Email'} 
                         placeholder={'Email'} 
                         required={true} 
+                        error={error}
                         onChange={e => setEmail(e.target.value)} 
                         email={email}>
                     </Input>
@@ -48,6 +70,7 @@ const Login = () => {
                         label={'password'} 
                         placeholder={'Password'} 
                         required={true} 
+                        error={error}
                         onChange={e => setPassword(e.target.value)} 
                         password={password}>
                     </Input>
