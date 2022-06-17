@@ -1,18 +1,16 @@
-@import '../../sass/utils/variables';
-@import '../../sass/utils/mixins';
+@import '../sass/utils/variables';
+@import '../sass/utils/mixins';
 @import "toastr";
 
-.Login{
+html{overflow: hidden}
+.Auth{
     @include flex-x-y;
 
     width: 100vw;
     height: 100vh;
-    
-    background-color: $ebony;
-    overflow-y: hidden;
 }
 
-.Login__form{
+.Auth__form{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -23,7 +21,6 @@
     height: 100%;
 
     max-width: 400px;
-    max-height: 400px;
     margin: 20px;
     
     box-shadow: $box-shadow;
@@ -31,7 +28,13 @@
 
     background-color: $maastricht-blue;
     
+    &-inputs :nth-child(even):not(:nth-last-child(-n+2)){
+        margin-bottom: 20px;
+    }
     &-header{
         text-align: center;
     }
 }
+
+.login{.Auth__form{max-height: 400px;}}
+.signup{.Auth__form{max-height: 500px;}}
