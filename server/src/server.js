@@ -1,6 +1,5 @@
 const express = require('express');
-const session = require('express-session')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const chalk = require('chalk');
@@ -13,12 +12,6 @@ const PORT = process.env.PORT || 8080;
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 app.set('trust proxy', 1)
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
 
 // * Connection * //
 app.listen(PORT, () => console.log(`

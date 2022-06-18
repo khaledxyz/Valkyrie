@@ -45,6 +45,7 @@ const Login = () => {
             if(res.status === 200) console.log('Logged In Successfully');
         }
         catch(err) {
+            console.log(err);
             toastr.error('Please try again.', err.response.data.msg , options)
         };
     };

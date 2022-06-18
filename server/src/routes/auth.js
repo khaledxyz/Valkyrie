@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const usersModel = require('../models/usersModel');
 
 const { customAlphabet } = require('nanoid');
@@ -18,9 +19,9 @@ const checkLogin = (user, req, res) => {
     if(!user) {res.status(401).json({msg: 'Wrong Email or Password'}); return;}
     if(user.password !== req.body.password) {res.status(401).json({msg: 'Wrong Email or Password'}); return;}
 
-    // set cookies
-    req.session.user = user;
-    res.status(200).json({msg: 'Logged in successfully'});
+    // Generate an access token
+    const accessToken = jwt.sign({user}, process.env.JWT_TOKEN_SECRET)
+    res.status(200).json({accessToken: accessToken});
 };
 
 // * SIGN UP * //
