@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { motion } from 'framer-motion';
 
 import '../Auth.scss';
 import '../../sass/index.scss'
 
 import axios from 'axios';
 import toastr from 'toastr';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -43,7 +43,8 @@ const Signup = () => {
                 password
             });
 
-            if(res.status === 200) console.log('Logged In Successfully');
+            if(res.status === 200) location.href('/login');
+            if(res.status === 409) toastr.error('Username or Email already exists', 'Error', options);
         }
         catch(err) {
             toastr.error('Please try again.', err.response.data.msg , options)

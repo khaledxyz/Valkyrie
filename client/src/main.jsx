@@ -12,9 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <AnimatePresence>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route exact path="/" element={<App />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </AnimatePresence>

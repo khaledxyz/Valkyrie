@@ -10,7 +10,12 @@ const userSchema = new mongoose.Schema({
     tag: {
         type: String,
         required: true,
-        validate: value => value.length == 4
+        validate: value => value.length == 5
+    },
+    fullUsername: {
+        type: String,
+        required: true,
+        unique: true
     },
     email: {
         type: String,
