@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-
 const { signUp, logIn } = require('../controllers/usersController');
 
 router.post('/', signUp);

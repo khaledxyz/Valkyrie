@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789';
@@ -56,7 +57,8 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
     // Checks the password with bcrypt.compare()
     if(user && bcrypt.compare(password, user.password)) {
         return res.status(200).json({
-            message: 'Logged in'
+            message: 'Logged in',
+            token: generateJWT(user._id)
         });
     }
 
@@ -66,5 +68,9 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
 
 }));
 
+// * OTHER FUNCTIONS * //
+const generateJWT = (id) => {
+    return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET)
+};
 
 module.exports = { signUp, logIn };
