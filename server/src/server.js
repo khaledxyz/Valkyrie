@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const colors = require('colors');
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 
 const errorHandler = require('./middlewares/errorHandler');
 const connectDB = require('./config/db');
@@ -19,7 +18,7 @@ app.use(errorHandler);
 
 // * Connection * //
 app.listen(PORT, () => {
-    console.log('-------------------------------------')
+    console.log('---------------------')
     console.log(
         'Dev server running at  >'.green,
         `https://localhost:${PORT}`.blue
@@ -27,5 +26,5 @@ app.listen(PORT, () => {
     connectDB()
 })
 
-// * ROUTES * //
+// * Routes * //
 app.use('/api/users', require('./routes/usersRouter'));
