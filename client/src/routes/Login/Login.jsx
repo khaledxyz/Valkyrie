@@ -8,13 +8,15 @@ import '../Auth.scss';
 import '../../sass/index.scss'
 
 import axios from 'axios';
-import toastr from 'toastr';
+import toastr, { clear } from 'toastr';
 import { motion } from 'framer-motion';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(false);
+
     const options = {
         "closeButton": true,
         "debug": false,
@@ -42,10 +44,10 @@ const Login = () => {
                 password
             });
 
-            if(res.status === 200) console.log('Logged In Successfully');
+            if(res.status === 200) {setUser(res.data); console.log(user)}
         }
         catch(err) {
-            console.log(err);
+            setError(err);
             toastr.error('Please try again.', err.response.data.msg , options)
         };
     };
@@ -69,6 +71,7 @@ const Login = () => {
                         required={true} 
                         onChange={e => setEmail(e.target.value)} 
                         email={email}
+                        error={error}
                         >
                     </Input>
                     <Input 
@@ -77,6 +80,7 @@ const Login = () => {
                         required={true} 
                         onChange={e => setPassword(e.target.value)} 
                         password={password}
+                        error={error}
                         >
                     </Input>
                     <small><a>Forgot your password?</a></small>

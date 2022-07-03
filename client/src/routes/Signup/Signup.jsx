@@ -15,6 +15,8 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+
     const options = {
         "closeButton": true,
         "debug": false,
@@ -44,9 +46,9 @@ const Signup = () => {
             });
 
             if(res.status === 200) location.href('/login');
-            if(res.status === 409) toastr.error('Username or Email already exists', 'Error', options);
         }
         catch(err) {
+            setError(err);
             toastr.error('Please try again.', err.response.data.msg , options)
         };
     };
@@ -70,6 +72,7 @@ const Signup = () => {
                         required={true} 
                         onChange={e => setEmail(e.target.value)} 
                         email={email}
+                        error={error}
                         >
                     </Input>
                     <Input 
@@ -78,6 +81,7 @@ const Signup = () => {
                         required={true} 
                         onChange={e => setUsername(e.target.value)} 
                         username={username}
+                        error={error}
                         >
                     </Input>
                     <Input 
@@ -86,6 +90,7 @@ const Signup = () => {
                         required={true} 
                         onChange={e => setPassword(e.target.value)} 
                         password={password}
+                        error={error}
                         >
                     </Input>
                     <small><a>Terms of Service</a></small>

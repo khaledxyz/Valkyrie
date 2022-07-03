@@ -18,13 +18,11 @@
     }
 }
 
-.error, .error:focus{
-    outline: 3px solid red;
-}
-
 .label{
     text-align: left;
     margin-left: 3px;
     color: $silver;
     text-transform: uppercase;
 }
+
+.error{outline: 3px solid $error !important;}
