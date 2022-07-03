@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const chalk = require('chalk');
 
 const connectDB = async () => {
     try{
@@ -10,7 +9,7 @@ const connectDB = async () => {
         )    
     }
     catch(error){
-        console.log(chalk.red(error));
+        console.log(error);
         process.exit(1);
     }
 };
