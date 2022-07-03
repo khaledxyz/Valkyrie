@@ -5,6 +5,8 @@ const cors = require('cors');
 const chalk = require('chalk');
 require("dotenv").config();
 
+const errorHandler = require('./middlewares/errorHandler');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -12,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // * Connection * //
 app.listen(PORT, () => console.log(`

@@ -16,9 +16,10 @@ const signUp = asyncHandler(async(req, res) => {
     const {username, email, password} = req.body;
 
     // Checks if user already exists
-    const userExists = await usersModel.findOne({email});
+    const userExists = await usersModel.findOne({email: email.toLowerCase()});
     if(userExists) {
-        return res.status(409).json({message: 'User already exists.'})
+        res.status(409);
+        throw new Error('Account already exists.');
     }
 
     // Hash the password
@@ -41,7 +42,8 @@ const signUp = asyncHandler(async(req, res) => {
         })
     }
 
-    res.status(400).json({message: 'Something went wrong. Try again.'})
+    res.status(400);
+    throw new Error();
 });
 
 // * LOGIN * //
