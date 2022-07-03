@@ -6,7 +6,7 @@ const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789';
 const nanoid = customAlphabet(alphabet, 4);
 
-const usersModel = require("../models/usersModel");
+const userModel = require("../models/userModel");
 
 // * SIGN UP * //
 // @desc    Register user
@@ -16,7 +16,7 @@ const signUp = asyncHandler(async(req, res) => {
     const {username, email, password} = req.body;
 
     // Checks if user already exists
-    const userExists = await usersModel.findOne({email: email.toLowerCase()});
+    const userExists = await userModel.findOne({email: email.toLowerCase()});
     if(userExists) {
         res.status(409);
         throw new Error('Account already exists.');
@@ -34,7 +34,7 @@ const signUp = asyncHandler(async(req, res) => {
         password: hashedPassword
 
     };
-    const newUser = await usersModel.create(user);
+    const newUser = await userModel.create(user);
 
     if(newUser) {
         return res.status(200).json({
@@ -54,7 +54,7 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
     const {email, password} = req.body;
 
     // Finds the user
-    const user = await usersModel.findOne({email: email.toLowerCase()}).select("+password");
+    const user = await userModel.findOne({email: email.toLowerCase()}).select("+password");
 
     // Checks the password with bcrypt.compare()
     if(user && bcrypt.compare(password, user.password)) {
