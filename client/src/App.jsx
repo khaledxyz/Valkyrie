@@ -19,7 +19,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Landing />} />
-          <Route exact path="/channels" element={user ? <Dashboard /> : <Navigate to="/login"/>}/>
+          <Route exact path="/channels" element={<Dashboard />}/>
           <Route exact path="/login" element={!user ? <Login /> : <Navigate to="/channels"/>} />
           <Route exact path="/signup" element={!user ? <Signup /> : <Navigate to="/channels"/>} />
         </Routes>
