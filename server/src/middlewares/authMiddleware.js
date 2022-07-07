@@ -12,7 +12,7 @@ const authenticate = asyncHandler(async (req, res, next) => {
             token = bearerToken.split(' ')[1];
             
             // Verifies the token
-            const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
             // Gets the user data
             req.user = await userModel.findById(decodedToken.id).select('-password');
