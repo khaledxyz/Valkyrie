@@ -64,10 +64,8 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
         });
     }
 
-    return res.status(401).json({
-        message: 'Wrong Email or Password'
-    });
-
+    res.status(401);
+    throw new Error('Wrong Email or Password');
 }));
 
 // * OTHER FUNCTIONS * //
