@@ -58,10 +58,7 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
 
     // Checks the password with bcrypt.compare()
     if(user && bcrypt.compare(password, user.password)) {
-        return res.status(200).json({
-            message: 'Logged in',
-            token: generateJWT(user._id)
-        });
+        return res.status(200).json({token: generateJWT(user._id)});
     }
 
     res.status(401);
