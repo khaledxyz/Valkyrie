@@ -6,10 +6,10 @@
     width: 100%;
     height: 50px;
 
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
 
-    background-color: $azure-radiance;
-    color: $lavender-blush;
+    background-color: var(--azure-radiance);
+    color: var(--lavender-blush);
 
     font-weight: 600;
 }
