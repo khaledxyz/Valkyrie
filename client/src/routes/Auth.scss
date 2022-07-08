@@ -14,7 +14,7 @@ html{overflow: hidden}
     flex-direction: column;
     justify-content: space-around;
     
-    padding: $base-padding;
+    padding: var(--base-padding);
 
     width: 100%;
     height: 100%;
@@ -22,10 +22,10 @@ html{overflow: hidden}
     max-width: 400px;
     margin: 20px;
     
-    box-shadow: $box-shadow;
-    border-radius: $border-radius;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
 
-    background-color: $maastricht-blue;
+    background-color: var(--maastricht-blue);
     
     &-inputs :nth-child(even):not(:nth-last-child(-n+2)){
         margin-bottom: 20px;

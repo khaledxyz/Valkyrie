@@ -11,7 +11,7 @@ html {font-size: 100%;} /*16px*/
 }
 
 body {
-  color: $lavender-blush;
+  color: var(--lavender-blush);
 }
 
 h1, h2, h3, h4, h5 {
@@ -36,11 +36,11 @@ h5 {font-size: 1.333rem;}
 small, .text_small {font-size: 0.75rem;}
 
 .subtitle{
-  color: $silver;
+  color: var(--silver);
 }
 
 a{
-  color: $cerulean;
+  color: var(--cerulean);
   &:hover{
     cursor: pointer;
     text-decoration: underline;

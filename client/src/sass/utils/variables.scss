@@ -1,32 +1,35 @@
-// * COLORS * // 
-// BRAND COLORS
-$azure-radiance: #0075F2;
-$bright-gray: #34354b;
+:root{
+    // * COLORS * // 
+    // BRAND COLORS
+    --azure-radiance: #0075F2;
+    --bright-gray: #34354b;
 
-// APP COLORS
-$ebony: #0f1a25;
-$maastricht-blue: #0e2339;
-$downriver: #0c2c4e;
-$madison: #0b3460;
+    // APP COLORS
+    --ebony: #0f1a25;
+    --maastricht-blue: #0e2339;
+    --downriver: #0c2c4e;
+    --madison: #0b3460;
 
-// TEXT COLORS
-$lavender-blush: #ffeaee;
-$silver: #b9bbbe;
-$cerulean: #00aff4;
+    // TEXT COLORS
+    --lavender-blush: #ffeaee;
+    --silver: #b9bbbe;
+    --cerulean: #00aff4;
 
-// STATUS COLORS
-$error: #e54b4b;
+    // STATUS COLORS
+    --error: #e54b4b;
 
-// * SPACING * //
-$base-padding: 20px;
 
-// * OTHER * //
-$border-radius: 5px;
-$box-shadow:
-    0px 0px 0.4px rgba(0, 0, 0, 0.051),
-    0px 0px 1px rgba(0, 0, 0, 0.073),
-    0px 0px 1.9px rgba(0, 0, 0, 0.09),
-    0px 0px 3.4px rgba(0, 0, 0, 0.107),
-    0px 0px 6.3px rgba(0, 0, 0, 0.129),
-    0px 0px 15px rgba(0, 0, 0, 0.18)
-;
+    // * SPACING * //
+    --base-padding: 20px;
+
+    // * OTHER * //
+    --border-radius: 5px;
+    --box-shadow:
+        0px 0px 0.4px rgba(0, 0, 0, 0.051),
+        0px 0px 1px rgba(0, 0, 0, 0.073),
+        0px 0px 1.9px rgba(0, 0, 0, 0.09),
+        0px 0px 3.4px rgba(0, 0, 0, 0.107),
+        0px 0px 6.3px rgba(0, 0, 0, 0.129),
+        0px 0px 15px rgba(0, 0, 0, 0.18)
+    ;
+}
