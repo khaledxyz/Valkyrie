@@ -1,0 +1,22 @@
+.ServerList{
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 70px;
+    height: 100vh;
+
+    display: grid;
+    justify-content: center;
+    gap: 5px;
+    
+    text-align: center;
+    background-color: var(--ebony);
+
+    padding: 12px 0;
+}
+
+::-webkit-scrollbar {display: none;}    
