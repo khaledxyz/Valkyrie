@@ -9,7 +9,7 @@ import { login, reset } from '../../features/auth/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
-import StyledButton from '../../components/StyledButton';
+import Button from '../../components/Button';
 
 // * STYLES * //
 import '../Auth.scss';
@@ -74,7 +74,7 @@ const Login = () => {
                     <small><a>Forgot your password?</a></small>
                 </div>
                 <div className="Auth__form-actions">
-                    <StyledButton variant={'primary'}>Login</StyledButton>
+                    <Button variant={'primary'}>Login</Button>
                     <small>Don't have an account? <Link to={'/signup'}>Sign Up!</Link></small>
                 </div>
             </form>

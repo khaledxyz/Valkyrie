@@ -16,7 +16,7 @@ const variants = {
     }
 }
 
-const StyledButton = styled.button`
+const Button = styled.button`
     cursor: pointer;
     
     width: 100%;
@@ -54,4 +54,4 @@ const StyledButton = styled.button`
     font-weight: 600;
 `;
  
-export default StyledButton;
+export default Button;
