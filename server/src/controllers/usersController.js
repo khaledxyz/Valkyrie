@@ -65,9 +65,18 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
     throw new Error('Wrong Email or Password');
 }));
 
+
+// * GET ME * //
+// @desc    Get user info
+// @route   GET /api/users/@me
+// @access  private
+const getMe = asyncHandler(async(req, res) => {
+    return res.status(200).json(req.user);
+});
+
 // * OTHER FUNCTIONS * //
 const generateJWT = (id) => {
     return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET)
 };
 
-module.exports = { signUp, logIn };
+module.exports = { signUp, logIn, getMe };
