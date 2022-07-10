@@ -9,7 +9,7 @@ import { signup, reset } from '../../features/auth/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import StyledButton from '../../components/StyledButton';
 
 // * STYLES * //
 import '../Auth.scss';
@@ -82,7 +82,7 @@ const Signup = () => {
                     <small><a>Terms of Service</a></small>
                 </div>
                 <div className="Auth__form-actions">
-                    <Button></Button>
+                    <StyledButton variant={'primary'}>Sign Up</StyledButton>
                     <small>Already have an accout? <Link to={'/login'}>Login!</Link></small>
                 </div>
             </form>
