@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         select: false
-    }
+    },
+    guilds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Guild'
+    }],
 });
 
 module.exports = new mongoose.model('User', userSchema);
