@@ -1,24 +1,9 @@
-.Server-list-wrapper{
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 70px;
-    height: 100%;
-    background-color: var(--ebony);
-}
-
 .Server-list{
     overflow-y: scroll;
     overflow-x: hidden;
 
-    position: fixed;
-    top: 0;
-    left: 0;
-
     width: 70px;
     height: fit-content;
-    max-height: 100%;
     
     display: grid;
     justify-content: center;
@@ -26,6 +11,8 @@
 
     text-align: center;
     padding: 12px;
+
+    background-color: var(--ebony);
 }
 
 ::-webkit-scrollbar {display: none;}    
