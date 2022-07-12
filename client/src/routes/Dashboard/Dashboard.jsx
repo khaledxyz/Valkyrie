@@ -1,8 +1,11 @@
-const Dashboard = () => {
-    const userID = localStorage.getItem("user");
+import './Dashboard.scss';
 
+import ServerList from "../../components/ServerList/ServerList";
+const Dashboard = () => {
     return ( 
-        <p>{userID}</p>
+        <div className='Dashboard'>
+            <ServerList />
+        </div>
      );
 }
  

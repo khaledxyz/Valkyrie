@@ -1,31 +1,22 @@
-import { ServerIcon, HomeIcon} from '../ServerIcon';
+import { ServerIcon, HomeIcon } from '../ServerIcon';
 import './ServerList.scss';
 
 const ServerList = () => {
-    return ( 
-        <aside className='ServerList'>
-            <HomeIcon>V</HomeIcon>
-            <div>--</div>
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-            <ServerIcon />
-        </aside>
-     );
+    return (
+        <div className="Server-list-wrapper">
+            <aside className='Server-list'>
+                <HomeIcon>V</HomeIcon>
+                <div>--</div>
+                <ServerIcon />
+                <ServerIcon />
+                <ServerIcon />
+                <ServerIcon />
+                <ServerIcon />
+                <ServerIcon />
+                <ServerIcon />
+            </aside>
+        </div>
+    );
 }
- 
+
 export default ServerList;

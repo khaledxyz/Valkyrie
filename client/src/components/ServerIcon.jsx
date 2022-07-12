@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 
 export const ServerIcon = styled.div`
+    position: relative;
     width: 50px;
     aspect-ratio: 1/1;
     border-radius: 50%;

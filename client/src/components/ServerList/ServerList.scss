@@ -1,4 +1,14 @@
-.ServerList{
+.Server-list-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 70px;
+    height: 100%;
+    background-color: var(--ebony);
+}
+
+.Server-list{
     overflow-y: scroll;
     overflow-x: hidden;
 
@@ -7,16 +17,15 @@
     left: 0;
 
     width: 70px;
-    height: 100vh;
-
+    height: fit-content;
+    max-height: 100%;
+    
     display: grid;
     justify-content: center;
     gap: 5px;
-    
-    text-align: center;
-    background-color: var(--ebony);
 
-    padding: 12px 0;
+    text-align: center;
+    padding: 12px;
 }
 
 ::-webkit-scrollbar {display: none;}    
