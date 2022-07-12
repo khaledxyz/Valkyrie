@@ -12,7 +12,7 @@ const Input = ( { type, label, placeholder, required , onChange, error } ) => {
 
     return ( 
         <>
-            <h6 className={`label`}>{`${label} ${err ? ' - ' + err : ''}`}</h6>
+            <h6 className={`label`}>{label}</h6>
             <input 
             onChange={onChange} 
             className={`Input`} 
