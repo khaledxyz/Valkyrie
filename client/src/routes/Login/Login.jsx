@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 
 // * REDUX SLICE * //
-import { login, reset } from '../../features/auth/authSlice';
+import { login } from '../../features/auth/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
@@ -39,7 +39,6 @@ const Login = () => {
             return;
         };
     
-        dispatch(reset())
       }, [user, Error, isSuccess, navigate, dispatch])
 
     return ( 
