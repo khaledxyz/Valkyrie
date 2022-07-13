@@ -5,6 +5,28 @@ const userModel = require("../models/userModel");
 var fs = require('fs');
 var path = require('path');
 
+// * GET GUILD * //
+// @desc    get single guild
+// @route   GET /api/guild/:id
+// @access  private
+const getGuild = asyncHandler(async(req, res) => {
+    const user = await userModel.findById(req.user.id);
+
+    if(!user) {
+        res.status(404);
+        throw new Error('Not authorized. No Token.');
+    };
+
+    if(!user.guilds.includes(req.params.id)) {
+        res.status(404);
+        throw new Error('Server not found.');
+    };
+
+    const guild = await guildModel.findById(req.params.id);
+
+    res.status(200).json({guild})
+});
+
 // * GET GUILDS * //
 // @desc    get guilds
 // @route   GET /api/guilds
@@ -80,4 +102,4 @@ const joinGuild = asyncHandler(async(req, res) => {
     res.status(200).json({message: "Successfully joined server."})
 });
 
-module.exports = { getGuilds, postGuild, joinGuild };
+module.exports = { getGuild, getGuilds, postGuild, joinGuild };
