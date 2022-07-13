@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { PulseLoader } from 'react-spinners';
 
 // * REDUX SLICE * //
 import { login } from '../../features/auth/authSlice';
@@ -24,6 +25,8 @@ const Login = () => {
     const [password, setPassword] = useState();
     
     const { user, isLoading, isSuccess, Error } = authState;
+
+    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5}/>
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,7 +50,6 @@ const Login = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
         >
-            {isLoading ? <h1>Loading...</h1> : null}
             <form className='Auth__form' onSubmit={handleSubmit}>
                 <div className='Auth__form-header'>
                     <h4>Well, ahoy there!</h4>
@@ -73,7 +75,7 @@ const Login = () => {
                     <small><a>Forgot your password?</a></small>
                 </div>
                 <div className="Auth__form-actions">
-                    <Button variant={'primary'}>Login</Button>
+                    <Button variant={'primary'}>{isLoading ? spinner : 'Login'}</Button>
                     <small>Don't have an account? <Link to={'/signup'}>Sign Up!</Link></small>
                 </div>
             </form>
