@@ -1,0 +1,13 @@
+.FriendsList{
+    width: 100%;
+    height: 100%;
+}
+
+.Navbar{
+    display: flex;
+    align-items: center;
+
+    height: 50px;
+    padding: var(--base-padding);
+    box-shadow: var(--box-shadow);
+}

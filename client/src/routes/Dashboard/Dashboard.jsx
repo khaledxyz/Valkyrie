@@ -8,6 +8,7 @@ import { getAllGuilds } from '../../features/guilds/guildsSlice';
 // * COMPONENTS * //
 import ServerList from "../../components/ServerList/ServerList";
 import Sidebar from '../../components/Sidebar/Sidebar';
+import FriendsList from '../../components/FriendsList/FriendsList';
 
 // * STYLES * //
 import './Dashboard.scss';
@@ -28,7 +29,7 @@ const Dashboard = () => {
             <Sidebar />
 
             <div className="Main-app">
-
+                <FriendsList />
             </div>
         </div>
      );
