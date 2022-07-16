@@ -19,8 +19,8 @@ const variants = {
 const Button = styled.button`
     cursor: pointer;
     
-    width: 100%;
-    height: 50px;
+    width: ${({ width }) => width || '100%'};
+    height: ${({ height }) => height || '50px'};
 
     border-radius: var(--border-radius);
 
