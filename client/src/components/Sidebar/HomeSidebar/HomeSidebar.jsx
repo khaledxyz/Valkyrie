@@ -1,6 +1,6 @@
 import { BsFillPersonLinesFill } from 'react-icons/bs';
 import { Separator } from '../../separator';
-import { SidebarButton, Conversation } from "../../SidebarButton";
+import { SidebarButton, Conversation } from "../SidebarButton";
 import { ProfileIcon } from '../../ProfileIcon';
 
 import './HomeSidebar.scss';
