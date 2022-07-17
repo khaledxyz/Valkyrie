@@ -8,5 +8,4 @@ export const Separator = styled.div`
 
     background-color: var(--madison);
     margin: 10px auto;
-
 `;
