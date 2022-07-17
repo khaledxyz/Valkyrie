@@ -62,11 +62,11 @@ const logIn = ('/login', asyncHandler(async(req, res) => {
     // Finds the user
     const user = await userModel.findOne({email: email.toLowerCase()}).select("+password");
         
-    // Checks the password with bcrypt.compare()
+    // Checks the password with bcrypt.compareSync()
     if(user && bcrypt.compareSync(password, user.password)) {
         return res.status(200).json({
             token: generateJWT(user._id),
-            user
+            details: user
         });
     };
     
