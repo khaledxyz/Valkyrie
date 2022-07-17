@@ -53,14 +53,23 @@ const signUp = asyncHandler(async(req, res) => {
 const logIn = ('/login', asyncHandler(async(req, res) => {
     const {email, password} = req.body;
 
+    // Checks if user provided email and password
+    if(!email || !password) {
+        res.status(400);
+        throw new Error('Please enter an email and password.');
+    };
+
     // Finds the user
     const user = await userModel.findOne({email: email.toLowerCase()}).select("+password");
-
+        
     // Checks the password with bcrypt.compare()
-    if(user && bcrypt.compare(password, user.password)) {
-        return res.status(200).json({token: generateJWT(user._id)});
-    }
-
+    if(user && bcrypt.compareSync(password, user.password)) {
+        return res.status(200).json({
+            token: generateJWT(user._id),
+            user
+        });
+    };
+    
     res.status(401);
     throw new Error('Wrong Email or Password');
 }));
