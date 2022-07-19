@@ -29,6 +29,26 @@ const getAllFriends = asyncHandler(async (req, res) => {
     res.status(200).json(friends);
 });
 
+// * GET ALL FRIEND REQUESTS * //
+// @desc    Get friend requests list
+// @route   GET /api/users/{USERID}/friend-requests
+// @access  private
+const getFriendRequests = asyncHandler(async (req, res) => {
+    const user = await userModel.findById(req.user.id);
+
+    // Checks if user is logged in
+    if(!user) {
+        res.status(409);
+        throw new Error('Not authorized. No Token.');
+    };
+
+    // Gets all friend requests for the user
+    const comingFriendRequests = await friendReqModel.find({ receiver: user.id });
+    const outgoingFriendRequests = await friendReqModel.find({ sender: user.id });
+
+    res.status(200).json({comingFriendRequests, outgoingFriendRequests});
+});
+
 // * CREATE FRIEND REQUEST * //
 // @desc    Create friend request
 // @route   POST /api/users/{USERID}/friend-requests
@@ -129,4 +149,4 @@ const declineFriendRequest = asyncHandler(async(req, res) => {
 
 });
 
-module.exports = { getAllFriends, addFriendRequest, acceptFriendRequest, declineFriendRequest };
+module.exports = { getFriendRequests, getAllFriends, addFriendRequest, acceptFriendRequest, declineFriendRequest };
