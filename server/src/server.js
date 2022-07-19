@@ -29,3 +29,4 @@ app.listen(PORT, () => {
 // * Routes * //
 app.use('/api/users', require('./routes/usersRouter'));
 app.use('/api/guilds', require('./routes/guildsRouter'));
+app.use('/api/users', require('./routes/friendsRouter'));

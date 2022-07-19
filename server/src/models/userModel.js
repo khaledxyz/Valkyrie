@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         select: false
     },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Friend'
+    }],
     guilds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Guild'
