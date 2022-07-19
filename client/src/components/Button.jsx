@@ -10,6 +10,10 @@ const variants = {
         background: 'var(--lavender-blush)',
         color: 'var(--bright-gray)',
     },
+    transparent: {
+        background: 'transparent',
+        color: 'var(--lavender-blush)',
+    },
     danger: {
         background: 'var(--error-danger)',
         color: 'var(--lavender-blush)',
@@ -36,19 +40,6 @@ const Button = styled.button`
     color: ${
         ({ variant }) => variants[variant] ? variants[variant].color : null
     };
-
-    // States
-    &:hover{
-            background-color: ${
-            ({ variant }) => variants[variant] ? darken(0.09, cssVar(variants[variant].background.slice(4, -1))) : null
-        };
-    };
-
-    &:active{
-        background-color: ${
-            ({ variant }) => variants[variant] ? darken(0.15, cssVar(variants[variant].background.slice(4, -1))) : null
-        };
-    }
 
     transition: background-color 0.2s ease;
     font-weight: 600;
