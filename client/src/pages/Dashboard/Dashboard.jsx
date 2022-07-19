@@ -4,11 +4,12 @@ import {useSelector, useDispatch} from 'react-redux';
 
 // * REDUX SLICE * //
 import { getAllGuilds } from '../../features/guilds/guildsSlice';
+import { getAllFriends } from '../../features/Friends/FriendsSlice';
 
 // * COMPONENTS * //
 import ServerList from "../../components/ServerList/ServerList";
 import Sidebar from '../../components/Sidebar/Sidebar';
-import FriendsList from '../../components/FriendsList/FriendsList';
+import FriendsTab from '../../components/FriendsTab/FriendsTab';
 
 // * STYLES * //
 import './Dashboard.scss';
@@ -16,11 +17,9 @@ import './Dashboard.scss';
 const Dashboard = () => {
     const dispatch = useDispatch();
 
-    const user = useSelector((state) => state.auth.user);
-    const guildsState = useSelector((state) => state.guilds);
-
     useEffect(() => {
         dispatch(getAllGuilds());
+        dispatch(getAllFriends());
     }, []);
 
     return ( 
@@ -29,7 +28,7 @@ const Dashboard = () => {
             <Sidebar />
 
             <div className="Main-app">
-                <FriendsList />
+                <FriendsTab />
             </div>
         </div>
      );
