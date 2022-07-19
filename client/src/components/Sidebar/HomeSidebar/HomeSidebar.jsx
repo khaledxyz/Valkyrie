@@ -1,5 +1,5 @@
 import { BsFillPersonLinesFill } from 'react-icons/bs';
-import { Separator } from '../../separator';
+import { Separator } from '../../Separator';
 import { SidebarButton, Conversation } from "../SidebarButton";
 import { ProfileIcon } from '../../ProfileIcon';
 
