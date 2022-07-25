@@ -1,9 +1,9 @@
 // * DEPENDENCIES * //
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { sendFriendRequest } from '../../features/friends/friendsSlice';
+import { reset, sendFriendRequest } from '../../features/friends/friendsSlice';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -17,15 +17,26 @@ import FriendsList from './FriendsList';
 
 const FriendsTab = () => {
     const dispatch = useDispatch();
-    
+    const friendsState = useSelector(state => state.friends);
+    const { isSuccess } = friendsState;
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTab, setCurrentTab] = useState('friends');
-    const [username, setUsername] = useState('');
+    const [friendFullUsername, setFriendFullUsername] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(sendFriendRequest(username));
+        const [username, tag] = friendFullUsername.split('#');
+        const friendDetails = {username, tag: '#' + tag};
+        dispatch(sendFriendRequest(friendDetails));
     };
+
+    useEffect(() => {
+        if(isSuccess) {
+            setIsModalOpen(false);
+            dispatch(reset);
+        };
+    }, [isSuccess]);
 
     return (
         <div className="FriendsTab">
@@ -41,8 +52,8 @@ const FriendsTab = () => {
                     label={'Username'}
                     required={true}
                     placeholder={'Valkyrie#0001'}
-                    onChange={e => setUsername(e.target.value)} 
-                    username={username}
+                    onChange={e => setFriendFullUsername(e.target.value)} 
+                    friendFullUsername={friendFullUsername}
                 >
                 </Input>
             </Modal>

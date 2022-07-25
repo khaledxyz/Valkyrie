@@ -18,7 +18,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllGuilds());
+        // dispatch(getAllGuilds());
         dispatch(getAllFriends());
     }, []);
 

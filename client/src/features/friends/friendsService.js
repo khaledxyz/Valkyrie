@@ -9,10 +9,10 @@ const getAllFriends = async(token, USERID) => {
     return res.data;
 };
 
-const sendFriendRequest = async(token, USERID, friendUsername) => {
+const sendFriendRequest = async(token, USERID, friendFullUsername) => {
     const config = {headers: {Authorization: `Bearer ${token}`}};
 
-    const res = await axios.post(`http://localhost:5000/api/users/${USERID}/friend-requests`, friendUsername, config);
+    const res = await axios.post(`http://localhost:5000/api/users/${USERID}/friend-requests`, friendFullUsername, config);
     if(res.data) return res.data;
 };
 
