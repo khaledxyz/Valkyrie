@@ -18,10 +18,16 @@ export const Friend = styled.div`
     border-bottom: 1px solid ${lighten(0.05, '#0c2c4e')};
     border-top: 1px solid ${lighten(0.05, '#0c2c4e')};
 
-    button{
+    button, .actions{
         position: absolute;
         right: 10px;
         top: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        
         transform: translateY(-50%);
     }
 

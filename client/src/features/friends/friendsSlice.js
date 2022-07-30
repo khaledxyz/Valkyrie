@@ -3,22 +3,47 @@ import friendsService from './friendsService';
 
 export const getAllFriends = createAsyncThunk('friends/getAllFriends', async(_, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
-    const USERID = thunkAPI.getState().auth.user.details.id;
+    const UserID = thunkAPI.getState().auth.user.details._id;
 
-    try {return await friendsService.getAllFriends(token, USERID)} 
+    try {return await friendsService.getAllFriends(token, UserID)} 
+    catch(Error) {console.log(Error)};
+});
+
+export const getAllfriendRequests = createAsyncThunk('friends/getAllfriendRequests', async(_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const UserID = thunkAPI.getState().auth.user.details._id;
+
+    try {return await friendsService.getAllfriendRequests(token, UserID)} 
     catch(Error) {console.log(Error)};
 });
 
 export const sendFriendRequest = createAsyncThunk('friends/sendFriendRequest', async(friendFullUsername, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
-    const USERID = thunkAPI.getState().auth.user.details.id;
+    const UserID = thunkAPI.getState().auth.user.details._id;
 
-    try {return await friendsService.sendFriendRequest(token, USERID, friendFullUsername)} 
+    try {return await friendsService.sendFriendRequest(token, UserID, friendFullUsername)} 
+    catch(Error) {console.log(Error)};
+});
+
+export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest', async(FriendID, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const UserID = thunkAPI.getState().auth.user.details._id;
+
+    try {return await friendsService.acceptFriendRequest(token, UserID, FriendID)} 
+    catch(Error) {console.log(Error)};
+});
+
+export const rejectFriendRequest = createAsyncThunk('friends/rejectFriendRequest', async(FriendID, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const UserID = thunkAPI.getState().auth.user.details._id;
+
+    try {return await friendsService.rejectFriendRequest(token, UserID, FriendID)} 
     catch(Error) {console.log(Error)};
 });
 
 const initialState = {
     friends: [],
+    friendRequests: [],
     isLoading: false,
     isSuccess: false,
 };
@@ -26,15 +51,9 @@ const initialState = {
 const friendsSlice = createSlice({
     name: 'friends',
     initialState,
-    reducers: {
-        reset: (state) => {
-            state.friends = [];
-            state.isLoading = false;
-            state.isSuccess = false;
-        }
-    },
     extraReducers: builder => {
         builder
+            // Get all Friends
             .addCase(getAllFriends.pending, (state) => {
                 state.isLoading = true;
             })
@@ -46,6 +65,19 @@ const friendsSlice = createSlice({
                 state.isLoading = false;
             })
 
+            // Get all Friend requests
+            .addCase(getAllfriendRequests.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllfriendRequests.fulfilled, (state, action) => {
+                state.friendRequests = action.payload;
+                state.isLoading = false;
+            })
+            .addCase(getAllfriendRequests.rejected, (state) => {
+                state.isLoading = false;
+            })
+            
+            // Send a Friend request
             .addCase(sendFriendRequest.pending, (state) => {
                 state.isLoading = true;
             })

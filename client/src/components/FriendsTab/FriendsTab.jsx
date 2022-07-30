@@ -9,10 +9,11 @@ import { reset, sendFriendRequest } from '../../features/friends/friendsSlice';
 import Button from '../Button';
 import Input from '../../components/Input/Input';
 import Modal from '../../components/Modal/Modal';
+import FriendsList from './FriendsList';
+import PendingList from './PendingList';
 
 // * STYLES * //
 import './FriendsTab.scss';
-import FriendsList from './FriendsList';
 
 
 const FriendsTab = () => {
@@ -34,7 +35,6 @@ const FriendsTab = () => {
     useEffect(() => {
         if(isSuccess) {
             setIsModalOpen(false);
-            dispatch(reset);
         };
     }, [isSuccess]);
 
@@ -71,7 +71,7 @@ const FriendsTab = () => {
                 {
                     currentTab == 'friends' ?
                         <FriendsList /> :
-                        <p>Pending</p>
+                        <PendingList /> 
                 }
             </div>
         </div>

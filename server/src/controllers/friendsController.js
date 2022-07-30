@@ -4,7 +4,7 @@ const friendReqModel = require('../models/friendReqModel');
 
 // * GET ALL FRIENDS * //
 // @desc    Get friends list
-// @route   POST /api/users/{USERID}/friends
+// @route   POST /api/users/{UserID}/friends
 // @access  private
 const getAllFriends = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
@@ -16,7 +16,7 @@ const getAllFriends = asyncHandler(async (req, res) => {
     };
 
     // // Checks if user matches the id in the url
-    // if(user.id !== req.params.USERID) {
+    // if(user.id !== req.params.UserID) {
     //     res.status(409);
     //     throw new Error('Not authorized.');
     // };
@@ -31,7 +31,7 @@ const getAllFriends = asyncHandler(async (req, res) => {
 
 // * GET ALL FRIEND REQUESTS * //
 // @desc    Get friend requests list
-// @route   GET /api/users/{USERID}/friend-requests
+// @route   GET /api/users/{UserID}/friend-requests
 // @access  private
 const getFriendRequests = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
@@ -42,16 +42,27 @@ const getFriendRequests = asyncHandler(async (req, res) => {
         throw new Error('Not authorized. No Token.');
     };
 
-    // Gets all friend requests for the user
-    const comingFriendRequests = await friendReqModel.find({ receiver: user.id });
-    const outgoingFriendRequests = await friendReqModel.find({ sender: user.id });
+    // Gets all friend requests (IDs) for the user
+    const comingRequestsIDs = await friendReqModel.find({ receiver: user.id });
+    const outgoingRequestsIDs = await friendReqModel.find({ sender: user.id });
+
+    // Gets details for all friend requests
+    const comingFriendRequests = await userModel.find({ _id: { $in: comingRequestsIDs.map(req => req.sender) } })
+        .select('username')
+        .select('tag')
+        .select('avatar');
+
+    const outgoingFriendRequests = await userModel.find({ _id: { $in: outgoingRequestsIDs.map(req => req.receiver) } })
+        .select('username')
+        .select('tag')
+        .select('avatar');
 
     res.status(200).json({comingFriendRequests, outgoingFriendRequests});
 });
 
 // * CREATE FRIEND REQUEST * //
 // @desc    Create friend request
-// @route   POST /api/users/{USERID}/friend-requests
+// @route   POST /api/users/{UserID}/friend-requests
 // @access  private
 const addFriendRequest = asyncHandler(async(req, res) => {
     const user = await userModel.findById(req.user.id);
@@ -77,7 +88,7 @@ const addFriendRequest = asyncHandler(async(req, res) => {
         throw new Error('Friend not found.');
     };
 
-    // Checks if user is sending hismelf a friend request
+    // Checks if user is sending himself a friend request
     if(user._id === friend._id) {
         res.status(409);
         throw new Error('Well, You don\'t need Valkyrie to talk to yourself!');
@@ -94,12 +105,12 @@ const addFriendRequest = asyncHandler(async(req, res) => {
 
 // * ACCEPT FRIEND REQUEST * //
 // @desc    Accept friend request
-// @route   PUT /api/users/{USERID}/friend-requests/{FRIENDID}
+// @route   PUT /api/users/{UserID}/friend-requests/{FriendID}
 // @access  private
 const acceptFriendRequest = asyncHandler(async(req, res) => {
     const user = await userModel.findById(req.user.id);
-    const userFriendRequest = await friendReqModel.find({ sender: req.params.FRIENDID, receiver: user._id });
-    const friend = await userModel.findById(req.params.FRIENDID);
+    const userFriendRequest = await friendReqModel.find({ sender: req.params.FriendID, receiver: user._id });
+    const friend = await userModel.findById(req.params.FriendID);
 
     // Checks if user is logged in
     if(!user) {
@@ -123,12 +134,12 @@ const acceptFriendRequest = asyncHandler(async(req, res) => {
 
 // * DECLINE FRIEND REQUEST * //
 // @desc    Decline friend request
-// @route   DELETE /api/users/{USERID}/friend-requests/{FRIENDID}
+// @route   DELETE /api/users/{UserID}/friend-requests/{FriendID}
 // @access  private
 const declineFriendRequest = asyncHandler(async(req, res) => {
     const user = await userModel.findById(req.user.id);
-    const userFriendRequest = await friendReqModel.find({ sender: req.params.FRIENDID, receiver: user._id });
-    const friend = await userModel.findById(req.params.FRIENDID);
+    const userFriendRequest = await friendReqModel.find({ sender: req.params.FriendID, receiver: user._id });
+    const friend = await userModel.findById(req.params.FriendID);
 
     // Checks if user is logged in
     if(!user) {
