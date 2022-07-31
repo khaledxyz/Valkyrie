@@ -10,6 +10,7 @@ import { getAllFriends } from '../../features/Friends/FriendsSlice';
 import ServerList from "../../components/ServerList/ServerList";
 import Sidebar from '../../components/Sidebar/Sidebar';
 import FriendsTab from '../../components/FriendsTab/FriendsTab';
+import Conversation from '../../components/Conversation/Conversation';
 
 // * STYLES * //
 import './Dashboard.scss';
@@ -28,7 +29,8 @@ const Dashboard = () => {
             <Sidebar />
 
             <div className="Main-app">
-                <FriendsTab />
+                {/* <FriendsTab /> */}
+                <Conversation />
             </div>
         </div>
      );
