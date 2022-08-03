@@ -5,7 +5,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'valkyrie/uploads' })
 
 const {getGuild, getGuilds, postGuild, joinGuild} = require('../controllers/guildsController');
-const {authenticate} = require('../middlewares/authMiddleware');
+const {authenticate} = require('../middleware/authMiddleware');
 
 // Fetch guilds
 router.get('/', authenticate, getGuilds);

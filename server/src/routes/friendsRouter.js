@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { getAllFriends, getFriendRequests, addFriendRequest, acceptFriendRequest, declineFriendRequest } = require('../controllers/friendsController');
-const { authenticate } = require('../middlewares/authMiddleware');
+const { authenticate } = require('../middleware/authMiddleware');
 
 router.get('/:UserID/friends', authenticate, getAllFriends);
 
