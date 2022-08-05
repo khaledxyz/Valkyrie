@@ -19,7 +19,7 @@ const AppRoutes = () => {
             <Route exact path="/channels" element={<Dashboard />} />
             <Route exact path="/login" element={isUserLogged} />
             <Route exact path="/signup" element={isUserSigned} />
-            <Route path="*" element={<Navigate replace to="/" />} />
+            <Route path="*" element={<Navigate replace to="/404" />} />
         </Routes>
     )
 }

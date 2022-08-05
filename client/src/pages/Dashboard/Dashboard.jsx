@@ -1,7 +1,7 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 // * REDUX SLICE * //
 import { getAllGuilds } from '../../features/guilds/guildsSlice';
 import { getAllFriends } from '../../features/Friends/FriendsSlice';
@@ -17,8 +17,11 @@ import './Dashboard.scss';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = localStorage.getItem("user");
 
     useEffect(() => {
+        if(!user) navigate('/login');
         // dispatch(getAllGuilds());
         dispatch(getAllFriends());
     }, []);
@@ -29,8 +32,8 @@ const Dashboard = () => {
             <Sidebar />
 
             <div className="Main-app">
-                {/* <FriendsTab /> */}
-                <Conversation />
+                <FriendsTab />
+                {/* <Conversation /> */}
             </div>
         </div>
      );
