@@ -32,8 +32,7 @@ const ServerList = () => {
                 <Separator width='40%' />
                 <div className="servers">{
                     guilds.map(guild => {
-                        // return <ServerIcon key={guild._id} guild={guild}/>
-                        console.log(guild.serverIcon.data);
+                        return <ServerIcon key={guild._id} guild={guild}/>
                     })
                 }</div>
                 <Separator width='40%' />
