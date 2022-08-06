@@ -39,7 +39,8 @@ const getGuilds = asyncHandler(async (req, res) => {
         throw new Error('Not authorized. No Token.');
     }
 
-    res.status(200).json(user.guilds)
+    const guilds = await guildModel.find({ _id: { $in: user.guilds } });
+    res.status(200).json(guilds);
 });
 
 // * CREATE GUILD * //

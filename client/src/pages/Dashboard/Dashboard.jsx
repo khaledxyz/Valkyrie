@@ -2,8 +2,8 @@
 import { useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 // * REDUX SLICE * //
-import { getAllGuilds } from '../../features/guilds/guildsSlice';
 import { getAllFriends } from '../../features/Friends/FriendsSlice';
 
 // * COMPONENTS * //
@@ -22,7 +22,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         if(!user) navigate('/login');
-        // dispatch(getAllGuilds());
         dispatch(getAllFriends());
     }, []);
 
