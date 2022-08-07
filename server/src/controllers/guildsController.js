@@ -1,9 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const guildModel = require("../models/guildModel");
 const userModel = require("../models/userModel");
-
-var fs = require('fs');
-var path = require('path');
+const cloudinary = require("../config/cloudinary");
 
 // * GET GUILD * //
 // @desc    get single guild
@@ -55,12 +53,12 @@ const postGuild = asyncHandler(async (req, res) => {
         throw new Error('Not authorized. No Token.');
     }
 
+    const uploadedFile = await cloudinary.uploader.upload(req.body.icon, { upload_preset: 'guild_icons' });
+    console.log(uploadedFile);
+
     const guild = await guildModel.create({
         name: req.body.name,
-        serverIcon: {
-            data: fs.readFileSync(path.join(__dirname + '../../../valkyrie/uploads/' + req.file.filename)),
-            contentType: 'image/png'
-        },
+        icon: uploadedFile.url,
         owner: req.user.id,
         members: [req.user.id]
     });
