@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const multer = require('multer');
-const upload = multer({ dest: 'valkyrie/uploads' })
-
-const {getGuild, getGuilds, postGuild, joinGuild} = require('../controllers/guildsController');
-const {authenticate} = require('../middleware/authMiddleware');
+const { getGuild, getGuilds, postGuild, joinGuild } = require('../controllers/guildsController');
+const { authenticate } = require('../middleware/authMiddleware');
 
 // Fetch guilds
 router.get('/', authenticate, getGuilds);
 router.get('/:id', authenticate, getGuild);
 
 // Create guild
-router.post('/', authenticate, upload.single('serverIcon'), postGuild);
+router.post('/', authenticate, postGuild);
 
 // Join guild
 router.put('/:id/join', authenticate, joinGuild);
