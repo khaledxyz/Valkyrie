@@ -5,9 +5,8 @@ const guildSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    serverIcon: {
-        data: Buffer,
-        contentType: String,
+    icon: {
+        type: String,
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
