@@ -1,6 +1,6 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // * REDUX SLICE * //
@@ -19,23 +19,26 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = localStorage.getItem("user");
+    const { currentTab, options } = useSelector(state => state.currentTab);
 
     useEffect(() => {
-        if(!user) navigate('/login');
+        if (!user) navigate('/login');
         dispatch(getAllFriends());
-    }, []);
+        console.log(currentTab);
+    }, [currentTab]);
 
-    return ( 
+    return (
         <div className='Dashboard'>
             <ServerList />
             <Sidebar />
 
             <div className="Main-app">
-                <FriendsTab />
-                {/* <Conversation /> */}
+                {currentTab === 'home' && <FriendsTab />}
+                {currentTab === 'friends' && <FriendsTab />}
+                {currentTab === 'conversation' && <Conversation friendID={options} />}
             </div>
         </div>
-     );
+    );
 }
- 
+
 export default Dashboard;

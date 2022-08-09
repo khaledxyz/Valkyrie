@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
 import { getAllGuilds, createGuild } from '../../features/guilds/guildsSlice';
+import { setCurrentTab } from '../../features/currentTab/currentTabSlice';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -82,7 +83,7 @@ const ServerList = () => {
 
             <div className="Server-list-wrapper">
                 <aside className='Server-list'>
-                    <HomeIcon style={{ marginBottom: '10px' }}><GiSteelwingEmblem /></HomeIcon>
+                    <HomeIcon onClick={() => dispatch(setCurrentTab({ currentTab: 'home', options: null }))} style={{ marginBottom: '10px' }}><GiSteelwingEmblem /></HomeIcon>
                     {guilds.length > 0 ? <Separator width='40%' /> : null}
                     <div className="servers">{
                         guilds?.map(guild => {
