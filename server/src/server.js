@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // * Middleware * //
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
@@ -27,6 +27,7 @@ app.listen(PORT, () => {
 })
 
 // * Routes * //
+app.use('/api/auth', require('./routes/authRouter'));
 app.use('/api/users', require('./routes/usersRouter'));
+app.use('/api/friend-requests', require('./routes/friendRequestsRouter'));
 app.use('/api/guilds', require('./routes/guildsRouter'));
-app.use('/api/users', require('./routes/friendsRouter'));

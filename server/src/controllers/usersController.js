@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789';
@@ -8,16 +7,16 @@ const nanoid = customAlphabet(alphabet, 4);
 
 const userModel = require("../models/userModel");
 
-// * SIGN UP * //
-// @desc    Register user
+// * REGISTER * //
+// @desc    Create new user account
 // @route   POST /api/users
 // @access  public
-const signUp = asyncHandler(async(req, res) => {
-    const {username, email, password} = req.body;
+const register = asyncHandler(async (req, res) => {
+    const { username, email, password } = req.body;
 
     // Checks if user already exists
-    const userExists = await userModel.findOne({email: email.toLowerCase()});
-    if(userExists) {
+    const userExists = await userModel.findOne({ email: email.toLowerCase() });
+    if (userExists) {
         res.status(409);
         throw new Error('Account already exists.');
     }
@@ -25,7 +24,7 @@ const signUp = asyncHandler(async(req, res) => {
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt)
-    
+
     // Pushes user to the DB
     const user = {
         username,
@@ -36,7 +35,7 @@ const signUp = asyncHandler(async(req, res) => {
     };
     const newUser = await userModel.create(user);
 
-    if(newUser) {
+    if (newUser) {
         return res.status(200).json({
             message: 'Registered an account.'
         })
@@ -46,46 +45,32 @@ const signUp = asyncHandler(async(req, res) => {
     throw new Error();
 });
 
-// * LOGIN * //
-// @desc    Login user
-// @route   POST /api/users/login
-// @access  public
-const logIn = ('/login', asyncHandler(async(req, res) => {
-    const {email, password} = req.body;
-
-    // Checks if user provided email and password
-    if(!email || !password) {
-        res.status(400);
-        throw new Error('Please enter an email and password.');
-    };
-
-    // Finds the user
-    const user = await userModel.findOne({email: email.toLowerCase()}).select("+password");
-        
-    // Checks the password with bcrypt.compareSync()
-    if(user && bcrypt.compareSync(password, user.password)) {
-        return res.status(200).json({
-            token: generateJWT(user._id),
-            details: user
-        });
-    };
-    
-    res.status(401);
-    throw new Error('Wrong Email or Password');
-}));
-
-
 // * GET ME * //
-// @desc    Get user info
+// @desc    Get logged user info
 // @route   GET /api/users/@me
 // @access  private
-const getMe = asyncHandler(async(req, res) => {
+const getMe = asyncHandler(async (req, res) => {
     return res.status(200).json(req.user);
 });
 
-// * OTHER FUNCTIONS * //
-const generateJWT = (id) => {
-    return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET)
-};
+// * GET USER * //
+// @desc    Get user info
+// @route   GET /api/users/:UserID
+// @access  private
+const getUser = asyncHandler(async (req, res) => {
+    const { UserID } = req.params;
+    console.log(UserID);
+    const user = await userModel.findById(UserID)
+        .select('username')
+        .select('tag')
+        .select('avatar');
 
-module.exports = { signUp, logIn, getMe };
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found.');
+    };
+
+    return res.status(200).json(user);
+});
+
+module.exports = { register, getMe, getUser };
