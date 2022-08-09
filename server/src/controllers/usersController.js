@@ -73,4 +73,31 @@ const getUser = asyncHandler(async (req, res) => {
     return res.status(200).json(user);
 });
 
-module.exports = { register, getMe, getUser };
+// * GET USER FRIENDS * //
+// @desc    Get friends list
+// @route   POST /api/users/:UserID/friends
+// @access  private
+const getUserFriends = asyncHandler(async (req, res) => {
+    const user = await userModel.findById(req.user.id);
+
+    // Checks if user is logged in
+    if (!user) {
+        res.status(409);
+        throw new Error('Not authorized. No Token.');
+    };
+
+    // Checks if user matches the id in the url
+    if (user.id !== req.params.UserID) {
+        res.status(409);
+        throw new Error('Not authorized.');
+    };
+
+    const userFriends = await userModel.find({ _id: { $in: user.friends } })
+        .select('username')
+        .select('tag')
+        .select('avatar');
+
+    res.status(200).json(userFriends);
+});
+
+module.exports = { register, getMe, getUser, getUserFriends };

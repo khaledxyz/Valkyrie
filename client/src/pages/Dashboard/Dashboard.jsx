@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // * REDUX SLICE * //
-import { getAllFriends } from '../../features/Friends/FriendsSlice';
+import { getUserFriends } from '../../features/Friends/FriendsSlice';
 
 // * COMPONENTS * //
 import ServerList from "../../components/ServerList/ServerList";
@@ -23,7 +23,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!user) navigate('/login');
-        dispatch(getAllFriends());
+        dispatch(getUserFriends());
         console.log(currentTab);
     }, [currentTab]);
 

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// const getAllFriends = async (token, UserID) => {
-//     const config = { headers: { Authorization: `Bearer ${token}` } };
+const getUserFriends = async (token, UserID) => {
+    const config = { headers: { Authorization: `Bearer ${token}` } };
 
-//     const res = await axios.get(`http://localhost:5000/api/users/${UserID}/friends`, config);
-//     if (res.data) localStorage.setItem('friends', JSON.stringify(res.data));
+    const res = await axios.get(`http://localhost:5000/api/users/${UserID}/friends`, config);
+    if (res.data) localStorage.setItem('userFriends', JSON.stringify(res.data));
 
-//     return res.data;
-// };
+    return res.data;
+};
 
 const getAllfriendRequests = async (token) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -34,5 +34,5 @@ const rejectFriendRequest = async (token, UserID, FriendID) => {
     if (res.data) return res.data;
 };
 
-const FriendsService = { sendFriendRequest, getAllfriendRequests, acceptFriendRequest, rejectFriendRequest };
+const FriendsService = { sendFriendRequest, getAllfriendRequests, acceptFriendRequest, rejectFriendRequest, getUserFriends };
 export default FriendsService;
