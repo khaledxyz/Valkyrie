@@ -54,7 +54,6 @@ const postGuild = asyncHandler(async (req, res) => {
     }
 
     const uploadedFile = await cloudinary.uploader.upload(req.body.icon, { upload_preset: 'guild_icons' });
-    console.log(uploadedFile);
 
     const guild = await guildModel.create({
         name: req.body.name,
