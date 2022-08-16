@@ -1,4 +1,4 @@
-.Conversation{
+.Conversation {
     position: relative;
 
     width: 100%;
@@ -9,7 +9,7 @@
     justify-content: space-between;
 }
 
-.Conversation__Navbar{
+.Conversation__Navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,45 +18,44 @@
     padding: var(--base-padding);
     box-shadow: var(--box-shadow);
     background-color: var(--down-river);
-    
+
     width: 100%;
 
-    div{
+    div {
         display: flex;
         align-items: center;
     }
 }
 
-.Conversation__messages{
-    overflow-y: auto;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-
+.Conversation__messages {
+    overflow-y: scroll;
+    overflow-x: hidden;
     height: 100%;
 }
 
-.message{
+.message {
     display: flex;
     gap: 10px;
     padding: 0 15px 0 15px;
 
-    &:hover{
+    margin-top: var(--base-margin);
+    width: 100%;
+
+    &:hover {
         background-color: var(--madison);
     }
 
-    .icon{
+    .icon {
         width: 40px;
         height: 40px;
     }
 
-    .username{
+    .username {
         font-size: 0.9rem;
     }
 }
 
-.Conversation__Footer{
+.Conversation__Footer {
     background-color: var(--down-river);
     width: 100%;
     padding: 15px;
