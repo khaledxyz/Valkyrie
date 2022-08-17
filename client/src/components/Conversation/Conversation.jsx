@@ -1,5 +1,6 @@
 // * DEPENDENCIES * //
-import { useState, useEffect } from 'react';
+import { forwardRef } from 'react';
+import { useState, useEffect, useRef, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
@@ -16,6 +17,7 @@ const Conversation = ({ friendID }) => {
     const dispatch = useDispatch();
 
     const [messageContent, setMessageContent] = useState('');
+    const scrollRef = useRef(null);
     const { currentConversation } = useSelector(state => state.conversations);
     const { user } = useSelector(state => state.auth);
 
@@ -24,10 +26,17 @@ const Conversation = ({ friendID }) => {
 
     useEffect(() => {
         dispatch(getConversation(friendID));
-    }, []);
+        scrollToBottom();
+    }, [messageContent]);
 
+    useEffect(() => {
+        scrollToBottom()
+    }, [currentConversation]);
+    
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if(!messageContent) return;
 
         const message = {
             content: messageContent,
@@ -36,7 +45,11 @@ const Conversation = ({ friendID }) => {
 
         dispatch(sendMessage(message));
         setMessageContent('');
-        socket.emit('sendMessage', 'hello');
+        e.target.reset();
+    };
+
+    const scrollToBottom = () => {
+        scrollRef.current?.scrollIntoView();
     };
 
     return (
@@ -55,7 +68,9 @@ const Conversation = ({ friendID }) => {
                         </div>
                     </div>
                 ))
-            }</div>
+            }
+                <div ref={scrollRef}></div>
+            </div>
 
             <form className='Conversation__Footer' onSubmit={(e) => handleSubmit(e)}>
                 <Input
