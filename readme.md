@@ -12,10 +12,17 @@ The client is built using React/Vite.
 ### Server
   - Open the server directory `cd server`.
   - Install npm dependencies `npm install`.
-  - Create .env file that contains the following values `* => Required`
+  - Create .env file that contains the following values
   
-        PORT=4000
-        MONGODB_URI=mongodb://[Username:Password(optional)]@HostName:Port/?aruguments *
-        JWT_TOKEN_SECRET=Very_Secure_token *
+        PORT="NUMBER"
+        MONGODB_URI="mongodb://[Username:Password(optional)]@HostName:Port/?aruguments"
+        JWT_TOKEN_SECRET="STRING"
         
+        // To upload images to Cloudinary CDN
+        // Not required if you're not planning to upload images
+        CLOUDINARY_API_KEY="NUMBER"
+        CLOUDINARY_API_SECRET="STRING"
+        CLOUDINARY_NAME="STRING"
+        CLOUDINARY_URL="URL"
+
   - Run the server `npm start`.
