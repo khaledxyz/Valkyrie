@@ -1,30 +1,71 @@
-import Button from '../Button';
+// * DEPENDENCIES * //
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+// * REDUX SLICE * //
+import { getConversation, sendMessage } from '../../features/conversations/conversationsSlice';
+
+// * COMPONENTS * //
 import Input from '../Input/Input';
 import { ProfileIcon } from '../ProfileIcon';
+
+// * STYLES * //
 import './Conversation.scss';
 
 const Conversation = ({ friendID }) => {
+    const dispatch = useDispatch();
+
+    const [messageContent, setMessageContent] = useState('');
+    const { currentConversation } = useSelector(state => state.conversations);
+    const { user } = useSelector(state => state.auth);
+
+    const receiver = currentConversation?.receiver;
+    const sender = user.details;
+
+    useEffect(() => {
+        dispatch(getConversation(friendID));
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const message = {
+            content: messageContent,
+            receiver: friendID
+        };
+
+        dispatch(sendMessage(message));
+        setMessageContent('');
+        socket.emit('sendMessage', 'hello');
+    };
+
     return (
         <div className="Conversation">
             <div className='Conversation__Navbar'>
-                <p>{friendID}</p>
+                <p>{receiver?.username}</p>
             </div>
 
-            <div className="Conversation__messages">
-                <div className="message">
-                    <ProfileIcon className='icon' />
-                    <div className="message__content">
-                        <p className='username'>{friendID}</p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed a, dolorem earum obcaecati recusandae odio accusamus similique provident magnam voluptates? Accusamus omnis voluptatibus modi culpa inventore optio? Eos repudiandae expedita libero fuga magni culpa facilis praesentium distinctio minus fugiat dignissimos pariatur, in minima officiis beatae magnam! Quasi architecto hic ipsum?
+            <div className="Conversation__messages">{
+                currentConversation?.messages.map(message => (
+                    <div className="message" key={message._id}>
+                        <ProfileIcon className='icon' />
+                        <div className="message__content">
+                            <p className='username'>{message.sender == sender._id ? sender.username : receiver?.username}</p>
+                            {message.content}
+                        </div>
                     </div>
-                </div>
-            </div>
+                ))
+            }</div>
 
-            <div className='Conversation__Footer'>
+            <form className='Conversation__Footer' onSubmit={(e) => handleSubmit(e)}>
                 <Input
-                    placeholder={`Message ${friendID}`}
+                    type={'text'}
+                    placeholder={`Message ${currentConversation?.receiver.username}`}
+                    required={true}
+                    onChange={e => setMessageContent(e.target.value)}
+                    messageContent={messageContent}
                 />
-            </div>
+            </form>
         </div>
     );
 }
