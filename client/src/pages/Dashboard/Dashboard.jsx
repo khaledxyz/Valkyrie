@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // * REDUX SLICE * //
-import { getUserFriends } from '../../features/Friends/FriendsSlice';
+import { getUserFriends } from '../../features/Friends/friendsSlice';
 
 // * COMPONENTS * //
 import ServerList from "../../components/ServerList/ServerList";
