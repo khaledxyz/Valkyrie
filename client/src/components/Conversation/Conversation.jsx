@@ -1,14 +1,16 @@
 // * DEPENDENCIES * //
-import { forwardRef } from 'react';
 import { useState, useEffect, useRef, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { getConversation, sendMessage } from '../../features/conversations/conversationsSlice';
+import {
+    getConversation,
+    sendMessage
+} from '../../features/conversations/conversationsSlice';
 
 // * COMPONENTS * //
 import Input from '../Input/Input';
-import { ProfileIcon } from '../ProfileIcon';
+import Message from './Message';
 
 // * STYLES * //
 import './Conversation.scss';
@@ -17,26 +19,30 @@ const Conversation = ({ friendID }) => {
     const dispatch = useDispatch();
 
     const [messageContent, setMessageContent] = useState('');
+    const [lastMessage, setLastMessage] = useState('');
     const scrollRef = useRef(null);
-    const { currentConversation } = useSelector(state => state.conversations);
-    const { user } = useSelector(state => state.auth);
+    const { currentConversation } = useSelector((state) => state.conversations);
+    const { user } = useSelector((state) => state.auth);
 
     const receiver = currentConversation?.receiver;
     const sender = user.details;
 
     useEffect(() => {
         dispatch(getConversation(friendID));
-        scrollToBottom();
-    }, [messageContent]);
+    }, []);
 
     useEffect(() => {
-        scrollToBottom()
+        scrollToBottom();
     }, [currentConversation]);
-    
+
+    useEffect(() => {
+        dispatch(getConversation(friendID));
+    }, [lastMessage]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if(!messageContent) return;
+        if (!messageContent) return;
 
         const message = {
             content: messageContent,
@@ -44,7 +50,9 @@ const Conversation = ({ friendID }) => {
         };
 
         dispatch(sendMessage(message));
+        setLastMessage(message);
         setMessageContent('');
+        scrollToBottom();
         e.target.reset();
     };
 
@@ -54,35 +62,36 @@ const Conversation = ({ friendID }) => {
 
     return (
         <div className="Conversation">
-            <div className='Conversation__Navbar'>
+            <div className="Conversation__Navbar">
                 <p>{receiver?.username}</p>
             </div>
 
-            <div className="Conversation__messages">{
-                currentConversation?.messages.map(message => (
-                    <div className="message" key={message._id}>
-                        <ProfileIcon className='icon' />
-                        <div className="message__content">
-                            <p className='username'>{message.sender == sender._id ? sender.username : receiver?.username}</p>
-                            {message.content}
-                        </div>
-                    </div>
-                ))
-            }
+            <div className="Conversation__messages">
+                {currentConversation?.messages.map((message) => (
+                    <Message
+                        message={message}
+                        key={message._id}
+                        receiver={receiver}
+                        sender={sender}
+                    />
+                ))}
                 <div ref={scrollRef}></div>
             </div>
 
-            <form className='Conversation__Footer' onSubmit={(e) => handleSubmit(e)}>
+            <form
+                className="Conversation__Footer"
+                onSubmit={(e) => handleSubmit(e)}
+            >
                 <Input
                     type={'text'}
                     placeholder={`Message ${currentConversation?.receiver.username}`}
                     required={true}
-                    onChange={e => setMessageContent(e.target.value)}
+                    onChange={(e) => setMessageContent(e.target.value)}
                     messageContent={messageContent}
                 />
             </form>
         </div>
     );
-}
+};
 
 export default Conversation;
