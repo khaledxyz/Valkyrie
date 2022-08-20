@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const colors = require('colors');
-const dotenv = require("dotenv").config();
+const dotenv = require('dotenv').config();
 
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
 // * Connection * //
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log('---------------------');
     console.log(
         'Dev server running at  >'.green,
