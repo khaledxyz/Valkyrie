@@ -33,12 +33,15 @@ const conversationsSlice = createSlice({
     initialState: {
         conversations: [],
         currentConversation: null,
-        updater: []
+        updater: ''
     },
     reducers: {
         reset: (state) => {
             state.conversations = [];
             state.currentConversation = null;
+        },
+        updateMessages: (state, action) => {
+            state.updater = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -48,5 +51,5 @@ const conversationsSlice = createSlice({
     }
 });
 
-export const { reset } = conversationsSlice.actions;
+export const { reset, updateMessages } = conversationsSlice.actions;
 export default conversationsSlice.reducer;

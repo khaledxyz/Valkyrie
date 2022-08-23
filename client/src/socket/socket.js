@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-
+import store from '../app/store';
+import {updateMessages} from '../features/conversations/conversationsSlice';
 let socket;
 
 export const connectSocket = async (user) => {
@@ -10,7 +11,7 @@ export const connectSocket = async (user) => {
     });
 
     socket.on('getMessage', (data) => {
-        console.log(data);
+        store.dispatch(updateMessages(data));
     });
 };
 
