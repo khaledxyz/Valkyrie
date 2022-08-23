@@ -1,7 +1,7 @@
 const connectSocket = (server) => {
     const io = require('socket.io')(server, {
         cors: {
-            origin: 'https://valkyrieapp.vercel.app'
+            origin: ['https://valkyrieapp.vercel.app', 'http://localhost:3000']
         }
     });
 

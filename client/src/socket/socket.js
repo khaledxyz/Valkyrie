@@ -5,7 +5,7 @@ import { updateMessagesHistory } from '../features/conversations/conversationsSl
 let socket;
 
 export const connectSocket = async (user) => {
-    socket = io(`${import.meta.env.API_URL}'?id=2'`);
+    socket = io(`https://valkyrieapp-server.herokuapp.com`);
 
     socket.on('connect', () => {
         socket.emit('join', user);
