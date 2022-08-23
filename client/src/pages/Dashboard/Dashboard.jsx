@@ -28,7 +28,6 @@ const Dashboard = () => {
         if (!user) return navigate('/login');
         dispatch(getUserFriends());
         dispatch(reset());
-        console.log(currentTab);
     }, [currentTab]);
 
     useEffect(() => {

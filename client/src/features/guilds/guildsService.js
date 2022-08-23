@@ -1,9 +1,9 @@
-import axios from "axios";
+import { axiosInstance } from '../../app/axios';
 
 const getAllGuilds = async (token) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
-    const res = await axios.get("http://localhost:5000/api/guilds", config);
+    const res = await axiosInstance.get('/api/guilds', config);
     if (res.data) localStorage.setItem('guilds', JSON.stringify(res.data));
 
     return res.data;
@@ -12,7 +12,7 @@ const getAllGuilds = async (token) => {
 const createGuild = async (token, guildData) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
-    const res = await axios.post("http://localhost:5000/api/guilds", guildData, config);
+    const res = await axiosInstance.post('/api/guilds', guildData, config);
 
     return res.data;
 };
