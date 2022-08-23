@@ -39,9 +39,6 @@ const conversationsSlice = createSlice({
         reset: (state) => {
             state.conversations = [];
             state.currentConversation = null;
-        },
-        updateMessagesHistory: (state, action) => {
-            state.updater = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -51,5 +48,5 @@ const conversationsSlice = createSlice({
     }
 });
 
-export const { reset, updateMessagesHistory } = conversationsSlice.actions;
+export const { reset } = conversationsSlice.actions;
 export default conversationsSlice.reducer;

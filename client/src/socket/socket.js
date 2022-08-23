@@ -1,6 +1,4 @@
 import io from 'socket.io-client';
-import { store } from '../app/store';
-import { updateMessagesHistory } from '../features/conversations/conversationsSlice';
 
 let socket;
 
@@ -13,7 +11,6 @@ export const connectSocket = async (user) => {
 
     socket.on('getMessage', (data) => {
         console.log(data);
-        store.dispatch(updateMessagesHistory(data));
     });
 };
 
