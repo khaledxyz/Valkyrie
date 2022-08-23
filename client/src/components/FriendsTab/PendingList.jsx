@@ -7,7 +7,7 @@ import {
     getAllfriendRequests,
     acceptFriendRequest,
     rejectFriendRequest
-} from '../../features/Friends/friendsSlice';
+} from '../../features/friends/friendsSlice';
 
 // * COMPONENTS * //
 import { Friend } from './Friend';
