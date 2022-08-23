@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import store from '../app/store';
+import {store} from '../app/store';
 import {updateMessages} from '../features/conversations/conversationsSlice';
 let socket;
 
