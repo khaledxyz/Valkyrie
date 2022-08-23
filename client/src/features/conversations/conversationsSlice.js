@@ -33,7 +33,7 @@ const conversationsSlice = createSlice({
     initialState: {
         conversations: [],
         currentConversation: null,
-        updater: null
+        updater: []
     },
     reducers: {
         reset: (state) => {
