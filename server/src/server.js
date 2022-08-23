@@ -4,6 +4,7 @@ const cors = require('cors');
 const colors = require('colors');
 const dotenv = require('dotenv').config();
 
+const connectSocket = require('./socket/socket');
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
 
@@ -24,6 +25,7 @@ const server = app.listen(PORT, () => {
         `https://localhost:${PORT}`.blue
     );
     connectDB();
+    connectSocket(server);
 });
 
 // * Routes * //

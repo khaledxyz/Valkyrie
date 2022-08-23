@@ -15,13 +15,17 @@ import Message from './Message';
 // * STYLES * //
 import './Conversation.scss';
 
+import { emitMessage } from '../../socket/socket';
+
 const Conversation = ({ friendID }) => {
     const dispatch = useDispatch();
 
     const [messageContent, setMessageContent] = useState('');
     const [lastMessage, setLastMessage] = useState('');
     const scrollRef = useRef(null);
-    const { currentConversation } = useSelector((state) => state.conversations);
+    const { currentConversation, updater } = useSelector(
+        (state) => state.conversations
+    );
     const { user } = useSelector((state) => state.auth);
 
     const receiver = currentConversation?.receiver;
@@ -37,7 +41,7 @@ const Conversation = ({ friendID }) => {
 
     useEffect(() => {
         dispatch(getConversation(friendID));
-    }, [lastMessage]);
+    }, [lastMessage, updater]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,6 +54,7 @@ const Conversation = ({ friendID }) => {
         };
 
         dispatch(sendMessage(message));
+        emitMessage(message, sender);
         setLastMessage(message);
         setMessageContent('');
         scrollToBottom();
