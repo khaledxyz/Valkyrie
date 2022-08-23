@@ -5,7 +5,7 @@ import { updateMessagesHistory } from '../features/conversations/conversationsSl
 let socket;
 
 export const connectSocket = async (user) => {
-    socket = io(import.meta.env.API_URL);
+    socket = io(`${import.meta.env.API_URL}'?id=2'`);
 
     socket.on('connect', () => {
         socket.emit('join', user);
