@@ -12,7 +12,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // * Middleware * //
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(
+    cors({ origin: 'https://valkyrie-mo1z9rmle-khaledxyz.vercel.app/login' })
+);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
