@@ -41,7 +41,7 @@ const conversationsSlice = createSlice({
             state.currentConversation = null;
         },
         updateMessagesHistory: (state, action) => {
-            state.updater = [];
+            state.updater = action.payload;
         }
     },
     extraReducers: (builder) => {

@@ -13,7 +13,7 @@ export const connectSocket = async (user) => {
 
     socket.on('getMessage', (data) => {
         console.log(data);
-        store.dispatch(updateMessagesHistory());
+        store.dispatch(updateMessagesHistory(data));
     });
 };
 
