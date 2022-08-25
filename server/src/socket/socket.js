@@ -1,12 +1,14 @@
 const connectSocket = (server) => {
+    // * CONFIG * //
     const io = require('socket.io')(server, {
         cors: {
-            origin: 'http://localhost:3000'
+            origin: process.env.CLIENT_URL
         }
     });
 
     let onlineUsers = [];
 
+    // * FUNCTIONS * //
     const join = ({ socketID, userID }) => {
         !onlineUsers.some((onlineUser) => onlineUser.userID === userID) &&
             onlineUsers.push({ socketID, userID });
@@ -22,15 +24,16 @@ const connectSocket = (server) => {
         return onlineUsers.find((onlineUser) => onlineUser.userID === sender);
     };
 
-    io.on('connection', (socket) => {
+    io.on('connect', (socket) => {
+        // * EVENTS * //
         socket.on('join', (user) => {
             join({ socketID: socket.id, userID: user.details._id });
         });
 
-        socket.on('emitMessage', (data) => {
-            const receiver = findUser(data.receiver);
+        socket.on('emitMessage', (message) => {
+            const receiver = findUser(message.receiver);
             if (!receiver) return;
-            io.to(receiver.socketID).emit('getMessage', data);
+            io.to(receiver.socketID).emit('getMessage', message);
         });
 
         socket.on('disconnect', () => {

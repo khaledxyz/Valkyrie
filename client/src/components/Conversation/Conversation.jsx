@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getConversation,
     sendMessage
-} from '../../features/conversations/conversationsSlice';
+} from '../../features/conversation/conversationSlice';
 
 // * COMPONENTS * //
 import Input from '../Input/Input';
@@ -15,21 +15,15 @@ import Message from './Message';
 // * STYLES * //
 import './Conversation.scss';
 
-import { emitMessage } from '../../socket/socket';
-
 const Conversation = ({ friendID }) => {
     const dispatch = useDispatch();
+    const scrollRef = useRef(null);
 
     const [messageContent, setMessageContent] = useState('');
-    const [lastMessage, setLastMessage] = useState('');
-    const scrollRef = useRef(null);
-    const { currentConversation, updater } = useSelector(
-        (state) => state.conversations
+    const { messages, receiver, lastMessage, isLoading, isError } = useSelector(
+        (state) => state.conversation
     );
-    const { user } = useSelector((state) => state.auth);
-
-    const receiver = currentConversation?.receiver;
-    const sender = user.details;
+    const sender = useSelector((state) => state.auth.user.details);
 
     useEffect(() => {
         dispatch(getConversation(friendID));
@@ -37,13 +31,8 @@ const Conversation = ({ friendID }) => {
 
     useEffect(() => {
         scrollToBottom();
-    }, [currentConversation]);
-
-    useEffect(() => {
-        dispatch(getConversation(friendID));
-    }, [lastMessage, updater]);
-
-    const handleSubmit = (e) => {
+    }, [messages]);
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!messageContent) return;
@@ -54,8 +43,6 @@ const Conversation = ({ friendID }) => {
         };
 
         dispatch(sendMessage(message));
-        emitMessage(message, sender);
-        setLastMessage(message);
         setMessageContent('');
         scrollToBottom();
         e.target.reset();
@@ -72,7 +59,7 @@ const Conversation = ({ friendID }) => {
             </div>
 
             <div className="Conversation__messages">
-                {currentConversation?.messages.map((message) => (
+                {messages?.map((message) => (
                     <Message
                         message={message}
                         key={message._id}
@@ -89,7 +76,7 @@ const Conversation = ({ friendID }) => {
             >
                 <Input
                     type={'text'}
-                    placeholder={`Message ${currentConversation?.receiver.username}`}
+                    placeholder={`Message ${receiver?.username}`}
                     required={true}
                     onChange={(e) => setMessageContent(e.target.value)}
                     messageContent={messageContent}

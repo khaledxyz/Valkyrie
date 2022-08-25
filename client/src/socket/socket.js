@@ -1,21 +1,23 @@
 import io from 'socket.io-client';
 import { store } from '../app/store';
-import { updateMessagesHistory } from '../features/conversations/conversationsSlice';
+import { updater } from '../features/conversation/conversationSlice';
 
 let socket;
 
 export const connectSocket = async (user) => {
-    socket = io(import.meta.env.API_URL);
+    socket = io(import.meta.env.VITE_API_URL);
+    user = JSON.parse(user);
 
     socket.on('connect', () => {
         socket.emit('join', user);
     });
 
-    socket.on('getMessage', (data) => {
-        store.dispatch(updateMessagesHistory());
+    socket.on('getMessage', (message) => {
+        store.dispatch(updater(message));
     });
 };
 
-export const emitMessage = async (message, sender) => {
-    socket.emit('emitMessage', { ...message, sender: sender._id });
+export const emitMessage = async (message) => {
+    if (!message) return;
+    socket.emit('emitMessage', message);
 };

@@ -1,4 +1,5 @@
 import { axiosInstance } from '../../app/axios';
+import { emitMessage } from '../../socket/socket';
 
 const getConversation = async (token, ReceiverID) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -7,6 +8,7 @@ const getConversation = async (token, ReceiverID) => {
         `/api/messages/user-messages/${ReceiverID}`,
         config
     );
+    if (res.data) localStorage.setItem('messages', JSON.stringify(res.data));
     return res.data;
 };
 
@@ -18,6 +20,8 @@ const sendMessage = async (token, message) => {
         message,
         config
     );
+
+    if (res.data) emitMessage(res.data);
     return res.data;
 };
 
