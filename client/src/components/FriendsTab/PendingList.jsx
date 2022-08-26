@@ -40,7 +40,7 @@ const FriendsList = () => {
                 {comingFriendRequests?.map((friend) => {
                     const template = (
                         <Friend key={friend._id}>
-                            <ProfileIcon />
+                            <ProfileIcon avatar={friend.avatar} />
                             <p>{friend.username}</p>
                             <div className="actions">
                                 <CircleButton
@@ -63,7 +63,7 @@ const FriendsList = () => {
                 {outgoingFriendRequests?.map((friend) => {
                     const template = (
                         <Friend key={friend._id}>
-                            <ProfileIcon />
+                            <ProfileIcon avatar={friend.avatar} />
                             <p>{friend.username}</p>
                             <div className="actions">
                                 <CircleButton>
