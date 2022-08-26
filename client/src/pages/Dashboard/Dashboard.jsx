@@ -2,10 +2,11 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { connectSocket } from '../../socket/socket';
 
 // * REDUX SLICE * //
 import { getUserFriends } from '../../features/friends/friendsSlice';
-import { reset } from '../../features/conversations/conversationsSlice';
+import { reset } from '../../features/conversation/conversationSlice';
 
 // * COMPONENTS * //
 import ServerList from '../../components/ServerList/ServerList';
@@ -15,8 +16,6 @@ import Conversation from '../../components/Conversation/Conversation';
 
 // * STYLES * //
 import './Dashboard.scss';
-
-import { connectSocket } from '../../socket/socket';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -32,7 +31,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!user) return navigate('/login');
-        connectSocket(JSON.parse(user));
+        connectSocket(user);
     }, []);
 
     return (

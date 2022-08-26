@@ -2,10 +2,13 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 
 const { customAlphabet } = require('nanoid');
-const alphabet = '0123456789';
-const nanoid = customAlphabet(alphabet, 4);
+const nanoid = customAlphabet('0123456789', 4);
+const nanoidSTR = customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
+    10
+);
 
-const userModel = require("../models/userModel");
+const userModel = require('../models/userModel');
 
 // * REGISTER * //
 // @desc    Create new user account
@@ -23,22 +26,25 @@ const register = asyncHandler(async (req, res) => {
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt)
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create new avatar from username & random id
+    const avatar = `https://source.boringavatars.com/beam/120/${nanoidSTR()}`;
 
     // Pushes user to the DB
     const user = {
         username,
         tag: '#' + nanoid(),
         email: email.toLowerCase(),
+        avatar,
         password: hashedPassword
-
     };
     const newUser = await userModel.create(user);
 
     if (newUser) {
         return res.status(200).json({
             message: 'Registered an account.'
-        })
+        });
     }
 
     res.status(400);
@@ -60,7 +66,8 @@ const getMe = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
     const { UserID } = req.params;
     console.log(UserID);
-    const user = await userModel.findById(UserID)
+    const user = await userModel
+        .findById(UserID)
         .select('username')
         .select('tag')
         .select('avatar');
@@ -68,7 +75,7 @@ const getUser = asyncHandler(async (req, res) => {
     if (!user) {
         res.status(404);
         throw new Error('User not found.');
-    };
+    }
 
     return res.status(200).json(user);
 });
@@ -84,15 +91,16 @@ const getUserFriends = asyncHandler(async (req, res) => {
     if (!user) {
         res.status(409);
         throw new Error('Not authorized. No Token.');
-    };
+    }
 
     // Checks if user matches the id in the url
     if (user.id !== req.params.UserID) {
         res.status(409);
         throw new Error('Not authorized.');
-    };
+    }
 
-    const userFriends = await userModel.find({ _id: { $in: user.friends } })
+    const userFriends = await userModel
+        .find({ _id: { $in: user.friends } })
         .select('username')
         .select('tag')
         .select('avatar');

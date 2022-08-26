@@ -16,6 +16,12 @@ export const signup = createAsyncThunk('auth/signup', async(user) => {
     catch(Error) {console.log(Error)};
 });
 
+// Action Creator - logout
+export const logout = createAsyncThunk('auth/logout', async(user) => {
+    try {return await authService.logout(user)} 
+    catch(Error) {console.log(Error)};
+});
+
 const authSlice = createSlice({
     name: "auth",
     initialState: {

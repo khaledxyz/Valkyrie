@@ -1,0 +1,62 @@
+.UserID {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    height: 50px;
+    width: 100%;
+    background-color: var(--ebony);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 10px 0 10px;
+}
+
+.UserID__left {
+    height: 85%;
+    width: 50%;
+    padding: 5px;
+
+    border-radius: var(--border-radius);
+
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(172, 185, 197, 0.116);
+    }
+
+    .details {
+        height: 80%;
+        margin-left: 10px;
+
+        h6 {
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 0;
+        }
+    }
+}
+
+.tippy-box[data-theme~='valkyrie'] {
+    background-color: var(--azure-radiance);
+    color: var(--lavender-blush);
+}
+.tippy-box[data-theme~='valkyrie'][data-placement^='top']
+    > .tippy-arrow::before {
+    border-top-color: var(--azure-radiance);
+}
+.tippy-box[data-theme~='valkyrie'][data-placement^='bottom']
+    > .tippy-arrow::before {
+    border-bottom-color: var(--azure-radiance);
+}
+.tippy-box[data-theme~='valkyrie'][data-placement^='left']
+    > .tippy-arrow::before {
+    border-left-color: var(--azure-radiance);
+}
+.tippy-box[data-theme~='valkyrie'][data-placement^='right']
+    > .tippy-arrow::before {
+    border-right-color: var(--azure-radiance);
+}

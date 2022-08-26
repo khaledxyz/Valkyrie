@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const userModel = require("../models/userModel");
+const userModel = require('../models/userModel');
 
 // * LOG IN * //
 // @desc    login user
@@ -19,7 +19,7 @@ const logIn = ('/', asyncHandler(async (req, res) => {
 
     // Finds the user
     const user = await userModel.findOne({ email: email.toLowerCase() })
-        .select("+password");
+        .select('+password');
 
     // Checks the password with bcrypt.compareSync()
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -38,6 +38,7 @@ const logIn = ('/', asyncHandler(async (req, res) => {
 // @route   DELETE /auth
 // @access  private
 const logOut = ('/', asyncHandler(async (req, res) => {
+    localStorage.removeItem('user');
     return res.status(200).json({ message: 'Logged out.' });
 }));
 
