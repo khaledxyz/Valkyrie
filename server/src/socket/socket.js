@@ -33,6 +33,7 @@ const connectSocket = (server) => {
         socket.on('emitMessage', (message) => {
             const receiver = findUser(message.receiver);
             if (!receiver) return;
+            console.log('got message to emit', message);
             io.to(receiver.socketID).emit('getMessage', message);
         });
 

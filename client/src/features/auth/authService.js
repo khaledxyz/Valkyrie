@@ -12,5 +12,10 @@ const signup = async (user) => {
     if (res.data) return res.data;
 };
 
-const authService = { login, signup };
+const logout = async (user) => {
+    const res = await axiosInstance.delete('/api/auth', user);
+    if (res.data) return res.data;
+};
+
+const authService = { login, signup, logout };
 export default authService;

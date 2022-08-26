@@ -20,4 +20,5 @@ export const connectSocket = async (user) => {
 export const emitMessage = async (message) => {
     if (!message) return;
     socket.emit('emitMessage', message);
+    console.log('emitted: ', message);
 };
