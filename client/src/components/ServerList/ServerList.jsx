@@ -7,7 +7,6 @@ import { getAllGuilds, createGuild } from '../../features/guilds/guildsSlice';
 import { setCurrentTab } from '../../features/currentTab/currentTabSlice';
 
 // * COMPONENTS * //
-import Button from '../Button';
 import Input from '../../components/Input/Input';
 import Modal from '../Modal/Modal';
 import { ServerIcon, HomeIcon, CreateServerIcon } from '../ServerIcon';
@@ -22,11 +21,11 @@ import { BsPlusLg } from 'react-icons/bs';
 
 const ServerList = () => {
     const dispatch = useDispatch();
-    const { guilds } = useSelector((state) => state.guilds);
+    const { guilds, isLoading } = useSelector((state) => state.guilds);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [guildName, setGuildName] = useState('');
-    const [guildIcon, setGuildIcon] = useState('');
+    const [guildName, setGuildName] = useState(null);
+    const [guildIcon, setGuildIcon] = useState(null);
 
     const handleImage = (files) => {
         const file = files[0];
@@ -39,14 +38,23 @@ const ServerList = () => {
     };
 
     const handleSubmit = () => {
+
         const guildData = {
             name: guildName,
             icon: guildIcon
         };
 
         dispatch(createGuild(guildData));
+        setGuildIcon(null);
+        setGuildName(null);
         dispatch(getAllGuilds());
-        setIsModalOpen(false);
+    };
+
+    const getInitials = (name) => {
+        name = name.split(' ');
+        if (!name[1]) return name[0].charAt(0);
+        name = name.shift().charAt(0) + name.pop().charAt(0);
+        return name;
     };
 
     useEffect(() => {
@@ -99,6 +107,7 @@ const ServerList = () => {
                                 <ServerIcon
                                     key={guild._id}
                                     guild={guild.icon}
+                                    initials={getInitials(guild.name)}
                                 />
                             );
                         })}

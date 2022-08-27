@@ -20,13 +20,22 @@ const guildsSlice = createSlice({
         isLoading: false,
     },
     reducers: {
-        reset: () => { }
+        reset: (state) => {
+            state.guilds = [];
+            state.isLoading = false;
+        }
     },
     extraReducers: builder => {
         builder
+            // Fetch guilds
             .addCase(getAllGuilds.pending, (state) => { state.isLoading = true })
             .addCase(getAllGuilds.fulfilled, (state, action) => { state.guilds = action.payload; state.isLoading = false })
             .addCase(getAllGuilds.rejected, (state) => { state.isLoading = false })
+
+            // Create guild
+            .addCase(createGuild.pending, (state) => { state.isLoading = true })
+            .addCase(createGuild.fulfilled, (state, action) => { state.guilds = [...state.guilds, action.payload] })
+            .addCase(createGuild.rejected, (state) => { state.isLoading = false })
     }
 });
 

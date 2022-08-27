@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 
 export const ServerIcon = styled.div`
@@ -16,6 +15,10 @@ export const ServerIcon = styled.div`
     align-items: center;
     justify-content: center;
 
+    &:after{
+        content: ${({ initials }) => `'${initials}'`};
+    }
+    
     // States
     &:hover{
         cursor: pointer;
@@ -29,9 +32,11 @@ export const ServerIcon = styled.div`
 export const HomeIcon = styled(ServerIcon)`
     background: var(--madison);
     font-size: 1.5rem;
+    &:after{content: '';}
     &:hover{background: var(--azure-radiance);}
 `
 export const CreateServerIcon = styled(ServerIcon)`
     background: var(--madison);
+    &:after{content: '';}
     &:hover{background: #44af69;}
 `

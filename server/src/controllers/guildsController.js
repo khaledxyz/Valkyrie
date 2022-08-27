@@ -22,7 +22,7 @@ const getGuild = asyncHandler(async (req, res) => {
 
     const guild = await guildModel.findById(req.params.id);
 
-    res.status(200).json({ guild })
+    res.status(200).json(guild)
 });
 
 // * GET GUILDS * //
@@ -51,20 +51,23 @@ const postGuild = asyncHandler(async (req, res) => {
     if (!user) {
         res.status(404);
         throw new Error('Not authorized. No Token.');
-    }
+    };
 
-    const uploadedFile = await cloudinary.uploader.upload(req.body.icon, { upload_preset: 'guild_icons' });
+    let uploadedFile;
+    if (req.body.icon) {
+        uploadedFile = await cloudinary.uploader.upload(req.body.icon, { upload_preset: 'guild_icons' });
+    };
 
     const guild = await guildModel.create({
         name: req.body.name,
-        icon: uploadedFile.url,
+        icon: req.body.icon ? uploadedFile.url : 'default',
         owner: req.user.id,
         members: [req.user.id]
     });
 
     await userModel.findOneAndUpdate({ _id: req.user.id }, { $push: { guilds: guild._id } });
 
-    res.status(201).json({ guild });
+    res.status(201).json(guild);
 });
 
 // * JOIN GUILD * //
