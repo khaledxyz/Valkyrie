@@ -16,7 +16,7 @@
 
 .UserID__left {
     height: 85%;
-    width: 50%;
+    width: 60%;
     padding: 5px;
 
     border-radius: var(--border-radius);
@@ -24,6 +24,7 @@
     display: flex;
     align-items: center;
 
+    transition: 0.3s ease;
     &:hover {
         cursor: pointer;
         background-color: rgba(172, 185, 197, 0.116);
@@ -38,6 +39,11 @@
             line-height: 0;
         }
     }
+}
+
+.UserID__right{
+    display: flex;
+    gap: 5px;
 }
 
 .tippy-box[data-theme~='valkyrie'] {

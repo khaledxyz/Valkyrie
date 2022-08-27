@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { TbLogout } from 'react-icons/tb';
+import { TbLogout, TbSettings } from 'react-icons/tb';
 import './UserID.scss';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
@@ -32,25 +32,36 @@ const UserID = () => {
 
     return (
         <div className="UserID">
-            <div className="UserID__left">
+            <div className="UserID__left" onClick={handleClick}>
                 <ProfileIcon className="avatar" avatar={user?.details.avatar} />
                 <Tippy content="Copied!" visible={tippy} theme="valkyrie">
-                    <div className="details" onClick={handleClick}>
+                    <div className="details">
                         <p>{user?.details.username}</p>
                         <h6>{user?.details.tag}</h6>
                     </div>
                 </Tippy>
             </div>
 
-            <div className="logout">
-                <Button
-                    onClick={logOut}
-                    variant={'danger'}
-                    height={'30px'}
-                    width={'30px'}
-                >
-                    <TbLogout />
-                </Button>
+            <div className="UserID__right">
+                <Tippy content="Settings" theme="valkyrie">
+                    <Button
+                        variant={'transparent'}
+                        height={'30px'}
+                        width={'30px'}
+                    >
+                        <TbSettings />
+                    </Button>
+                </Tippy>
+                <Tippy content="Log out" theme="valkyrie">
+                    <Button
+                        onClick={logOut}
+                        variant={'transparent'}
+                        height={'30px'}
+                        width={'30px'}
+                    >
+                        <TbLogout />
+                    </Button>
+                </Tippy>
             </div>
         </div>
     );
