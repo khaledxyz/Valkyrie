@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { darken, cssVar } from 'polished'
 
 const variants = {
     primary: {
@@ -22,7 +21,16 @@ const variants = {
 
 const Button = styled.button`
     cursor: pointer;
-    
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg{
+        font-size: 20px;
+        aspect-ratio: 1/1;
+    }
+
     width: ${({ width }) => width || '100%'};
     height: ${({ height }) => height || '50px'};
 
@@ -33,16 +41,12 @@ const Button = styled.button`
     color: var(--lavender-blush);
 
     // Variants
-    background-color: ${
-        ({ variant }) => variants[variant] ? variants[variant].background : null
-    };
+    background-color: ${({ variant }) => variants[variant] ? variants[variant].background : null};
 
-    color: ${
-        ({ variant }) => variants[variant] ? variants[variant].color : null
-    };
+    color: ${({ variant }) => variants[variant] ? variants[variant].color : null};
 
     transition: background-color 0.2s ease;
     font-weight: 600;
 `;
- 
+
 export default Button;
