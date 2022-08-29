@@ -22,6 +22,7 @@ import { BsPlusLg } from 'react-icons/bs';
 const ServerList = () => {
     const dispatch = useDispatch();
     const { guilds, isLoading } = useSelector((state) => state.guilds);
+    const { currentTab, options } = useSelector((state) => state.currentTab);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [guildName, setGuildName] = useState(null);
@@ -38,7 +39,6 @@ const ServerList = () => {
     };
 
     const handleSubmit = () => {
-
         const guildData = {
             name: guildName,
             icon: guildIcon
@@ -55,6 +55,12 @@ const ServerList = () => {
         if (!name[1]) return name[0].charAt(0);
         name = name.shift().charAt(0) + name.pop().charAt(0);
         return name;
+    };
+
+    const isActive = (guildID) => {
+        if (currentTab === 'home' && options === guildID) return 'active';
+        if (currentTab === 'guild' && options === guildID) return 'active';
+        return null
     };
 
     useEffect(() => {
@@ -88,15 +94,9 @@ const ServerList = () => {
             <div className="Server-list-wrapper">
                 <aside className="Server-list">
                     <HomeIcon
-                        onClick={() =>
-                            dispatch(
-                                setCurrentTab({
-                                    currentTab: 'home',
-                                    options: null
-                                })
-                            )
-                        }
+                        onClick={() => dispatch(setCurrentTab({ currentTab: 'home', options: null }))}
                         style={{ marginBottom: '10px' }}
+                        className={isActive(null)}
                     >
                         <GiSteelwingEmblem />
                     </HomeIcon>
@@ -106,8 +106,10 @@ const ServerList = () => {
                             return (
                                 <ServerIcon
                                     key={guild._id}
-                                    guild={guild.icon}
+                                    icon={guild.icon}
                                     initials={getInitials(guild.name)}
+                                    onClick={() => dispatch(setCurrentTab({ currentTab: 'guild', options: guild._id }))}
+                                    className={isActive(guild._id)}
                                 />
                             );
                         })}

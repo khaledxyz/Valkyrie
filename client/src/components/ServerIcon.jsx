@@ -7,7 +7,7 @@ export const ServerIcon = styled.div`
     border-radius: 50%;
 
     background-color: var(--madison);
-    background-image: ${({ guild }) => `url(${guild})`};
+    background-image: ${({ icon }) => `url(${icon})`};
     background-size: cover;
     background-position: center;
 
@@ -15,28 +15,63 @@ export const ServerIcon = styled.div`
     align-items: center;
     justify-content: center;
 
-    &:after{
+    &:after {
         content: ${({ initials }) => `'${initials}'`};
     }
-    
-    // States
-    &:hover{
+
+    transition: all 0.2s ease;
+
+    // Hover
+    &:hover {
         cursor: pointer;
         border-radius: 30%;
         background-color: var(--azure-radiance);
+
+        &::before {
+            content: '';
+
+            position: absolute;
+            left: -20px;
+
+            width: 13px;
+            height: 40%;
+            border-radius: 5px;
+
+            background-color: var(--lavender-blush);
+        }
     }
 
-    transition: 0.2s ease;
+    &.active{border-radius: 30%;}
+    &.active::before {
+        content: '';
+
+        position: absolute;
+        left: -20px;
+
+        width: 13px;
+        height: 70%;
+        border-radius: 5px;
+
+        background-color: var(--lavender-blush);
+    }
 `;
 
 export const HomeIcon = styled(ServerIcon)`
     background: var(--madison);
     font-size: 1.5rem;
-    &:after{content: '';}
-    &:hover{background: var(--azure-radiance);}
-`
+    &:after {
+        content: '';
+    }
+    &:hover {
+        background: var(--azure-radiance);
+    }
+`;
 export const CreateServerIcon = styled(ServerIcon)`
     background: var(--madison);
-    &:after{content: '';}
-    &:hover{background: #44af69;}
-`
+    &:after {
+        content: '';
+    }
+    &:hover {
+        background: #44af69;
+    }
+`;
