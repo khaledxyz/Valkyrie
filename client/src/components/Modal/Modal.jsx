@@ -1,4 +1,5 @@
 // * DEPENDENCIES * //
+import ReactDom from 'react-dom';
 import { motion } from 'framer-motion';
 
 // * COMPONENTS * //
@@ -11,9 +12,14 @@ import './Modal.scss';
 const Modal = ({ children, title, action, handleSubmit, isModalOpen, close }) => {
     if (!isModalOpen) return;
 
-    return (
+    const handleClose = (e) => {
+        if (e.target.classList[0] !== 'Overlay') return;
+        close();
+    };
+
+    return ReactDom.createPortal(
         <>
-            <div className="Overlay">
+            <div className="Overlay" onClick={handleClose} >
                 <motion.div className="Modal"
                     initial={{ opacity: 0, scale: 0.75 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -31,7 +37,8 @@ const Modal = ({ children, title, action, handleSubmit, isModalOpen, close }) =>
                     </div>
                 </motion.div>
             </div>
-        </>
+        </>,
+        document.getElementById('modalPortal')
     );
 }
 
