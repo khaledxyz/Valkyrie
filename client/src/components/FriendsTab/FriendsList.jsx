@@ -1,9 +1,6 @@
 // * DEPENDENCIES * //
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-
-// * REDUX SLICE * //
-import { setCurrentTab } from '../../features/currentTab/currentTabSlice';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -11,13 +8,11 @@ import { Friend } from './Friend';
 import { ProfileIcon } from '../ProfileIcon';
 
 const FriendsList = () => {
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { userFriends, isLoading } = useSelector((state) => state.friends);
 
     const handleShowConversation = (friendID) => {
-        dispatch(
-            setCurrentTab({ currentTab: 'conversation', options: friendID })
-        );
+        navigate(`/channels/@me/${friendID}`);
     };
 
     return isLoading ? (

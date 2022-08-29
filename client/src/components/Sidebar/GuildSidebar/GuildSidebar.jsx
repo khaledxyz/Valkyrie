@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Separator } from '../../Separator';
 import Modal from '../../Modal/Modal';
 import Input from "../../Input/Input";
+import { useParams } from "react-router-dom";
 import './GuildSidebar.scss';
 
-const GuildSidebar = ({ guildID }) => {
+const GuildSidebar = () => {
     const dispatch = useDispatch();
+    const { guildID } = useParams();
     const { channels } = useSelector((state) => state.guilds);
     const [channelName, setChannelName] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);

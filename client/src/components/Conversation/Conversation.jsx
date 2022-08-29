@@ -1,5 +1,6 @@
 // * DEPENDENCIES * //
-import { useState, useEffect, useRef, createRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
@@ -15,7 +16,8 @@ import Message from './Message';
 // * STYLES * //
 import './Conversation.scss';
 
-const Conversation = ({ friendID }) => {
+const Conversation = () => {
+    const { friendID } = useParams();
     const dispatch = useDispatch();
     const scrollRef = useRef(null);
 

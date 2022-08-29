@@ -21,38 +21,38 @@ const FriendsTab = () => {
     const friendsState = useSelector(state => state.friends);
     const { isSuccess } = friendsState;
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTab, setCurrentTab] = useState('friends');
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [friendFullUsername, setFriendFullUsername] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const [username, tag] = friendFullUsername.split('#');
-        const friendDetails = {username, tag: '#' + tag};
+        const friendDetails = { username, tag: '#' + tag };
         dispatch(sendFriendRequest(friendDetails));
     };
 
     useEffect(() => {
-        if(isSuccess) {
+        if (isSuccess) {
             setIsModalOpen(false);
         };
     }, [isSuccess]);
 
     return (
         <div className="FriendsTab">
-            <Modal 
-                isModalOpen={isModalOpen} 
+            <Modal
+                isModalOpen={isModalOpen}
                 close={() => setIsModalOpen(false)}
                 title={'Add a friend'}
                 action={'Add'}
                 handleSubmit={handleSubmit}
-                >
+            >
                 <Input
                     type={'text'}
                     label={'Username'}
                     required={true}
                     placeholder={'Valkyrie#0001'}
-                    onChange={e => setFriendFullUsername(e.target.value)} 
+                    onChange={e => setFriendFullUsername(e.target.value)}
                     friendFullUsername={friendFullUsername}
                 >
                 </Input>
@@ -68,11 +68,8 @@ const FriendsTab = () => {
             </nav>
 
             <div className="Friends-container">
-                {
-                    currentTab == 'friends' ?
-                        <FriendsList /> :
-                        <PendingList /> 
-                }
+                {currentTab === 'friends' && <FriendsList />}
+                {currentTab === 'pending' && <PendingList />}
             </div>
         </div>
     );

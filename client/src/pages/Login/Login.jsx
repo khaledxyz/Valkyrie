@@ -23,10 +23,10 @@ const Login = () => {
     const authState = useSelector((state) => state.auth);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    
+
     const { user, isLoading, isSuccess, Error } = authState;
 
-    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5}/>
+    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5} />
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,16 +36,16 @@ const Login = () => {
 
     useEffect(() => {
         if (Error) console.log(Error);
-    
+
         if (user) {
-            navigate('/channels')
+            navigate('/channels/@me')
             return;
         };
-    
-      }, [user, Error, isSuccess, navigate, dispatch])
 
-    return ( 
-        <motion.div className="Auth login" 
+    }, [user, Error, isSuccess, navigate, dispatch])
+
+    return (
+        <motion.div className="Auth login"
             initial={{ opacity: 0, scale: 0.75 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
@@ -56,21 +56,21 @@ const Login = () => {
                     <h6 className='subtitle'>Login to chat with your friends.</h6>
                 </div>
                 <div className='Auth__form-inputs'>
-                    <Input 
-                        type={'text'} 
-                        label={'Email'} 
-                        required={true} 
-                        onChange={e => setEmail(e.target.value)} 
+                    <Input
+                        type={'text'}
+                        label={'Email'}
+                        required={true}
+                        onChange={e => setEmail(e.target.value)}
                         email={email}
-                        >
+                    >
                     </Input>
-                    <Input 
-                        type={'password'} 
-                        label={'password'} 
-                        required={true} 
-                        onChange={e => setPassword(e.target.value)} 
+                    <Input
+                        type={'password'}
+                        label={'password'}
+                        required={true}
+                        onChange={e => setPassword(e.target.value)}
                         password={password}
-                        >
+                    >
                     </Input>
                     <small><a>Forgot your password?</a></small>
                 </div>
@@ -80,7 +80,7 @@ const Login = () => {
                 </div>
             </form>
         </motion.div>
-     );
+    );
 };
- 
+
 export default Login;

@@ -1,7 +1,7 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { connectSocket } from '../../socket/socket';
 
 // * REDUX SLICE * //
@@ -21,13 +21,12 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = localStorage.getItem('user');
-    const { currentTab, options } = useSelector((state) => state.currentTab);
 
     useEffect(() => {
         if (!user) return navigate('/login');
         dispatch(getUserFriends());
         dispatch(reset());
-    }, [currentTab]);
+    }, []);
 
     useEffect(() => {
         if (!user) return navigate('/login');
@@ -40,11 +39,10 @@ const Dashboard = () => {
             <Sidebar />
 
             <div className="Main-app">
-                {currentTab === 'home' && <FriendsTab />}
-                {currentTab === 'friends' && <FriendsTab />}
-                {currentTab === 'conversation' && (
-                    <Conversation friendID={options} />
-                )}
+                <Routes>
+                    <Route path={'@me/:friendID'} element={<Conversation />} />
+                    <Route path={'@me'} element={<FriendsTab />} />
+                </Routes>
             </div>
         </div>
     );

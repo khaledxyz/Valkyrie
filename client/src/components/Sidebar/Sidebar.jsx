@@ -1,7 +1,7 @@
 import HomeSidebar from './HomeSidebar/HomeSidebar';
 import GuildSidebar from './GuildSidebar/GuildSidebar';
 import UserID from '../UserID/UserID';
-import { useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 
 const Styles = {
     position: 'relative',
@@ -12,13 +12,13 @@ const Styles = {
 };
 
 const Sidebar = () => {
-    const { currentTab, options } = useSelector((state) => state.currentTab);
 
     return (
         <div className="Sidebar" style={Styles}>
-            {currentTab === 'home' ? <HomeSidebar /> : null}
-            {currentTab === 'conversation' ? <HomeSidebar /> : null}
-            {currentTab === 'guild' ? <GuildSidebar guildID={options} /> : null}
+            <Routes>
+                <Route path={'@me/*'} element={<HomeSidebar />} />
+                <Route path={':guildID'} element={<GuildSidebar />} />
+            </Routes>
             <UserID />
         </div>
     );

@@ -1,10 +1,10 @@
 // * DEPENDENCIES * //
 import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
 import { getAllGuilds, createGuild } from '../../features/guilds/guildsSlice';
-import { setCurrentTab } from '../../features/currentTab/currentTabSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
@@ -20,9 +20,10 @@ import { GiSteelwingEmblem } from 'react-icons/gi';
 import { BsPlusLg } from 'react-icons/bs';
 
 const ServerList = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
     const { guilds, isLoading } = useSelector((state) => state.guilds);
-    const { currentTab, options } = useSelector((state) => state.currentTab);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [guildName, setGuildName] = useState(null);
@@ -58,9 +59,11 @@ const ServerList = () => {
     };
 
     const isActive = (guildID) => {
-        if (currentTab === 'home' && options === guildID) return 'active';
-        if (currentTab === 'guild' && options === guildID) return 'active';
-        return null
+        const path = location.pathname.replace('/channels/', '');
+
+        if (path === guildID) return 'active';
+        if (path.includes('@me') && guildID === 'home') return 'active';
+        return;
     };
 
     useEffect(() => {
@@ -94,9 +97,9 @@ const ServerList = () => {
             <div className="Server-list-wrapper">
                 <aside className="Server-list">
                     <HomeIcon
-                        onClick={() => dispatch(setCurrentTab({ currentTab: 'home', options: null }))}
                         style={{ marginBottom: '10px' }}
-                        className={isActive(null)}
+                        className={isActive('home')}
+                        onClick={() => navigate('@me')}
                     >
                         <GiSteelwingEmblem />
                     </HomeIcon>
@@ -108,8 +111,8 @@ const ServerList = () => {
                                     key={guild._id}
                                     icon={guild.icon}
                                     initials={getInitials(guild.name)}
-                                    onClick={() => dispatch(setCurrentTab({ currentTab: 'guild', options: guild._id }))}
                                     className={isActive(guild._id)}
+                                    onClick={() => navigate(guild._id)}
                                 />
                             );
                         })}
