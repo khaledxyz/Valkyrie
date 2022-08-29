@@ -31,3 +31,10 @@ export const Conversation = styled(SidebarButton)`
     font-size: 1rem;
     color: #b9bbbe;
 `
+export const Channel = styled(SidebarButton)`
+    height: 30px;
+    font-size: 0.9rem;
+    padding: 0;
+    padding-left: 10px;
+    border-radius: 3px;
+`

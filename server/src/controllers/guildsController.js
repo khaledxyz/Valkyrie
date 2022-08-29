@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const guildModel = require("../models/guildModel");
 const userModel = require("../models/userModel");
+const channelModel = require('../models/channelModel');
 const cloudinary = require("../config/cloudinary");
 
 // * GET GUILD * //
@@ -103,4 +104,55 @@ const joinGuild = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Successfully joined server." })
 });
 
-module.exports = { getGuild, getGuilds, postGuild, joinGuild };
+// * GET GUILD CHANNELS * //
+// @desc    Create guild
+// @route   GET /api/guilds/:id/channels
+// @access  private
+const getChannels = asyncHandler(async (req, res) => {
+    const guild = await guildModel.findById(req.params.id);
+    const user = req.user;
+
+    if (!guild) {
+        res.status(404);
+        throw new Error('Guild not found');
+    };
+
+    if (!guild.members.includes(user._id)) {
+        res.status(403);
+        throw new Error('You are not a member of this guild.');
+    };
+
+    const channels = await channelModel.find({ guild: guild._id });
+    res.status(200).json(channels);
+});
+
+// * CREATE NEW GUILD CHANNEL * //
+// @desc    Create guild channel
+// @route   POST /api/guilds/:id/channels
+// @access  private
+const createChannel = asyncHandler(async (req, res) => {
+    const guild = await guildModel.findById(req.params.id);
+    const user = req.user;
+    const { name } = req.body
+
+    if (!name) {
+        res.status(400);
+        throw new Error('Provide a name.');
+    };
+
+    if (user._id.toString() !== guild.owner.toString()) {
+        res.status(403);
+        throw new Error('Not authorized. You don\'t have permissions.');
+    };
+
+    // create channel
+    const channel = await channelModel.create({
+        name,
+        guild: guild._id,
+        // TODO: add position
+    });
+
+    res.status(200).json(channel)
+});
+
+module.exports = { getGuild, getGuilds, postGuild, joinGuild, getChannels, createChannel };
