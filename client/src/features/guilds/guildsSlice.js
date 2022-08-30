@@ -13,6 +13,12 @@ export const getGuildChannels = createAsyncThunk('guilds/getGuildChannels', asyn
     catch (Error) { console.log(Error) };
 });
 
+export const getChannelMessages = createAsyncThunk('guilds/getChannelMessages', async (channelID, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    try { return await guildsService.getChannelMessages(channelID, token) }
+    catch (Error) { console.log(Error) };
+});
+
 export const createGuild = createAsyncThunk('guilds/createGuild', async (guildData, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
     try { return await guildsService.createGuild(token, guildData) }
@@ -30,6 +36,7 @@ const guildsSlice = createSlice({
     initialState: {
         guilds: [],
         channels: [],
+        messages: [],
         isLoading: false,
     },
     reducers: {
@@ -45,15 +52,20 @@ const guildsSlice = createSlice({
             .addCase(getAllGuilds.fulfilled, (state, action) => { state.guilds = action.payload; state.isLoading = false })
             .addCase(getAllGuilds.rejected, (state) => { state.isLoading = false })
 
-            // Create guild
-            .addCase(createGuild.pending, (state) => { state.isLoading = true })
-            .addCase(createGuild.fulfilled, (state, action) => { state.guilds = [...state.guilds, action.payload] })
-            .addCase(createGuild.rejected, (state) => { state.isLoading = false })
-
             // Fetch guild channels
             .addCase(getGuildChannels.pending, (state) => { state.isLoading = true })
             .addCase(getGuildChannels.fulfilled, (state, action) => { state.channels = action.payload })
             .addCase(getGuildChannels.rejected, (state) => { state.isLoading = false })
+
+            // Fetch channel messages
+            .addCase(getChannelMessages.pending, (state) => { state.isLoading = true })
+            .addCase(getChannelMessages.fulfilled, (state, action) => { state.messages = action.payload })
+            .addCase(getChannelMessages.rejected, (state) => { state.isLoading = false })
+
+            // Create guild
+            .addCase(createGuild.pending, (state) => { state.isLoading = true })
+            .addCase(createGuild.fulfilled, (state, action) => { state.guilds = [...state.guilds, action.payload] })
+            .addCase(createGuild.rejected, (state) => { state.isLoading = false })
 
             // Create guild channel
             .addCase(createChannel.pending, (state) => { state.isLoading = true })

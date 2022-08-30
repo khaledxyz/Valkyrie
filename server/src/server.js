@@ -34,4 +34,4 @@ app.use('/api/users', require('./routes/usersRouter'));
 app.use('/api/friend-requests', require('./routes/friendRequestsRouter'));
 app.use('/api/guilds', require('./routes/guildsRouter'));
 app.use('/api/messages/user-messages', require('./routes/userMessagesRouter'));
-// app.use('/api/messages/guild-messages', require('./routes/guildMessagesRouter')); // TODO: Implement guild messages router
+app.use('/api/messages/guild-messages', require('./routes/guildMessagesRouter')); // TODO: Implement guild messages router

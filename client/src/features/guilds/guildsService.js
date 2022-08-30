@@ -13,6 +13,12 @@ const getGuildChannels = async (guildID, token) => {
     return res.data;
 };
 
+const getChannelMessages = async (channelID, token) => {
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const res = await axiosInstance.get(`/api/messages/guild-messages/${channelID}`, config);
+    return res.data;
+};
+
 const createGuild = async (token, guildData) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const res = await axiosInstance.post('/api/guilds', guildData, config);
@@ -26,5 +32,5 @@ const createChannel = async (token, channel) => {
     return res.data;
 };
 
-const guildsService = { getAllGuilds, getGuildChannels, createGuild, createChannel };
+const guildsService = { getAllGuilds, getGuildChannels, getChannelMessages, createGuild, createChannel };
 export default guildsService;
