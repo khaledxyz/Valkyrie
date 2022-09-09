@@ -41,7 +41,10 @@ export const ServerIcon = styled.div`
         }
     }
 
-    &.active{border-radius: 30%;}
+    &.active{
+        border-radius: 30%;
+        background-color: var(--azure-radiance);
+    }
     &.active::before {
         content: '';
 
