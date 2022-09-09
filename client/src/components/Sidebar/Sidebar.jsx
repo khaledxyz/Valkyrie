@@ -17,7 +17,7 @@ const Sidebar = () => {
         <div className="Sidebar" style={Styles}>
             <Routes>
                 <Route path={'@me/*'} element={<HomeSidebar />} />
-                <Route path={':guildID'} element={<GuildSidebar />} />
+                <Route path={':guildID/*'} element={<GuildSidebar />} />
             </Routes>
             <UserID />
         </div>

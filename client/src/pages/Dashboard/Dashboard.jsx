@@ -40,6 +40,7 @@ const Dashboard = () => {
 
             <div className="Main-app">
                 <Routes>
+                    <Route path={':guildID/:channelID'} element={<Conversation />} />
                     <Route path={'@me/:friendID'} element={<Conversation />} />
                     <Route path={'@me'} element={<FriendsTab />} />
                 </Routes>

@@ -32,9 +32,13 @@ export const Conversation = styled(SidebarButton)`
     color: #b9bbbe;
 `
 export const Channel = styled(SidebarButton)`
-    height: 30px;
+    height: 35px;
     font-size: 0.9rem;
     padding: 0;
     padding-left: 10px;
     border-radius: 3px;
+    margin-bottom: 5px;
+    &.active {
+        background-color: ${lighten(0.06, '#0e2339')}
+    }
 `

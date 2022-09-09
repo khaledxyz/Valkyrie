@@ -61,7 +61,7 @@ const ServerList = () => {
     const isActive = (guildID) => {
         const path = location.pathname.replace('/channels/', '');
 
-        if (path === guildID) return 'active';
+        if (path.includes(guildID)) return 'active';
         if (path.includes('@me') && guildID === 'home') return 'active';
         return;
     };

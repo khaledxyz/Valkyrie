@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Separator } from '../../Separator';
 import Modal from '../../Modal/Modal';
 import Input from "../../Input/Input";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import './GuildSidebar.scss';
 
 const GuildSidebar = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { guildID } = useParams();
     const { channels } = useSelector((state) => state.guilds);
     const [channelName, setChannelName] = useState('');
@@ -24,6 +25,11 @@ const GuildSidebar = () => {
     const handleSubmit = () => {
         dispatch(createChannel({ guildID, name: channelName }));
         setIsModalOpen(false);
+    };
+
+    const isActive = (channelID) => {
+        const path = location.pathname;
+        if (path.includes(channelID)) return 'active';
     };
 
     return (
@@ -53,7 +59,7 @@ const GuildSidebar = () => {
                 <Separator width='40%' />
                 {
                     channels && channels?.map((channel) => (
-                        <Channel key={channel._id}><RiHashtag />{channel.name}</Channel>
+                        <Channel className={isActive(channel._id)} onClick={() => navigate(channel._id)} key={channel._id}><RiHashtag />{channel.name}</Channel>
                     ))
                 }
             </div>
