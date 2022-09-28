@@ -9,6 +9,7 @@ import Modal from '../../Modal/Modal';
 import Input from "../../Input/Input";
 import { useNavigate, useParams } from "react-router-dom";
 import './GuildSidebar.scss';
+import { joinRoom } from "../../../socket/socket";
 
 const GuildSidebar = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,11 @@ const GuildSidebar = () => {
     const handleSubmit = () => {
         dispatch(createChannel({ guildID, name: channelName }));
         setIsModalOpen(false);
+    };
+
+    const openChannel = (channelID) => {
+        navigate(channelID);
+        joinRoom(channelID);
     };
 
     const isActive = (channelID) => {
@@ -59,7 +65,7 @@ const GuildSidebar = () => {
                 <Separator width='40%' />
                 {
                     channels && channels?.map((channel) => (
-                        <Channel className={isActive(channel._id)} onClick={() => navigate(channel._id)} key={channel._id}><RiHashtag />{channel.name}</Channel>
+                        <Channel className={isActive(channel._id)} onClick={() => openChannel(channel._id)} key={channel._id}><RiHashtag />{channel.name}</Channel>
                     ))
                 }
             </div>

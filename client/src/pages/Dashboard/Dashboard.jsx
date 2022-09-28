@@ -1,6 +1,6 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { connectSocket } from '../../socket/socket';
 
@@ -13,6 +13,7 @@ import ServerList from '../../components/ServerList/ServerList';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import FriendsTab from '../../components/FriendsTab/FriendsTab';
 import Conversation from '../../components/Conversation/Conversation';
+import GuildConversation from '../../components/Conversation/GuildConversation';
 
 // * STYLES * //
 import './Dashboard.scss';
@@ -21,6 +22,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = localStorage.getItem('user');
+    const { guilds } = useSelector((state) => state.guilds)
 
     useEffect(() => {
         if (!user) return navigate('/login');
@@ -30,8 +32,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!user) return navigate('/login');
-        connectSocket(user);
-    }, []);
+        connectSocket(user, guilds);
+    }, [guilds]);
 
     return (
         <div className="Dashboard">
@@ -40,7 +42,7 @@ const Dashboard = () => {
 
             <div className="Main-app">
                 <Routes>
-                    <Route path={':guildID/:channelID'} element={<Conversation />} />
+                    <Route path={':guildID/:channelID'} element={<GuildConversation />} />
                     <Route path={'@me/:friendID'} element={<Conversation />} />
                     <Route path={'@me'} element={<FriendsTab />} />
                 </Routes>

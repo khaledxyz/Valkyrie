@@ -37,7 +37,7 @@ const sendMessage = ('/', asyncHandler(async (req, res) => {
     };
 
     const message = await guildMessageModel.create({
-        sender: guild._id,
+        sender: user._id,
         content,
         channel: channel._id,
         createdAt: Date.now()

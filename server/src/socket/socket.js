@@ -1,44 +1,30 @@
-const connectSocket = (server) => {
-    // * CONFIG * //
+const guildModel = require("../models/guildModel");
+
+const join = require('./events/join');
+const emitMessage = require('./events/emitMessage');
+const disconnect = require('./events/disconnect');
+
+const emitGuildMessage = require('./events/emitGuildMessage');
+
+const connectSocket = async (server) => {
     const io = require('socket.io')(server, {
-        cors: {
-            origin: process.env.CLIENT_URL
-        }
+        cors: { origin: process.env.CLIENT_URL }
     });
 
     let onlineUsers = [];
-
-    // * FUNCTIONS * //
-    const join = ({ socketID, userID }) => {
-        !onlineUsers.some((onlineUser) => onlineUser.userID === userID) &&
-            onlineUsers.push({ socketID, userID });
-    };
-
-    const disconnect = (socketID) => {
-        onlineUsers = onlineUsers.filter(
-            (onlineUser) => onlineUser.socketID === !socketID
-        );
-    };
-
-    const findUser = (sender) => {
-        return onlineUsers.find((onlineUser) => onlineUser.userID === sender);
-    };
+    let namespaces = await guildModel.find();
 
     io.on('connect', (socket) => {
         // * EVENTS * //
-        socket.on('join', (user) => {
-            join({ socketID: socket.id, userID: user.details._id });
-        });
+        socket.on('join', user => join(onlineUsers, { socketID: socket.id, userID: user.details._id }));
+        socket.on('emitMessage', message => emitMessage(io, onlineUsers, message));
+        socket.on('disconnect', () => disconnect(onlineUsers, socket.id));
+    });
 
-        socket.on('emitMessage', (message) => {
-            const receiver = findUser(message.receiver);
-            if (!receiver) return;
-            console.log('got message to emit', message);
-            io.to(receiver.socketID).emit('getMessage', message);
-        });
-
-        socket.on('disconnect', () => {
-            disconnect(socket.id);
+    namespaces.forEach((namespace) => {
+        io.of(namespace._id).on('connection', (nsSocket) => {
+            nsSocket.on('joinRoom', roomID => nsSocket.join(roomID));
+            nsSocket.on('emitGuildMessage', message => emitGuildMessage(io, namespace, nsSocket, message));
         });
     });
 };

@@ -22,8 +22,13 @@ const getGuild = asyncHandler(async (req, res) => {
     };
 
     const guild = await guildModel.findById(req.params.id);
+    const channels = await channelModel.find({ guild: guild._id });
+    const members = await userModel.find({ _id: guild.members })
+        .select('-guilds')
+        .select('-friends')
+        .select('-email');
 
-    res.status(200).json(guild)
+    res.status(200).json({ guild, members, channels })
 });
 
 // * GET GUILDS * //
