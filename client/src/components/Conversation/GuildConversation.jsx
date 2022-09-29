@@ -26,7 +26,11 @@ const GuildConversation = () => {
         dispatch(getGuild(guildID));
         dispatch(getChannelMessages(channelID));
         scrollToBottom();
-    }, [guildID, channelID, messages]);
+    }, [guildID, channelID]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
