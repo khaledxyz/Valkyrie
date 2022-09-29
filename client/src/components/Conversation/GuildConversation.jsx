@@ -12,7 +12,6 @@ import GuildMessage from './GuildMessage';
 
 // * STYLES * //
 import './Conversation.scss';
-import { emitGuildMessage } from '../../socket/socket';
 
 const GuildConversation = () => {
     const dispatch = useDispatch();
