@@ -1,5 +1,5 @@
 // * DEPENDENCIES * //
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -20,10 +20,11 @@ import '../../sass/index.scss'
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const inputRef = useRef();
+
     const authState = useSelector((state) => state.auth);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-
     const { user, isLoading, isSuccess, Error } = authState;
 
     const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5} />
@@ -35,7 +36,7 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (Error) console.log(Error);
+        inputRef.current.focus();
 
         if (user) {
             navigate('/channels/@me')
@@ -62,6 +63,7 @@ const Login = () => {
                         required={true}
                         onChange={e => setEmail(e.target.value)}
                         email={email}
+                        inputRef={inputRef}
                     >
                     </Input>
                     <Input
