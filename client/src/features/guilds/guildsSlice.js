@@ -13,12 +13,6 @@ export const getGuild = createAsyncThunk('guilds/getGuild', async (guildID, thun
     catch (Error) { console.log(Error) };
 });
 
-export const getGuildChannels = createAsyncThunk('guilds/getGuildChannels', async (guildID, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    try { return await guildsService.getGuildChannels(guildID, token) }
-    catch (Error) { console.log(Error) };
-});
-
 export const getChannelMessages = createAsyncThunk('guilds/getChannelMessages', async (channelID, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
     try { return await guildsService.getChannelMessages(channelID, token) }
@@ -48,7 +42,6 @@ const guildsSlice = createSlice({
     initialState: {
         guilds: [],
         currentGuild: [],
-        channels: [],
         messages: [],
         isLoading: false,
     },
@@ -77,11 +70,6 @@ const guildsSlice = createSlice({
                 state.isLoading = false
             })
             .addCase(getGuild.rejected, (state) => { state.isLoading = false })
-
-            // Fetch guild channels
-            .addCase(getGuildChannels.pending, (state) => { state.isLoading = true })
-            .addCase(getGuildChannels.fulfilled, (state, action) => { state.channels = action.payload })
-            .addCase(getGuildChannels.rejected, (state) => { state.isLoading = false })
 
             // Fetch channel messages
             .addCase(getChannelMessages.pending, (state) => { state.isLoading = true })
