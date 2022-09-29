@@ -2,7 +2,7 @@ import { Channel, SidebarButton } from "../SidebarButton";
 import { RiHashtag } from 'react-icons/ri';
 import { BsPlusLg } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
-import { getGuildChannels, createChannel } from '../../../features/guilds/guildsSlice';
+import { getGuild, createChannel } from '../../../features/guilds/guildsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Separator } from '../../Separator';
 import Modal from '../../Modal/Modal';
@@ -15,12 +15,13 @@ const GuildSidebar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { guildID } = useParams();
-    const { channels } = useSelector((state) => state.guilds);
+
+    const { channels } = useSelector((state) => state.guilds.currentGuild);
     const [channelName, setChannelName] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        dispatch(getGuildChannels(guildID));
+        dispatch(getGuild(guildID));
     }, [guildID]);
 
     const handleSubmit = () => {
