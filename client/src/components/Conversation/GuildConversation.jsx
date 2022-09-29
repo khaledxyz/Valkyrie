@@ -9,23 +9,28 @@ import { getGuild, getChannelMessages, createGuildMessage } from '../../features
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import GuildMessage from './GuildMessage';
+import { RiHashtag } from 'react-icons/ri';
 
 // * STYLES * //
 import './Conversation.scss';
 
 const GuildConversation = () => {
     const dispatch = useDispatch();
-    const scrollRef = useRef(null);
+    const scrollRef = useRef();
+    const inputRef = useRef();
     const { guildID, channelID } = useParams();
 
     const { messages } = useSelector((state) => state.guilds)
-    const { members } = useSelector((state) => state.guilds.currentGuild)
+    const { members, channels } = useSelector((state) => state.guilds.currentGuild)
     const [messageContent, setMessageContent] = useState('');
+
+    const channel = channels.find(channel => channel._id === channelID);
 
     useEffect(() => {
         dispatch(getGuild(guildID));
         dispatch(getChannelMessages(channelID));
         scrollToBottom();
+        inputRef.current.focus();
     }, [guildID, channelID]);
 
     useEffect(() => {
@@ -55,7 +60,7 @@ const GuildConversation = () => {
     return (
         <div className="Conversation">
             <div className="Conversation__Navbar">
-                <p>ChannelName</p>
+                <p>#{channel.name}</p>
             </div>
 
             <div className="Conversation__messages">
@@ -75,10 +80,11 @@ const GuildConversation = () => {
             >
                 <Input
                     type={'text'}
-                    placeholder={`Message ChannelName`}
+                    placeholder={`Message #${channel.name}`}
                     required={true}
                     onChange={(e) => setMessageContent(e.target.value)}
                     messageContent={messageContent}
+                    inputRef={inputRef}
                 />
             </form>
         </div>
