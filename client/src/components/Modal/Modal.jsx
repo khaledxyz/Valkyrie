@@ -1,6 +1,6 @@
 // * DEPENDENCIES * //
 import ReactDom from 'react-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // * COMPONENTS * //
 import Button from '../../components/Button';
@@ -10,7 +10,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import './Modal.scss';
 
 const Modal = ({ children, title, action, handleSubmit, isModalOpen, close }) => {
-    if (!isModalOpen) return;
 
     const handleClose = (e) => {
         if (e.target.classList[0] !== 'Overlay') return;
@@ -19,24 +18,32 @@ const Modal = ({ children, title, action, handleSubmit, isModalOpen, close }) =>
 
     return ReactDom.createPortal(
         <>
-            <div className="Overlay" onClick={handleClose} >
-                <motion.div className="Modal"
-                    initial={{ opacity: 0, scale: 0.75 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0 }}
+            <AnimatePresence>{isModalOpen &&
+                <motion.div
+                    className="Overlay"
+                    onClick={handleClose}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                 >
-                    <div className="Modal__header">
-                        {title}
-                        <AiOutlineClose onClick={close} />
-                    </div>
+                    <motion.div className="Modal"
+                        initial={{ opacity: 0, scale: 0.75 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.75 }}
+                    >
+                        <div className="Modal__header">
+                            {title}
+                            <AiOutlineClose onClick={close} />
+                        </div>
 
-                    <div className="Modal__body">{children}</div>
+                        <div className="Modal__body">{children}</div>
 
-                    <div className="Modal__footer">
-                        <Button onClick={handleSubmit} width={'90px'} height={'45px'}>{action}</Button>
-                    </div>
+                        <div className="Modal__footer">
+                            <Button onClick={handleSubmit} width={'90px'} height={'45px'}>{action}</Button>
+                        </div>
+                    </motion.div>
                 </motion.div>
-            </div>
+            }</AnimatePresence>
         </>,
         document.getElementById('modalPortal')
     );
