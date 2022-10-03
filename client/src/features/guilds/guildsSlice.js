@@ -50,7 +50,7 @@ const guildsSlice = createSlice({
             state.guilds = [];
             state.isLoading = false;
         },
-        updater: (state) => {
+        updater: (state, action) => {
             state.messages = [...state.messages, action.payload];
         }
     },
@@ -96,5 +96,5 @@ const guildsSlice = createSlice({
     }
 });
 
-export const { reset } = guildsSlice.actions;
+export const { reset, updater } = guildsSlice.actions;
 export default guildsSlice.reducer;

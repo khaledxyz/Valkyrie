@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { connectSocket } from '../../socket/socket';
 
 // * REDUX SLICE * //
 import { getUserFriends } from '../../features/friends/friendsSlice';
@@ -35,25 +34,21 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!user) return navigate('/login');
-        connectSocket(user, guilds);
     }, [guilds]);
 
     return (
-        <>
-            <LoadingOverlay isReady={isReady} />
-            <div className="Dashboard">
-                <ServerList />
-                <Sidebar />
+        <div className="Dashboard">
+            <ServerList />
+            <Sidebar />
 
-                <div className="Main-app">
-                    <Routes>
-                        <Route path={':guildID/:channelID'} element={<GuildConversation />} />
-                        <Route path={'@me/:friendID'} element={<Conversation />} />
-                        <Route path={'@me'} element={<FriendsTab />} />
-                    </Routes>
-                </div>
+            <div className="Main-app">
+                <Routes>
+                    <Route path={':guildID/:channelID'} element={<GuildConversation />} />
+                    <Route path={'@me/:friendID'} element={<Conversation />} />
+                    <Route path={'@me'} element={<FriendsTab />} />
+                </Routes>
             </div>
-        </>
+        </div>
     );
 };
 

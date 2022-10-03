@@ -14,6 +14,7 @@ import { RiHashtag } from 'react-icons/ri';
 // * STYLES * //
 import './Conversation.scss';
 
+
 const GuildConversation = () => {
     const dispatch = useDispatch();
     const scrollRef = useRef();
@@ -24,7 +25,7 @@ const GuildConversation = () => {
     const { members, channels } = useSelector((state) => state.guilds.currentGuild)
     const [messageContent, setMessageContent] = useState('');
 
-    const channel = channels.find(channel => channel._id === channelID);
+    const channel = channels?.find(channel => channel._id === channelID);
 
     useEffect(() => {
         dispatch(getGuild(guildID));
@@ -60,7 +61,7 @@ const GuildConversation = () => {
     return (
         <div className="Conversation">
             <div className="Conversation__Navbar">
-                <p>#{channel.name}</p>
+                <p>#{channel?.name}</p>
             </div>
 
             <div className="Conversation__messages">
@@ -80,7 +81,7 @@ const GuildConversation = () => {
             >
                 <Input
                     type={'text'}
-                    placeholder={`Message #${channel.name}`}
+                    placeholder={`Message #${channel?.name}`}
                     required={true}
                     onChange={(e) => setMessageContent(e.target.value)}
                     messageContent={messageContent}
