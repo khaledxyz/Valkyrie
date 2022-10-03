@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { PulseLoader } from 'react-spinners';
 
 // * REDUX SLICE * //
-import { login } from '../../features/auth/authSlice';
+import { login, resetAuth } from '../../features/auth/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
@@ -22,10 +22,9 @@ const Login = () => {
     const navigate = useNavigate();
     const inputRef = useRef();
 
-    const authState = useSelector((state) => state.auth);
+    const { user, loading, success, error } = useSelector(state => state.auth);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const { user, isLoading, isSuccess, Error } = authState;
 
     const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5} />
 
@@ -37,13 +36,10 @@ const Login = () => {
 
     useEffect(() => {
         inputRef.current.focus();
-
-        if (user) {
-            navigate('/channels/@me')
-            return;
-        };
-
-    }, [user, Error, isSuccess, navigate, dispatch])
+        if (user) { navigate('/channels/@me') };
+        if (error) { console.log(error) };
+        dispatch(resetAuth());
+    }, [user, success, error]);
 
     return (
         <motion.div className="Auth login"
@@ -77,7 +73,7 @@ const Login = () => {
                     <small><a>Forgot your password?</a></small>
                 </div>
                 <div className="Auth__form-actions">
-                    <Button variant={'primary'}>{isLoading ? spinner : 'Login'}</Button>
+                    <Button variant={'primary'}>{loading ? spinner : 'Login'}</Button>
                     <small>Don't have an account? <Link to={'/signup'}>Sign Up!</Link></small>
                 </div>
             </form>

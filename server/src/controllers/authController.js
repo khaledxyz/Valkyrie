@@ -38,7 +38,6 @@ const logIn = ('/', asyncHandler(async (req, res) => {
 // @route   DELETE /auth
 // @access  private
 const logOut = ('/', asyncHandler(async (req, res) => {
-    localStorage.removeItem('user');
     return res.status(200).json({ message: 'Logged out.' });
 }));
 

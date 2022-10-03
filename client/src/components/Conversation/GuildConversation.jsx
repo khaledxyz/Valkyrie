@@ -9,11 +9,9 @@ import { getGuild, getChannelMessages, createGuildMessage } from '../../features
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import GuildMessage from './GuildMessage';
-import { RiHashtag } from 'react-icons/ri';
 
 // * STYLES * //
 import './Conversation.scss';
-
 
 const GuildConversation = () => {
     const dispatch = useDispatch();
@@ -54,9 +52,7 @@ const GuildConversation = () => {
         e.target.reset();
     };
 
-    const scrollToBottom = () => {
-        scrollRef.current?.scrollIntoView();
-    };
+    const scrollToBottom = () => { scrollRef.current?.scrollIntoView(); };
 
     return (
         <div className="Conversation">

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { PulseLoader } from 'react-spinners';
 
 // * REDUX SLICE * //
-import { signup, reset } from '../../features/auth/authSlice';
+import { signup, resetAuth } from '../../features/auth/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';
@@ -19,33 +19,28 @@ import '../../sass/index.scss'
 const Signup = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const authState = useSelector((state) => state.auth);
+
+    const { user, loading, success, error } = useSelector(state => state.auth);
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const { user, isLoading, isSuccess, Error } = authState;
-
-    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5}/>
+    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5} />
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = { email, username, password};
+        const userData = { email, username, password };
         dispatch(signup(userData));
     };
 
     useEffect(() => {
-        if (Error) console.log(Error);
-    
-        if (isSuccess) {
-            navigate('/login')
-            return;
-        }
-    
-        dispatch(reset())
-      }, [user, Error, isSuccess, navigate, dispatch])
+        if (user) { navigate('/channels/@me') };
+        if (success) { navigate('/login') };
+        if (error) { console.log(error) };
+        dispatch(resetAuth());
+    }, [user, success, error]);
 
-    return ( 
+    return (
         <motion.div className="Auth signup"
             initial={{ opacity: 0, scale: 0.75 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -57,39 +52,39 @@ const Signup = () => {
                     <h6 className='subtitle'>Sign up to chat with your friends.</h6>
                 </div>
                 <div className='Auth__form-inputs'>
-                    <Input 
-                        type={'text'} 
-                        label={'Email'} 
-                        required={true} 
-                        onChange={e => setEmail(e.target.value)} 
+                    <Input
+                        type={'text'}
+                        label={'Email'}
+                        required={true}
+                        onChange={e => setEmail(e.target.value)}
                         email={email}
-                        >
+                    >
                     </Input>
-                    <Input 
-                        type={'text'} 
-                        label={'Username'} 
-                        required={true} 
-                        onChange={e => setUsername(e.target.value)} 
+                    <Input
+                        type={'text'}
+                        label={'Username'}
+                        required={true}
+                        onChange={e => setUsername(e.target.value)}
                         username={username}
-                        >
+                    >
                     </Input>
-                    <Input 
-                        type={'password'} 
-                        label={'password'} 
-                        required={true} 
-                        onChange={e => setPassword(e.target.value)} 
+                    <Input
+                        type={'password'}
+                        label={'password'}
+                        required={true}
+                        onChange={e => setPassword(e.target.value)}
                         password={password}
-                        >
+                    >
                     </Input>
                     <small><a>Terms of Service</a></small>
                 </div>
                 <div className="Auth__form-actions">
-                    <Button variant={'primary'}>{isLoading ? spinner : 'Sign Up'}</Button>
-                    <small>Already have an accout? <Link to={'/login'}>Login!</Link></small>
+                    <Button variant={'primary'}>{loading ? spinner : 'Sign Up'}</Button>
+                    <small>Already have an account? <Link to={'/login'}>Login!</Link></small>
                 </div>
             </form>
         </motion.div>
-     );
+    );
 }
- 
+
 export default Signup;

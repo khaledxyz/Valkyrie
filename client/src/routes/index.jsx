@@ -15,10 +15,10 @@ const AppRoutes = () => {
 
     return (
         <Routes>
-            <Route exact path='/' element={<Landing />} />
-            <Route exact path="/channels/*" element={<Dashboard />} />
-            <Route exact path="/login" element={isUserLogged} />
-            <Route exact path="/signup" element={isUserSigned} />
+            <Route path='/' element={<Landing />} />
+            <Route path="/channels/*" element={<Dashboard />} />
+            <Route path="/login" element={isUserLogged} />
+            <Route path="/signup" element={isUserSigned} />
         </Routes>
     )
 }
