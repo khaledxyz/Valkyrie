@@ -1,6 +1,6 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // * REDUX SLICE * //
@@ -20,7 +20,7 @@ import './Dashboard.scss';
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = localStorage.getItem('user');
+    const { user } = useSelector(state => state.auth);
 
     useEffect(() => {
         if (!user) return navigate('/login');
