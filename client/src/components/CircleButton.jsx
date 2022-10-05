@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { lighten } from 'polished'
 
 const CircleButton = styled.div`
     display: flex;
@@ -10,6 +9,9 @@ const CircleButton = styled.div`
     aspect-ratio: 1/1;
     border-radius: 50%;
     background-color: var(--maastricht-blue);
+    
+    transition: filter 0.3s ease;
+    &:hover{filter: brightness(1.2);}
 `;
 
 export default CircleButton;
