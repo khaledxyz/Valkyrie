@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { reset, sendFriendRequest } from '../../features/friends/friendsSlice';
+import { sendFriendRequest } from '../../features/friends/friendsSlice';
 
 // * COMPONENTS * //
 import Button from '../Button';

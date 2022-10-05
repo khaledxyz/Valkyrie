@@ -1,6 +1,6 @@
 // * DEPENDENCIES * //
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // * REDUX SLICE * //
 import {
@@ -13,70 +13,61 @@ import {
 import { Friend } from './Friend';
 import { ProfileIcon } from '../ProfileIcon';
 import CircleButton from '../CircleButton';
+import Loading from './Loading';
 
 // * ICONS * //
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
 const FriendsList = () => {
     const dispatch = useDispatch();
-    const { comingFriendRequests, outgoingFriendRequests } =
-        JSON.parse(localStorage.getItem('friendRequests')) || [];
+    const { isLoading } = useSelector((state) => state.friends);
+    const { comingFriendRequests, outgoingFriendRequests } = useSelector((state) => state.friends.friendRequests);
 
     useEffect(() => {
         dispatch(getAllfriendRequests());
     }, []);
 
-    const handleReject = (id) => {
-        dispatch(rejectFriendRequest(id));
-    };
+    const handleReject = (id) => { dispatch(rejectFriendRequest(id)); };
+    const handleAccept = (id) => { dispatch(acceptFriendRequest(id)); };
 
-    const handleAccept = (id) => {
-        dispatch(acceptFriendRequest(id));
-    };
+    if (isLoading) return (
+        <>
+            <Loading />
+            <Loading />
+            <Loading />
+        </>
+    );
 
     return (
         <>
-            <div>
-                {comingFriendRequests?.map((friend) => {
-                    const template = (
-                        <Friend key={friend._id}>
-                            <ProfileIcon avatar={friend.avatar} />
-                            <p>{friend.username}</p>
-                            <div className="actions">
-                                <CircleButton
-                                    onClick={() => handleAccept(friend._id)}
-                                >
-                                    <AiOutlineCheck />
-                                </CircleButton>
-                                <CircleButton
-                                    onClick={() => handleReject(friend._id)}
-                                >
-                                    <AiOutlineClose />
-                                </CircleButton>
-                            </div>
-                        </Friend>
-                    );
-                    return template;
-                })}
-            </div>
-            <div>
-                {outgoingFriendRequests?.map((friend) => {
-                    const template = (
-                        <Friend key={friend._id}>
-                            <ProfileIcon avatar={friend.avatar} />
-                            <p>{friend.username}</p>
-                            <div className="actions">
-                                <CircleButton>
-                                    <AiOutlineClose />
-                                </CircleButton>
-                            </div>
-                        </Friend>
-                    );
-                    return template;
-                })}
-            </div>
+            {comingFriendRequests?.map((friend) => (
+                <Friend key={friend._id}>
+                    <ProfileIcon avatar={friend.avatar} />
+                    <p>{friend.username}</p>
+                    <div className="actions">
+                        <CircleButton onClick={() => handleAccept(friend._id)}>
+                            <AiOutlineCheck />
+                        </CircleButton>
+                        <CircleButton onClick={() => handleReject(friend._id)}>
+                            <AiOutlineClose />
+                        </CircleButton>
+                    </div>
+                </Friend>
+            ))}
+
+            {outgoingFriendRequests?.map((friend) => (
+                <Friend key={friend._id}>
+                    <ProfileIcon avatar={friend.avatar} />
+                    <p>{friend.username}</p>
+                    <div className="actions">
+                        <CircleButton>
+                            <AiOutlineClose />
+                        </CircleButton>
+                    </div>
+                </Friend>
+            ))}
         </>
-    );
+    )
 };
 
 export default FriendsList;

@@ -60,9 +60,11 @@ const friendsSlice = createSlice({
             .addCase(getUserFriends.fulfilled, (state, action) => {
                 state.userFriends = action.payload;
                 state.isLoading = false;
+                state.isSuccess = true;
             })
             .addCase(getUserFriends.rejected, (state) => {
                 state.isLoading = false;
+                state.isSuccess = false;
             })
 
             // Get all Friend requests
@@ -72,9 +74,12 @@ const friendsSlice = createSlice({
             .addCase(getAllfriendRequests.fulfilled, (state, action) => {
                 state.friendRequests = action.payload;
                 state.isLoading = false;
+                state.isSuccess = true;
+
             })
             .addCase(getAllfriendRequests.rejected, (state) => {
                 state.isLoading = false;
+                state.isSuccess = false;
             })
 
             // Send a Friend request

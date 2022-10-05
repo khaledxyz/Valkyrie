@@ -1,9 +1,9 @@
-.FriendsList{
+.FriendsList {
     width: 100%;
     height: 100%;
 }
 
-.Navbar{
+.Navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,16 +12,37 @@
     padding: var(--base-padding);
     box-shadow: var(--box-shadow);
 
-    div{
+    div {
         display: flex;
         align-items: center;
     }
 }
 
-.Friends-container{
+.Friends-container {
     overflow-y: scroll;
     padding: calc(var(--base-padding));
 
     height: 100%;
     padding-bottom: 60px;
+}
+
+.Loading {
+    position: relative;
+    margin-bottom: 5px;
+
+    :nth-child(2) {
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        translate: 0% -50%;
+    }
+
+    :nth-child(3) {
+        position: absolute;
+        left: 17%;
+        top: 50%;
+        translate: 0% -50%;
+
+        width: 20%;
+    }
 }
