@@ -1,11 +1,14 @@
 // * DEPENDENCIES * //
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // * REDUX SLICE * //
 import { getUserFriends } from '../../features/friends/friendsSlice';
 import { reset } from '../../features/conversation/conversationSlice';
+
+// * SOCKET CONTEXT * //
+import { SocketContext, socket } from '../../context/socket';
 
 // * COMPONENTS * //
 import ServerList from '../../components/ServerList/ServerList';
@@ -20,27 +23,32 @@ import './Dashboard.scss';
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const { user } = useSelector(state => state.auth);
 
     useEffect(() => {
         if (!user) return navigate('/login');
         dispatch(getUserFriends());
         dispatch(reset());
+
+        socket.emit('USER_ONLINE', user);
     }, []);
 
     return (
-        <div className="Dashboard">
-            <ServerList />
-            <Sidebar />
+        <SocketContext.Provider value={socket}>
+            <div className="Dashboard">
+                <ServerList />
+                <Sidebar />
 
-            <div className="Main-app">
-                <Routes>
-                    <Route path={':guildID/:channelID'} element={<GuildConversation />} />
-                    <Route path={'@me/:friendID'} element={<Conversation />} />
-                    <Route path={'@me'} element={<FriendsTab />} />
-                </Routes>
+                <div className="Main-app">
+                    <Routes>
+                        <Route path={':guildID/:channelID'} element={<GuildConversation />} />
+                        <Route path={'@me/:friendID'} element={<Conversation />} />
+                        <Route path={'@me'} element={<FriendsTab />} />
+                    </Routes>
+                </div>
             </div>
-        </div>
+        </SocketContext.Provider>
     );
 };
 

@@ -1,4 +1,5 @@
 import { axiosInstance } from '../../app/axios';
+import { emitPrivateMessage } from '../../context/socket';
 
 const getConversation = async (token, ReceiverID) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -20,6 +21,7 @@ const sendMessage = async (token, message) => {
         config
     );
 
+    if (res.data) emitPrivateMessage(message.room, res.data);
     return res.data;
 };
 

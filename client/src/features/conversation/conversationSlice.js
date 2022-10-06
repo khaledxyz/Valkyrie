@@ -5,11 +5,8 @@ export const getConversation = createAsyncThunk(
     'conversation/getConversation',
     async (ReceiverID, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token;
-        try {
-            return await conversationService.getConversation(token, ReceiverID);
-        } catch (Error) {
-            console.log(Error);
-        }
+        try { return await conversationService.getConversation(token, ReceiverID) }
+        catch (Error) { console.log(Error) };
     }
 );
 
@@ -17,11 +14,8 @@ export const sendMessage = createAsyncThunk(
     'conversation/sendMessage',
     async (ReceiverID, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token;
-        try {
-            return await conversationService.sendMessage(token, ReceiverID);
-        } catch (Error) {
-            console.log(Error);
-        }
+        try { return await conversationService.sendMessage(token, ReceiverID) }
+        catch (Error) { console.log(Error) };
     }
 );
 
@@ -30,20 +24,15 @@ const conversationSlice = createSlice({
     initialState: {
         messages: null,
         receiver: null,
-        lastMessage: null,
         isLoading: false,
-        isError: false,
-        debug: []
     },
     reducers: {
         reset: (state) => {
             state.messages = null;
             state.receiver = null;
-            state.lastMessage = null;
             state.isLoading = false;
         },
         updater: (state, action) => {
-            state.lastMessage = action.payload;
             state.messages = [...state.messages, action.payload];
         }
     },
@@ -64,7 +53,6 @@ const conversationSlice = createSlice({
             state.messages = [];
             state.receiver = [];
             state.isLoading = false;
-            isError = true;
         });
 
         // Send message

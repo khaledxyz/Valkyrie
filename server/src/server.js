@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config();
 
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
+const connectSocket = require('./socket/socket');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ const server = app.listen(PORT, () => {
         `https://localhost:${PORT}`.blue
     );
     connectDB();
+    connectSocket(server);
 });
 
 // * Routes * //
