@@ -7,9 +7,6 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { getUserFriends } from '../../features/friends/friendsSlice';
 import { reset } from '../../features/conversation/conversationSlice';
 
-// * SOCKET CONTEXT * //
-import { SocketContext, socket } from '../../context/socket';
-
 // * COMPONENTS * //
 import ServerList from '../../components/ServerList/ServerList';
 import Sidebar from '../../components/Sidebar/Sidebar';
@@ -30,25 +27,21 @@ const Dashboard = () => {
         if (!user) return navigate('/login');
         dispatch(getUserFriends());
         dispatch(reset());
-
-        socket.emit('USER_ONLINE', user);
     }, []);
 
     return (
-        <SocketContext.Provider value={socket}>
-            <div className="Dashboard">
-                <ServerList />
-                <Sidebar />
+        <div className="Dashboard">
+            <ServerList />
+            <Sidebar />
 
-                <div className="Main-app">
-                    <Routes>
-                        <Route path={':guildID/:channelID'} element={<GuildConversation />} />
-                        <Route path={'@me/:friendID'} element={<Conversation />} />
-                        <Route path={'@me'} element={<FriendsTab />} />
-                    </Routes>
-                </div>
+            <div className="Main-app">
+                <Routes>
+                    <Route path={':guildID/:channelID'} element={<GuildConversation />} />
+                    <Route path={'@me/:friendID'} element={<Conversation />} />
+                    <Route path={'@me'} element={<FriendsTab />} />
+                </Routes>
             </div>
-        </SocketContext.Provider>
+        </div>
     );
 };
 

@@ -2,10 +2,9 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { SocketContext } from '../../context/socket';
 
 // * REDUX SLICE * //
-import { getConversation, sendMessage, updater } from '../../features/conversation/conversationSlice';
+import { getConversation, sendMessage } from '../../features/conversation/conversationSlice';
 
 // * COMPONENTS * //
 import Input from '../Input/Input';
@@ -20,25 +19,8 @@ const Conversation = () => {
     const scrollRef = useRef(null);
 
     const [messageContent, setMessageContent] = useState('');
-    const [joined, setJoined] = useState(false);
-    const [room, setRoom] = useState('');
 
     const { messages, receiver } = useSelector(state => state.conversation);
-    const sender = useSelector(state => state.auth.user.details);
-    const socket = useContext(SocketContext);
-
-    const joinChat = useCallback(() => { socket.emit("SEND_ROOM_JOIN_REQUEST"); });
-
-    const joinAccepted = (roomID) => {
-        setJoined(true);
-        setRoom(roomID);
-    };
-
-    useEffect(() => {
-        socket.on("JOIN_REQUEST_ACCEPTED", (roomID) => joinAccepted(roomID));
-        socket.on('SEND_MESSAGE', message => dispatch(updater(message)));
-        return () => { socket.on("JOIN_REQUEST_ACCEPTED", (roomID) => joinAccepted(roomID)); };
-    }, [socket, sender]);
 
     useEffect(() => {
         dispatch(getConversation(friendID));
@@ -47,9 +29,6 @@ const Conversation = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!messageContent) return;
-        if (!joined) return;
 
         const message = {
             content: messageContent,
