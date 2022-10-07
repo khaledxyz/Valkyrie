@@ -50,7 +50,7 @@ const ServerList = () => {
     };
 
     const getInitials = (name) => {
-        name = name.split(' ');
+        name = name.toString().split(' ');
         if (!name[1]) return name[0].charAt(0);
         name = name.shift().charAt(0) + name.pop().charAt(0);
         return name;
