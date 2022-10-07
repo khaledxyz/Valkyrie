@@ -1,14 +1,18 @@
-import { Channel, SidebarButton } from "../SidebarButton";
+// * DEPENDENCIES * //
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
 import { RiHashtag } from 'react-icons/ri';
 import { BsPlusLg } from 'react-icons/bs';
-import { useEffect, useState } from 'react';
-import { getGuild, createChannel } from '../../../features/guilds/guildsSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { Separator } from '../../Separator';
-import Modal from '../../Modal/Modal';
-import Input from "../../Input/Input";
-import { useNavigate, useParams } from "react-router-dom";
-import './GuildSidebar.scss';
+
+// * REDUX SLICE * //
+import { getGuild, createChannel } from '../../features/guilds/guildsSlice';
+
+// * COMPONENTS * //
+import Separator from '../Separator';
+import Modal from '../Modal/Modal';
+import Input from "../Input/Input";
+import { Channel, SidebarButton } from "./SidebarButton";
 
 const GuildSidebar = () => {
     const dispatch = useDispatch();
@@ -55,18 +59,19 @@ const GuildSidebar = () => {
                 ></Input>
             </Modal>
 
-            <div className="GuildSidebar">
-                <SidebarButton onClick={() => setIsModalOpen(true)}><BsPlusLg />New channel</SidebarButton>
-                <Separator width='40%' />
-                {
-                    channels && channels?.map((channel) => (
-                        <Channel className={isActive(channel._id)} onClick={() => navigate(channel._id)} key={channel._id}><RiHashtag />{channel.name}</Channel>
-                    ))
-                }
-            </div>
+            <SidebarButton onClick={() => setIsModalOpen(true)}><BsPlusLg />New channel</SidebarButton>
+            <Separator />
+
+            {channels && channels?.map((channel) => (
+                <Channel
+                    className={isActive(channel._id)}
+                    onClick={() => navigate(channel._id)}
+                    key={channel._id}><RiHashtag />
+                    {channel.name}
+                </Channel>
+            ))}
         </>
     );
 }
 
 export default GuildSidebar;
-            // {/* <Channel><RiHashtag />Hi</Channel> */}

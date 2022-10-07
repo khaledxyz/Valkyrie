@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllGuilds, createGuild } from '../../features/guilds/guildsSlice';
 
 // * COMPONENTS * //
+import { ServerIcon, HomeIcon, CreateServerIcon } from '../ServerIcon';
 import Input from '../../components/Input/Input';
 import Modal from '../Modal/Modal';
-import { ServerIcon, HomeIcon, CreateServerIcon } from '../ServerIcon';
-import { Separator } from '../Separator';
+import Separator from '../Separator';
 
 // * STYLES * //
 import './ServerList.scss';
@@ -23,8 +23,8 @@ const ServerList = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
-    const { guilds, isLoading } = useSelector((state) => state.guilds);
 
+    const { guilds } = useSelector(state => state.guilds);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [guildName, setGuildName] = useState(null);
     const [guildIcon, setGuildIcon] = useState(null);
@@ -34,9 +34,7 @@ const ServerList = () => {
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => {
-            setGuildIcon(reader.result);
-        };
+        reader.onload = () => { setGuildIcon(reader.result) };
     };
 
     const handleSubmit = () => {
@@ -104,19 +102,17 @@ const ServerList = () => {
                         <GiSteelwingEmblem />
                     </HomeIcon>
                     {guilds.length > 0 ? <Separator width="40%" /> : null}
-                    <div className="servers">
-                        {guilds?.map((guild) => {
-                            return (
-                                <ServerIcon
-                                    key={guild._id}
-                                    icon={guild.icon}
-                                    initials={getInitials(guild.name)}
-                                    className={isActive(guild._id)}
-                                    onClick={() => navigate(guild._id)}
-                                />
-                            );
-                        })}
-                    </div>
+                    <div className="servers">{
+                        guilds?.map((guild) => (
+                            <ServerIcon
+                                key={guild._id}
+                                icon={guild.icon}
+                                initials={getInitials(guild.name)}
+                                className={isActive(guild._id)}
+                                onClick={() => navigate(guild._id)}
+                            />
+                        ))
+                    }</div>
                     {guilds.length > 0 ? <Separator width="40%" /> : null}
                     <CreateServerIcon onClick={() => setIsModalOpen(true)}>
                         <BsPlusLg />

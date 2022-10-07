@@ -25,6 +25,7 @@
     align-items: center;
 
     transition: 0.3s ease;
+
     &:hover {
         cursor: pointer;
         background-color: rgba(172, 185, 197, 0.116);
@@ -41,7 +42,7 @@
     }
 }
 
-.UserID__right{
+.UserID__right {
     display: flex;
     gap: 5px;
 }
@@ -50,19 +51,19 @@
     background-color: var(--azure-radiance);
     color: var(--lavender-blush);
 }
-.tippy-box[data-theme~='valkyrie'][data-placement^='top']
-    > .tippy-arrow::before {
+
+.tippy-box[data-theme~='valkyrie'][data-placement^='top']>.tippy-arrow::before {
     border-top-color: var(--azure-radiance);
 }
-.tippy-box[data-theme~='valkyrie'][data-placement^='bottom']
-    > .tippy-arrow::before {
+
+.tippy-box[data-theme~='valkyrie'][data-placement^='bottom']>.tippy-arrow::before {
     border-bottom-color: var(--azure-radiance);
 }
-.tippy-box[data-theme~='valkyrie'][data-placement^='left']
-    > .tippy-arrow::before {
+
+.tippy-box[data-theme~='valkyrie'][data-placement^='left']>.tippy-arrow::before {
     border-left-color: var(--azure-radiance);
 }
-.tippy-box[data-theme~='valkyrie'][data-placement^='right']
-    > .tippy-arrow::before {
+
+.tippy-box[data-theme~='valkyrie'][data-placement^='right']>.tippy-arrow::before {
     border-right-color: var(--azure-radiance);
 }

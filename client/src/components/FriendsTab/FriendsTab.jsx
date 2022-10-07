@@ -11,6 +11,7 @@ import Input from '../../components/Input/Input';
 import Modal from '../../components/Modal/Modal';
 import FriendsList from './FriendsList';
 import PendingList from './PendingList';
+import Navbar from '../Navbar';
 
 // * STYLES * //
 import './FriendsTab.scss';
@@ -58,14 +59,14 @@ const FriendsTab = () => {
                 </Input>
             </Modal>
 
-            <nav className="Navbar">
+            <Navbar>
                 <div>
                     <p>Friends</p>
                     <Button onClick={() => setCurrentTab('friends')} variant={'transparent'} width={'80px'} height={'30px'}>Friends</Button>
                     <Button onClick={() => setCurrentTab('pending')} variant={'transparent'} width={'80px'} height={'30px'}>Pending</Button>
                 </div>
                 <Button onClick={() => setIsModalOpen(true)} variant={'transparent'} width={'80px'} height={'30px'}>Add Friend</Button>
-            </nav>
+            </Navbar>
 
             <div className="Friends-container">
                 {currentTab === 'friends' && <FriendsList />}

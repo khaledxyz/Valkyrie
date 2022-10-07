@@ -3,27 +3,16 @@
     height: 100%;
 }
 
-.Navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    height: 50px;
-    padding: var(--base-padding);
-    box-shadow: var(--box-shadow);
-
-    div {
-        display: flex;
-        align-items: center;
-    }
-}
-
 .Friends-container {
     overflow-y: scroll;
     padding: calc(var(--base-padding));
 
     height: 100%;
     padding-bottom: 60px;
+
+    &>* {
+        margin-bottom: 2px;
+    }
 }
 
 .Loading {

@@ -5,7 +5,7 @@ export const SidebarButton = styled.button`
     cursor: pointer;
 
     width: 100%;
-    height: 50px;
+    height: 46px;
 
     background-color: transparent;
     color: var(--lavender-blush);

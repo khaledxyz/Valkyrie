@@ -1,9 +1,10 @@
-@import '../sass/utils/variables';
-@import '../sass/utils/mixins';
+@import '../sass/variables';
 
 html{overflow: hidden}
 .Auth{
-    @include flex-x-y;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     width: 100vw;
     height: 100vh;

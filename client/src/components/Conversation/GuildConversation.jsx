@@ -9,6 +9,7 @@ import { getGuild, getChannelMessages, createGuildMessage } from '../../features
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import GuildMessage from './GuildMessage';
+import Navbar from '../Navbar';
 
 // * STYLES * //
 import './Conversation.scss';
@@ -56,9 +57,9 @@ const GuildConversation = () => {
 
     return (
         <div className="Conversation">
-            <div className="Conversation__Navbar">
+            <Navbar>
                 <p>#{channel?.name}</p>
-            </div>
+            </Navbar>
 
             <div className="Conversation__messages">
                 {messages?.map((message) => (

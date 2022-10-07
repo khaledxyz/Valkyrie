@@ -13,10 +13,7 @@ export const Friend = styled.div`
     height: 60px;
     padding: 10px;
     border-radius: var(--border-radius);
-    background-color: var(--down-river);
-
-    border-bottom: 1px solid ${lighten(0.05, '#0c2c4e')};
-    border-top: 1px solid ${lighten(0.05, '#0c2c4e')};
+    background-color: var(--maastricht-blue);
 
     button, .actions{
         position: absolute;
@@ -31,11 +28,7 @@ export const Friend = styled.div`
         transform: translateY(-50%);
     }
 
-    p{
-        margin-left: calc(var(--base-margin) / 2);
-    }
-
-    &:hover {
-        background-color: ${lighten(0.05, '#0c2c4e')};
-    }
-`;
+    transition: 0.2s ease;
+    p{margin-left: calc(var(--base-margin) / 2);}
+    &:hover {background-color: ${lighten(0.05, cssVar('--maastricht-blue'))};}
+`

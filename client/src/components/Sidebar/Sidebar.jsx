@@ -1,26 +1,30 @@
-import HomeSidebar from './HomeSidebar/HomeSidebar';
-import GuildSidebar from './GuildSidebar/GuildSidebar';
-import UserID from '../UserID/UserID';
+// * DEPENDENCIES * //
+import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
 
-const Styles = {
-    position: 'relative',
-    minWidth: '250px',
-    height: '100vh',
+// * COMPONENTS * //
+import HomeSidebar from './HomeSidebar';
+import GuildSidebar from './GuildSidebar';
+import UserID from '../UserID/UserID';
 
-    backgroundColor: 'var(--maastricht-blue)'
-};
+const StyledNavbar = styled.aside`
+    position: relative;
+    min-width: 250px;
+    height: 100vh;
+    background-color: var(--maastricht-blue);
+    z-index: 0;
+    padding: calc(var(--base-padding) + 3px) 15px;
+`;
 
 const Sidebar = () => {
-
     return (
-        <div className="Sidebar" style={Styles}>
+        <StyledNavbar>
             <Routes>
                 <Route path={'@me/*'} element={<HomeSidebar />} />
                 <Route path={':guildID/*'} element={<GuildSidebar />} />
             </Routes>
             <UserID />
-        </div>
+        </StyledNavbar>
     );
 };
 

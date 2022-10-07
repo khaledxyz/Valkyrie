@@ -1,13 +1,7 @@
+@import 'resets';
+@import 'typography';
+@import 'variables';
 
-// base
-@import 'base/resets';
-@import 'base/typography';
-
-// utils
-@import 'utils/helpers';
-@import 'utils/variables';
-@import 'utils/mixins';
-
-body{
+body {
     background-color: var(--ebony);
 }

@@ -1,13 +1,13 @@
-:root{
+:root {
     // * COLORS * // 
     // BRAND COLORS
     --azure-radiance: #0075F2;
     --bright-gray: #34354b;
 
     // APP COLORS
-    --ebony: #0f1a25;
-    --maastricht-blue: #0e2339;
-    --down-river: #0c2c4e;
+    --ebony: #17181f;
+    --maastricht-blue: #1c1d25;
+    --down-river: #14151e;
     --madison: #0b3460;
 
     // TEXT COLORS
@@ -22,7 +22,7 @@
     // * SPACING * //
     --base-padding: 20px;
     --base-margin: 20px;
-    
+
     // * OTHER * //
     --border-radius: 5px;
     --box-shadow:
@@ -31,6 +31,5 @@
         0px 0px 1.9px rgba(0, 0, 0, 0.09),
         0px 0px 3.4px rgba(0, 0, 0, 0.107),
         0px 0px 6.3px rgba(0, 0, 0, 0.129),
-        0px 0px 15px rgba(0, 0, 0, 0.18)
-    ;
+        0px 0px 15px rgba(0, 0, 0, 0.18);
 }

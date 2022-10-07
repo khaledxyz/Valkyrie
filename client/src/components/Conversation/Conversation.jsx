@@ -9,6 +9,7 @@ import { getConversation, sendMessage } from '../../features/conversation/conver
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import Message from './Message';
+import Navbar from '../Navbar';
 
 // * STYLES * //
 import './Conversation.scss';
@@ -21,10 +22,10 @@ const Conversation = () => {
     const [messageContent, setMessageContent] = useState('');
 
     const { messages, receiver } = useSelector(state => state.conversation);
+    const sender = useSelector(state => state.auth.user.details);
 
     useEffect(() => {
         dispatch(getConversation(friendID));
-        joinChat();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -33,7 +34,6 @@ const Conversation = () => {
         const message = {
             content: messageContent,
             receiver: friendID,
-            room
         };
 
         dispatch(sendMessage(message));
@@ -47,9 +47,9 @@ const Conversation = () => {
 
     return (
         <div className="Conversation">
-            <div className="Conversation__Navbar">
+            <Navbar>
                 <p>{receiver?.username}</p>
-            </div>
+            </Navbar>
 
             <div className="Conversation__messages">
                 {messages?.map((message) => (
