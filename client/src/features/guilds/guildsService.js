@@ -1,4 +1,5 @@
 import { axiosInstance } from '../../app/axios';
+import { socket } from '../../context/SocketContext';
 
 const getAllGuilds = async (token) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -23,6 +24,7 @@ const getChannelMessages = async (channelID, token) => {
 const createGuildMessage = async (message, token) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const res = await axiosInstance.post(`/api/messages/guild-messages`, message, config);
+    if (res.data) socket.emit('send_guild_message', res.data);
     return res.data;
 };
 

@@ -35,7 +35,7 @@ const Conversation = () => {
             socket.off('joined_dm');
             socket.off('received_message');
         };
-    }, []);
+    }, [friendID, sender]);
 
     useEffect(() => {
         dispatch(getConversation(friendID));

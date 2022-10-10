@@ -1,9 +1,13 @@
 const join = require('./events/join');
 const disconnect = require('./events/disconnect');
 
+const getOnlineFriends = require('./events/getOnlineFriends');
+
 const joinDm = require('./events/joinDm');
 const sendMessage = require('./events/sendMessage');
-const getOnlineFriends = require('./events/getOnlineFriends');
+
+const joinChannel = require('./events/joinChannel');
+const sendGuildMessage = require('./events/sendGuildMessage');
 
 global.onlineUsers = [];
 
@@ -16,10 +20,13 @@ const connectSocket = (server) => {
         socket.on('join', userID => join(socket, userID));
         socket.on('disconnect', () => disconnect(socket));
 
+        socket.on('get_online_friends', userID => getOnlineFriends(socket, userID));
+
         socket.on('join_dm', (userID, friendID) => joinDm(socket, userID, friendID));
         socket.on('send_message', (message, roomID) => sendMessage(socket, message, roomID));
 
-        socket.on('get_online_friends', userID => getOnlineFriends(socket, userID));
+        socket.on('join_channel', channelID => joinChannel(socket, channelID));
+        socket.on('send_guild_message', message => sendGuildMessage(socket, message));
     });
 };
 
