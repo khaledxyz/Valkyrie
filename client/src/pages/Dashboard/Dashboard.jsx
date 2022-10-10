@@ -57,9 +57,11 @@ const Dashboard = () => {
 
     const socket = useContext(SocketContext);
     const { user } = useSelector(state => state.auth);
+    const checkUser = localStorage.getItem('user');
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
+        if (!checkUser) return;
         socket.emit('join', user.details._id);
 
         socket.on('received_message_notification', (message) => {
@@ -73,11 +75,7 @@ const Dashboard = () => {
     }, [socket, user]);
 
     useEffect(() => {
-        console.log(notifications)
-    }, [notifications])
-
-    useEffect(() => {
-        if (!user) return navigate('/login');
+        if (!checkUser) return navigate('/login');
         dispatch(fetchFriends());
         dispatch(reset());
     }, []);
