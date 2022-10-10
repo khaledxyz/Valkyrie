@@ -62,19 +62,11 @@ export const ServerIcon = styled.div`
 export const HomeIcon = styled(ServerIcon)`
     background: var(--madison);
     font-size: 1.5rem;
-    &:after {
-        content: '';
-    }
-    &:hover {
-        background: var(--azure-radiance);
-    }
+    &:after {content: '';}
+    &:hover {background: var(--azure-radiance);}
 `;
 export const CreateServerIcon = styled(ServerIcon)`
     background: var(--madison);
-    &:after {
-        content: '';
-    }
-    &:hover {
-        background: #44af69;
-    }
+    &:after {content: '';}
+    &:hover {background: #44af69;}
 `;

@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // * REDUX SLICE * //
 import {
-    getAllfriendRequests,
+    fetchFriendRequests,
     acceptFriendRequest,
-    rejectFriendRequest
+    rejectFriendRequest,
+    reset
 } from '../../features/friends/friendsSlice';
 
 // * COMPONENTS * //
@@ -20,17 +21,18 @@ import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
 const FriendsList = () => {
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state) => state.friends);
-    const { comingFriendRequests, outgoingFriendRequests } = useSelector((state) => state.friends.friendRequests);
+    const { loading, success } = useSelector((state) => state.friends);
+    const { comingFriendRequests, outgoingFriendRequests } = useSelector((state) => state.friends.requests);
 
     useEffect(() => {
-        dispatch(getAllfriendRequests());
+        dispatch(fetchFriendRequests());
+        if (success) dispatch(reset());
     }, []);
 
     const handleReject = (id) => { dispatch(rejectFriendRequest(id)); };
     const handleAccept = (id) => { dispatch(acceptFriendRequest(id)); };
 
-    if (isLoading) return (
+    if (loading) return (
         <>
             <Loading />
             <Loading />

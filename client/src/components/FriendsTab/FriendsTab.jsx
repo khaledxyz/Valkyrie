@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { sendFriendRequest } from '../../features/friends/friendsSlice';
+import { createFriendRequest, reset } from '../../features/friends/friendsSlice';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -16,11 +16,10 @@ import Navbar from '../Navbar';
 // * STYLES * //
 import './FriendsTab.scss';
 
-
 const FriendsTab = () => {
     const dispatch = useDispatch();
     const friendsState = useSelector(state => state.friends);
-    const { isSuccess } = friendsState;
+    const { success } = friendsState;
 
     const [currentTab, setCurrentTab] = useState('friends');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,14 +29,15 @@ const FriendsTab = () => {
         e.preventDefault();
         const [username, tag] = friendFullUsername.split('#');
         const friendDetails = { username, tag: '#' + tag };
-        dispatch(sendFriendRequest(friendDetails));
+        dispatch(createFriendRequest(friendDetails));
     };
 
     useEffect(() => {
-        if (isSuccess) {
+        if (success) {
             setIsModalOpen(false);
+            dispatch(reset());
         };
-    }, [isSuccess]);
+    }, [success]);
 
     return (
         <div className="FriendsTab">

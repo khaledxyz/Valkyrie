@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { PulseLoader } from 'react-spinners';
 
 // * REDUX SLICE * //
-import { signup, resetAuth } from '../../features/auth/authSlice';
+import { signup, resetAuth } from '../../features/authSlice';
 
 // * COMPONENTS * //
 import Input from '../../components/Input/Input';

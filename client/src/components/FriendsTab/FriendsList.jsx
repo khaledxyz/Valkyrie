@@ -10,7 +10,7 @@ import { Friend } from './Friend';
 
 const FriendsList = () => {
     const navigate = useNavigate();
-    const { userFriends, isLoading } = useSelector((state) => state.friends);
+    const { friends, isLoading } = useSelector((state) => state.friends);
 
     if (isLoading) return (
         <>
@@ -21,7 +21,7 @@ const FriendsList = () => {
     );
 
     return (
-        userFriends?.map((friend) => (
+        friends?.map((friend) => (
             <Friend
                 key={friend._id}
                 onClick={() => navigate(`/channels/@me/${friend._id}`)}

@@ -4,7 +4,6 @@ import { TbLogout, TbSettings } from 'react-icons/tb';
 import './UserID.scss';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
-import { logout } from '../../features/auth/authSlice';
 
 import Button from '../Button';
 import { ProfileIcon } from '../ProfileIcon';

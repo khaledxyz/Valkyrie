@@ -19,7 +19,7 @@ import './ServerList.scss';
 import { GiSteelwingEmblem } from 'react-icons/gi';
 import { BsPlusLg } from 'react-icons/bs';
 
-const ServerList = () => {
+const ServerList = ({ notifications }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();

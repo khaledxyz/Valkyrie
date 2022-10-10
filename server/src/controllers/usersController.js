@@ -84,7 +84,7 @@ const getUser = asyncHandler(async (req, res) => {
 // @desc    Get friends list
 // @route   POST /api/users/:UserID/friends
 // @access  private
-const getUserFriends = asyncHandler(async (req, res) => {
+const getfriends = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
 
     // Checks if user is logged in
@@ -99,13 +99,13 @@ const getUserFriends = asyncHandler(async (req, res) => {
         throw new Error('Not authorized.');
     }
 
-    const userFriends = await userModel
+    const friends = await userModel
         .find({ _id: { $in: user.friends } })
         .select('username')
         .select('tag')
         .select('avatar');
 
-    res.status(200).json(userFriends);
+    res.status(200).json(friends);
 });
 
-module.exports = { register, getMe, getUser, getUserFriends };
+module.exports = { register, getMe, getUser, getfriends };

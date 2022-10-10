@@ -1,100 +1,98 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import friendsService from './friendsService';
 
-export const getUserFriends = createAsyncThunk('friends/getUserFriends', async (_, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    const UserID = thunkAPI.getState().auth.user.details._id;
-
-    try { return await friendsService.getUserFriends(token, UserID) }
-    catch (Error) { console.log(Error) };
-});
-
-export const getAllfriendRequests = createAsyncThunk('friends/getAllfriendRequests', async (_, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    const UserID = thunkAPI.getState().auth.user.details._id;
-
-    try { return await friendsService.getAllfriendRequests(token, UserID) }
-    catch (Error) { console.log(Error) };
-});
-
-export const sendFriendRequest = createAsyncThunk('friends/sendFriendRequest', async (friendFullUsername, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    const UserID = thunkAPI.getState().auth.user.details._id;
-
-    try { return await friendsService.sendFriendRequest(token, UserID, friendFullUsername) }
-    catch (Error) { console.log(Error) };
-});
-
-export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest', async (FriendID, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    const UserID = thunkAPI.getState().auth.user.details._id;
-
-    try { return await friendsService.acceptFriendRequest(token, UserID, FriendID) }
-    catch (Error) { console.log(Error) };
-});
-
-export const rejectFriendRequest = createAsyncThunk('friends/rejectFriendRequest', async (FriendID, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    const UserID = thunkAPI.getState().auth.user.details._id;
-
-    try { return await friendsService.rejectFriendRequest(token, UserID, FriendID) }
-    catch (Error) { console.log(Error) };
-});
-
 const initialState = {
-    userFriends: [],
-    friendRequests: [],
-    isLoading: false,
-    isSuccess: false,
+    friends: [],
+    requests: {
+        outgoingFriendRequests: [],
+        comingFriendRequests: []
+    },
+    online: [],
+    loading: false,
+    success: false,
 };
 
 const friendsSlice = createSlice({
     name: 'friends',
     initialState,
+    reducers: {
+        reset: (state) => { state.success = false; }
+    },
     extraReducers: builder => {
         builder
-            // Get all Friends
-            .addCase(getUserFriends.pending, (state) => {
-                state.isLoading = true;
+            // Fetch friends
+            .addCase(fetchFriends.pending, (state) => {
+                state.loading = true;
             })
-            .addCase(getUserFriends.fulfilled, (state, action) => {
-                state.userFriends = action.payload;
-                state.isLoading = false;
-                state.isSuccess = true;
-            })
-            .addCase(getUserFriends.rejected, (state) => {
-                state.isLoading = false;
-                state.isSuccess = false;
+            .addCase(fetchFriends.fulfilled, (state, action) => {
+                state.friends = action.payload;
+                state.loading = false;
+                state.success = true;
             })
 
-            // Get all Friend requests
-            .addCase(getAllfriendRequests.pending, (state) => {
-                state.isLoading = true;
+            // Fetch friend requests
+            .addCase(fetchFriendRequests.pending, (state) => {
+                state.loading = true;
             })
-            .addCase(getAllfriendRequests.fulfilled, (state, action) => {
-                state.friendRequests = action.payload;
-                state.isLoading = false;
-                state.isSuccess = true;
-
-            })
-            .addCase(getAllfriendRequests.rejected, (state) => {
-                state.isLoading = false;
-                state.isSuccess = false;
+            .addCase(fetchFriendRequests.fulfilled, (state, action) => {
+                state.requests = action.payload;
+                state.loading = false;
+                state.success = true;
             })
 
-            // Send a Friend request
-            .addCase(sendFriendRequest.pending, (state) => {
-                state.isLoading = true;
+            // Create friend requests
+            .addCase(createFriendRequest.pending, (state) => {
+                state.loading = true;
             })
-            .addCase(sendFriendRequest.fulfilled, (state) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-            })
-            .addCase(sendFriendRequest.rejected, (state) => {
-                state.isLoading = false;
-                state.isSuccess = false;
+            .addCase(createFriendRequest.fulfilled, (state, action) => {
+                state.requests = action.payload;
+                state.loading = false;
+                state.success = true;
             })
     },
+});
+
+// * ACTION CREATORS * //
+// Fetch Friends
+export const fetchFriends = createAsyncThunk('friends/fetchFriends', async (_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const UserID = thunkAPI.getState().auth.user.details._id;
+
+    try { return await friendsService.fetchFriends(token, UserID) }
+    catch (Error) { console.log(Error) };
+});
+
+// Fetch friend requests
+export const fetchFriendRequests = createAsyncThunk('friends/fetchFriendRequests', async (_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    const UserID = thunkAPI.getState().auth.user.details._id;
+
+    try { return await friendsService.fetchFriendRequests(token, UserID) }
+    catch (Error) { console.log(Error) };
+});
+
+// Create friend request
+export const createFriendRequest = createAsyncThunk('friends/createFriendRequest', async (friendFullUsername, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+
+    try { return await friendsService.createFriendRequest(token, friendFullUsername) }
+    catch (Error) { console.log(Error) };
+});
+
+// Accept friend request
+export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest', async (FriendID, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+
+    try { return await friendsService.acceptFriendRequest(token, FriendID) }
+    catch (Error) { console.log(Error) };
+});
+
+// Reject friend request
+export const rejectFriendRequest = createAsyncThunk('friends/rejectFriendRequest', async (FriendID, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+
+    try { return await friendsService.rejectFriendRequest(token, FriendID) }
+    catch (Error) { console.log(Error) };
 });
 
 export const { reset } = friendsSlice.actions;

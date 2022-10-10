@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { getConversation, sendMessage } from '../../features/conversation/conversationSlice';
+import { getConversation, sendMessage, updater } from '../../features/conversation/conversationSlice';
+import { SocketContext, socket } from '../../context/SocketContext';
 
 // * COMPONENTS * //
 import Input from '../Input/Input';
@@ -20,9 +21,21 @@ const Conversation = () => {
     const scrollRef = useRef(null);
 
     const [messageContent, setMessageContent] = useState('');
-
+    const [roomID, setRoomID] = useState('');
+    const socket = useContext(SocketContext);
     const { messages, receiver } = useSelector(state => state.conversation);
     const sender = useSelector(state => state.auth.user.details);
+
+    useEffect(() => {
+        socket.emit('join_dm', sender._id, friendID);
+        socket.on('joined_dm', roomID => setRoomID(roomID));
+        socket.on('received_message', (message) => { dispatch(updater(message)) });
+
+        return () => {
+            socket.off('joined_dm');
+            socket.off('received_message');
+        };
+    }, []);
 
     useEffect(() => {
         dispatch(getConversation(friendID));
@@ -36,7 +49,7 @@ const Conversation = () => {
             receiver: friendID,
         };
 
-        dispatch(sendMessage(message));
+        dispatch(sendMessage({ message, roomID }));
         setMessageContent('');
         scrollToBottom();
         e.target.reset();

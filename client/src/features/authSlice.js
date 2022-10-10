@@ -1,18 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authService";
+import { axiosInstance } from '../app/axios';
 
 // Gets user from local storage
 const user = JSON.parse(localStorage.getItem("user"));
 
 // Action Creator - login
 export const login = createAsyncThunk('auth/login', async (user) => {
-    try { return await authService.login(user) }
+    try {
+        const res = await axiosInstance.post('/api/auth', user);
+        if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
+        return res.data;
+    }
     catch (Error) { console.log(Error) };
 });
 
 // Action Creator - signup
 export const signup = createAsyncThunk('auth/signup', async (user) => {
-    try { return await authService.signup(user) }
+    try {
+        const res = await axiosInstance.post('/api/users', user);
+        if (res.data) return res.data;
+    }
     catch (Error) { console.log(Error) };
 });
 
@@ -37,42 +44,34 @@ const authSlice = createSlice({
         builder
             // Login
             .addCase(login.pending, (state) => {
-                state.user = null
                 state.loading = true;
-                state.success = false;
-                state.error = null;
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.user = action.payload;
                 state.loading = false;
                 state.success = true;
-                state.error = null;
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(login.rejected, (state) => {
                 state.user = null
                 state.loading = false;
                 state.success = false;
-                state.error = action.error.message;
+                state.error = true;
             })
 
             // Signup
             .addCase(signup.pending, (state) => {
-                state.user = null
                 state.loading = true;
-                state.success = false;
-                state.error = null;
             })
-            .addCase(signup.fulfilled, (state, action) => {
+            .addCase(signup.fulfilled, (state) => {
                 state.user = null;
                 state.loading = false;
                 state.success = true;
-                state.error = null;
             })
-            .addCase(signup.rejected, (state, action) => {
+            .addCase(signup.rejected, (state) => {
                 state.user = null;
                 state.loading = false;
                 state.success = false;
-                state.error = action.error.message;
+                state.error = true;
             })
     }
 });
