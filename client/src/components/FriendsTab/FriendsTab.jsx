@@ -1,9 +1,10 @@
 // * DEPENDENCIES * //
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // * REDUX SLICE * //
-import { createFriendRequest, reset } from '../../features/friends/friendsSlice';
+import { updateOnline, createFriendRequest } from '../../features/friends/friendsSlice';
+import { SocketContext, socket } from '../../context/SocketContext';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -15,15 +16,29 @@ import Navbar from '../Navbar';
 
 // * STYLES * //
 import './FriendsTab.scss';
+import OnlineList from '../OnlineList';
 
 const FriendsTab = () => {
     const dispatch = useDispatch();
-    const friendsState = useSelector(state => state.friends);
-    const { success } = friendsState;
 
+    const { online, success } = useSelector(state => state.friends);
+    const { user } = useSelector(state => state.auth);
+    const socket = useContext(SocketContext);
     const [currentTab, setCurrentTab] = useState('friends');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [friendFullUsername, setFriendFullUsername] = useState('');
+
+    useEffect(() => {
+        socket.emit('get_online_friends', user.details._id);
+
+        setInterval(() => {
+            socket.emit('get_online_friends', user.details._id);
+        }, 10000);
+
+        socket.on('receive_online_friends', onlineFriends => dispatch(updateOnline(onlineFriends)));
+
+        return () => { socket.off('receive_online_friends') };
+    }, [socket]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,12 +47,7 @@ const FriendsTab = () => {
         dispatch(createFriendRequest(friendDetails));
     };
 
-    useEffect(() => {
-        if (success) {
-            setIsModalOpen(false);
-            dispatch(reset());
-        };
-    }, [success]);
+    useEffect(() => { if (success) { setIsModalOpen(false) } }, [success]);
 
     return (
         <div className="FriendsTab">
@@ -72,6 +82,8 @@ const FriendsTab = () => {
                 {currentTab === 'friends' && <FriendsList />}
                 {currentTab === 'pending' && <PendingList />}
             </div>
+
+            <OnlineList online={online} />
         </div>
     );
 }

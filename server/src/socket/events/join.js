@@ -1,13 +1,16 @@
 const join = (socket, userID) => {
-    const alreadyOnline = onlineUsers.some(onlineUser => onlineUser.userID === userID);
-    if (alreadyOnline) { onlineUsers = onlineUsers.filter(onlineUser => onlineUser.socketID !== socket.id); };
+    const alreadyOnline = onlineUsers.find(onlineUser => onlineUser.userID === userID);
+
+    if (alreadyOnline) {
+        if (alreadyOnline.sockets.some(id => id === socket.id)) return;
+        alreadyOnline.sockets = [...alreadyOnline.sockets, socket.id];
+        return;
+    };
 
     onlineUsers.push({
         userID,
-        socketID: socket.id,
+        sockets: [socket.id],
     });
-
-    console.log('new')
 };
 
 module.exports = join;

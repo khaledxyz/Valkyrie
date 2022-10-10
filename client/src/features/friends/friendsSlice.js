@@ -16,6 +16,7 @@ const friendsSlice = createSlice({
     name: 'friends',
     initialState,
     reducers: {
+        updateOnline: (state, action) => { state.online = action.payload },
         reset: (state) => { state.success = false; }
     },
     extraReducers: builder => {
@@ -95,5 +96,5 @@ export const rejectFriendRequest = createAsyncThunk('friends/rejectFriendRequest
     catch (Error) { console.log(Error) };
 });
 
-export const { reset } = friendsSlice.actions;
+export const { updateOnline, reset } = friendsSlice.actions;
 export default friendsSlice.reducer;
