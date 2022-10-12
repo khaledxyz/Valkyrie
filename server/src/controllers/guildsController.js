@@ -1,5 +1,8 @@
 const asyncHandler = require('express-async-handler');
+const { nanoid } = require('nanoid');
+
 const guildModel = require("../models/guildModel");
+const inviteModel = require('../models/inviteModel');
 const userModel = require("../models/userModel");
 const channelModel = require('../models/channelModel');
 const cloudinary = require("../config/cloudinary");
@@ -76,35 +79,75 @@ const postGuild = asyncHandler(async (req, res) => {
     res.status(201).json(guild);
 });
 
-// * JOIN GUILD * //
-// @desc    Create guild
-// @route   PUT /api/guilds/:id/join
+// * CREATE INVITE * //
+// @desc    Create invite
+// @route   POST /api/guilds/:id/invite
 // @access  private
-const joinGuild = asyncHandler(async (req, res) => {
-    const guild = await guildModel.findById(req.params.id)
+const createInvite = asyncHandler(async (req, res) => {
+    const { guildID, invite } = req.body;
+    const guild = await guildModel.findById(guildID)
     const user = await userModel.findById(req.user.id);
 
     // Checks if user exists
     if (!user) {
         res.status(404);
         throw new Error('Not authorized. No Token.');
-    }
+    };
 
     // Checks if server exists
     if (!guild) {
         res.status(404);
         throw new Error('Could not find server.');
-    }
+    };
+
+    // Creates the invite id
+    const inviteObj = await inviteModel.create({
+        guild: guild._id,
+        invite
+    });
+
+    res.status(200).json(inviteObj);
+});
+
+// * JOIN GUILD * //
+// @desc    Join guild
+// @route   PUT /api/guilds/:id/join
+// @access  private
+const joinGuild = asyncHandler(async (req, res) => {
+    const invite = await inviteModel.find({ invite: req.params.id });
+    const user = await userModel.findById(req.user.id);
+
+    // Checks if user exists
+    if (!user) {
+        res.status(404);
+        throw new Error('Not authorized. No Token.');
+    };
+
+    // Checks if the invite exists
+    if (!invite[0]) {
+        const message = 'This invite in invalid or has expired.'
+        res.status(404).json(message);
+        throw new Error(message);
+    };
+
+    const guild = await guildModel.findById(invite[0].guild);
+
+    if (!guild) {
+        const message = 'This invite in invalid or has expired.'
+        res.status(404).json(message);
+        throw new Error(message);
+    };
 
     // Checks if user is already in guild
     if (guild.members.includes(req.user.id)) {
-        res.status(400);
-        throw new Error('You are already in this server.');
-    }
+        const message = 'You are already in this server.';
+        res.status(400).json(message);
+        throw new Error(message);
+    };
 
     // Adds user to guild
-    await guildModel.findOneAndUpdate({ _id: req.params.id }, { $push: { members: req.user.id } });
-    await userModel.findOneAndUpdate({ _id: req.user.id }, { $push: { guilds: req.params.id } });
+    await guildModel.findOneAndUpdate({ _id: guild._id }, { $push: { members: req.user.id } });
+    await userModel.findOneAndUpdate({ _id: req.user.id }, { $push: { guilds: guild._id } });
 
     res.status(200).json({ message: "Successfully joined server." })
 });
@@ -160,4 +203,4 @@ const createChannel = asyncHandler(async (req, res) => {
     res.status(200).json(channel)
 });
 
-module.exports = { getGuild, getGuilds, postGuild, joinGuild, getChannels, createChannel };
+module.exports = { getGuild, getGuilds, postGuild, joinGuild, getChannels, createChannel, createInvite };
