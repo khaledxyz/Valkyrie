@@ -10,7 +10,7 @@ import { SocketContext, socket } from '../../context/SocketContext';
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import GuildMessage from './GuildMessage';
-import Navbar from '../Navbar';
+import ConversationNavbar from '../ConversationNavbar';
 
 // * STYLES * //
 import './Conversation.scss';
@@ -68,9 +68,9 @@ const GuildConversation = () => {
 
     return (
         <div className="Conversation">
-            <Navbar>
+            <ConversationNavbar>
                 <p>#{channel?.name}</p>
-            </Navbar>
+            </ConversationNavbar>
 
             <div className="Conversation__messages">
                 {messages?.map((message) => (

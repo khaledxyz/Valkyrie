@@ -10,7 +10,7 @@ import { SocketContext, socket } from '../../context/SocketContext';
 // * COMPONENTS * //
 import Input from '../Input/Input';
 import Message from './Message';
-import Navbar from '../Navbar';
+import ConversationNavbar from '../ConversationNavbar';
 
 // * STYLES * //
 import './Conversation.scss';
@@ -60,9 +60,9 @@ const Conversation = () => {
 
     return (
         <div className="Conversation">
-            <Navbar>
+            <ConversationNavbar>
                 <p>{receiver?.username}</p>
-            </Navbar>
+            </ConversationNavbar>
 
             <div className="Conversation__messages">
                 {messages?.map((message) => (
