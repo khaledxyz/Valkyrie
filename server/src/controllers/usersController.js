@@ -84,7 +84,7 @@ const getUser = asyncHandler(async (req, res) => {
 // @desc    Get friends list
 // @route   POST /api/users/:UserID/friends
 // @access  private
-const getfriends = asyncHandler(async (req, res) => {
+const getFriends = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
 
     // Checks if user is logged in
@@ -108,4 +108,30 @@ const getfriends = asyncHandler(async (req, res) => {
     res.status(200).json(friends);
 });
 
-module.exports = { register, getMe, getUser, getfriends };
+// * DELETE FRIEND * //
+// @desc    Delete a friends
+// @route   PUT /api/users/:UserID/friends/:FriendID
+// @access  private
+const deleteFriend = asyncHandler(async (req, res) => {
+    const user = await userModel.findById(req.user.id);
+    const { UserID, FriendID } = req.params;
+
+    // Checks if user is logged in
+    if (!user) {
+        res.status(409);
+        throw new Error('Not authorized. No Token.');
+    };
+
+    // Checks if user matches the id in the url
+    if (user.id !== UserID) {
+        res.status(409);
+        throw new Error('Not authorized.');
+    };
+
+    await userModel.findOneAndUpdate({ _id: FriendID }, { $pull: { friends: UserID } });
+    await userModel.findOneAndUpdate({ _id: UserID }, { $pull: { friends: FriendID } });
+
+    res.status(200).json(FriendID);
+});
+
+module.exports = { register, getMe, getUser, getFriends, deleteFriend };

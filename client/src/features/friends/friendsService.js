@@ -35,13 +35,21 @@ const rejectFriendRequest = async (token, FriendID) => {
     if (res.data) return res.data;
 };
 
+// Reject friend request
+const deleteFriend = async (token, UserID, FriendID) => {
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const res = await axiosInstance.put(`/api/users/${UserID}/friends/${FriendID}`, config);
+    if (res.data) return res.data;
+};
+
 const FriendsService = {
     fetchFriends,
     fetchFriendRequests,
 
     createFriendRequest,
     acceptFriendRequest,
-    rejectFriendRequest
+    rejectFriendRequest,
+    deleteFriend
 };
 
 export default FriendsService;

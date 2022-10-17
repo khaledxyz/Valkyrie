@@ -43,37 +43,45 @@ const createFriendRequest = asyncHandler(async (req, res) => {
 
     // Checks if user is logged in
     if (!user) {
-        res.status(409);
-        throw new Error('Not authorized. No Token.');
+        const message = 'Not authorized. No Token.';
+        res.status(409).json(message);
+        throw new Error(message);
     };
 
     // Checks if user provided a username and tag
     if (!username || !tag) {
-        res.status(409);
-        throw new Error('Please provide a username and tag.');
+        const message = 'Please provide a username and tag.';
+        res.status(409).json(message);
+        throw new Error(message);
     };
 
     // Gets friend's user ID from database
-    const friend = await userModel.findOne({ username, tag });
+    const friend = await userModel.findOne({ username, tag })
+        .select('username')
+        .select('tag')
+        .select('avatar');
+
 
     if (!friend) {
-        res.status(409);
-        throw new Error('Friend not found.');
+        const message = 'Friend not found.';
+        res.status(409).json(message);
+        throw new Error(message);
     };
 
     // Checks if user is sending himself a friend request
     if (user._id.toString() == friend._id.toString()) {
-        res.status(409);
-        throw new Error('Well, You don\'t need Valkyrie to talk to yourself!');
+        const message = 'Well, You don\'t need Valkyrie to talk to yourself!';
+        res.status(409).json(message);
+        throw new Error(message);
     };
 
     // Creates friend request
-    await friendReqModel.create({
+    const request = await friendReqModel.create({
         sender: user._id,
         receiver: friend._id,
     });
 
-    res.status(201).json({ message: 'Friend request sent.' });
+    res.status(201).json({ friend, request });
 });
 
 // * ACCEPT FRIEND REQUEST * //
@@ -105,13 +113,17 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Friend request accepted.' });
 });
 
-// * DECLINE FRIEND REQUEST * //
-// @desc    Decline friend request
+// * DELETE FRIEND REQUEST * //
+// @desc    Delete friend request
 // @route   DELETE /api/friend-requests/:FriendID
 // @access  private
-const declineFriendRequest = asyncHandler(async (req, res) => {
+const rejectFriendRequest = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
-    const userFriendRequest = await friendReqModel.find({ sender: req.params.FriendID, receiver: user._id });
+    let friendRequest = await friendReqModel.find({ sender: req.params.FriendID, receiver: user._id });
+
+    if (!friendRequest.length) {
+        friendRequest = await friendReqModel.find({ sender: user._id, receiver: req.params.FriendID });
+    };
 
     // Checks if user is logged in
     if (!user) {
@@ -120,16 +132,14 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
     };
 
     // Checks if friend request is valid
-    if (!userFriendRequest.length) {
+    if (!friendRequest.length) {
         res.status(409);
         throw new Error('Something went wrong.');
     };
 
     // Deletes friend request
-    await friendReqModel.deleteOne({ _id: userFriendRequest[0]._id });
-
-    res.status(200).json({ message: 'Friend request Declined.' });
-
+    await friendReqModel.deleteOne({ _id: friendRequest[0]._id });
+    res.status(200).json({ message: 'Friend request rejected.' });
 });
 
-module.exports = { getFriendRequests, createFriendRequest, acceptFriendRequest, declineFriendRequest };
+module.exports = { getFriendRequests, createFriendRequest, acceptFriendRequest, rejectFriendRequest };
