@@ -1,14 +1,10 @@
 // * DEPENDENCIES * //
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // * REDUX SLICE * //
-import {
-    fetchFriendRequests,
-    acceptFriendRequest,
-    rejectFriendRequest,
-    reset
-} from '../../features/friends/friendsSlice';
+import { fetchFriendRequests, acceptFriendRequest, rejectFriendRequest, reset } from '../../features/friends/friendsSlice';
+import { SocketContext, socket } from '../../context/SocketContext';
 
 // * COMPONENTS * //
 import { Friend } from './Friend';
@@ -21,8 +17,11 @@ import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
 const FriendsList = () => {
     const dispatch = useDispatch();
+    const socket = useContext(SocketContext);
+
+    const { user } = useSelector(state => state.auth);
     const { loading, success } = useSelector((state) => state.friends);
-    const { comingFriendRequests, outgoingFriendRequests } = useSelector((state) => state.friends.requests);
+    const { comingFriendRequests, outgoingFriendRequests } = useSelector(state => state.friends.requests);
 
     useEffect(() => {
         dispatch(fetchFriendRequests());
@@ -30,7 +29,10 @@ const FriendsList = () => {
     }, []);
 
     const handleReject = (id) => { dispatch(rejectFriendRequest(id)); };
-    const handleAccept = (id) => { dispatch(acceptFriendRequest(id)); };
+    const handleAccept = (id) => {
+        dispatch(acceptFriendRequest(id));
+        socket.emit('accept_friend_request_notification', user.details.username, id);
+    };
 
     if (loading) return (
         <>
@@ -47,12 +49,8 @@ const FriendsList = () => {
                     <ProfileIcon avatar={friend.avatar} />
                     <p>{friend.username}</p>
                     <div className="actions">
-                        <CircleButton onClick={() => handleAccept(friend._id)}>
-                            <AiOutlineCheck />
-                        </CircleButton>
-                        <CircleButton onClick={() => handleReject(friend._id)}>
-                            <AiOutlineClose />
-                        </CircleButton>
+                        <CircleButton onClick={() => handleAccept(friend._id)}><AiOutlineCheck /></CircleButton>
+                        <CircleButton onClick={() => handleReject(friend._id)}><AiOutlineClose /></CircleButton>
                     </div>
                 </Friend>
             ))}
@@ -62,9 +60,7 @@ const FriendsList = () => {
                     <ProfileIcon avatar={friend.avatar} />
                     <p>{friend.username}</p>
                     <div className="actions">
-                        <CircleButton>
-                            <AiOutlineClose />
-                        </CircleButton>
+                        <CircleButton onClick={() => handleReject(friend._id)}><AiOutlineClose /></CircleButton>
                     </div>
                 </Friend>
             ))}

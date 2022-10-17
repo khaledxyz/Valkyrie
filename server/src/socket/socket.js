@@ -8,6 +8,7 @@ const sendMessage = require('./events/sendMessage');
 
 const joinChannel = require('./events/joinChannel');
 const sendGuildMessage = require('./events/sendGuildMessage');
+const notifications = require('./events/notification');
 
 global.onlineUsers = [];
 
@@ -27,6 +28,9 @@ const connectSocket = (server) => {
 
         socket.on('join_channel', channelID => joinChannel(socket, channelID));
         socket.on('send_guild_message', message => sendGuildMessage(socket, message));
+
+        socket.on('friend_request_notification', request => notifications.friendRequest(request));
+        socket.on('accept_friend_request_notification', (username, friendID) => notifications.acceptFriendRequest(username, friendID));
     });
 };
 

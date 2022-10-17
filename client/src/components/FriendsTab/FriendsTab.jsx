@@ -1,9 +1,10 @@
 // * DEPENDENCIES * //
 import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 
 // * REDUX SLICE * //
-import { updateOnline, createFriendRequest } from '../../features/friends/friendsSlice';
+import { updateOnline, createFriendRequest, reset } from '../../features/friends/friendsSlice';
 import { SocketContext, socket } from '../../context/SocketContext';
 
 // * COMPONENTS * //
@@ -21,7 +22,7 @@ import OnlineList from '../OnlineList';
 const FriendsTab = () => {
     const dispatch = useDispatch();
 
-    const { online, success } = useSelector(state => state.friends);
+    const { lastRequest, online, success, Error } = useSelector(state => state.friends);
     const { user } = useSelector(state => state.auth);
     const socket = useContext(SocketContext);
     const [currentTab, setCurrentTab] = useState('friends');
@@ -30,14 +31,16 @@ const FriendsTab = () => {
 
     useEffect(() => {
         socket.emit('get_online_friends', user.details._id);
-
-        setInterval(() => {
-            socket.emit('get_online_friends', user.details._id);
-        }, 10000);
-
+        setInterval(() => socket.emit('get_online_friends', user.details._id), 10000);
         socket.on('receive_online_friends', onlineFriends => dispatch(updateOnline(onlineFriends)));
+        socket.on('friend_request_notification', () => toast('You have received a friend request', { icon: '👏' }));
+        socket.on('accept_friend_request_notification', username => toast.success(`${username} has accepted your request`));
 
-        return () => { socket.off('receive_online_friends') };
+        return () => {
+            socket.off('receive_online_friends');
+            socket.off('friend_request_notification');
+            socket.off('accept_friend_request_notification');
+        };
     }, [socket]);
 
     const handleSubmit = (e) => {
@@ -47,7 +50,19 @@ const FriendsTab = () => {
         dispatch(createFriendRequest(friendDetails));
     };
 
-    useEffect(() => { if (success) { setIsModalOpen(false) } }, [success]);
+    useEffect(() => {
+        if (success) {
+            setIsModalOpen(false);
+            toast.success(`Sent a friend request to ${friendFullUsername}`);
+            socket.emit('friend_request_notification', lastRequest)
+            dispatch(reset());
+        };
+
+        if (Error) {
+            toast.error(Error);
+            dispatch(reset());
+        };
+    }, [success, Error]);
 
     return (
         <div className="FriendsTab">
@@ -68,6 +83,18 @@ const FriendsTab = () => {
                 >
                 </Input>
             </Modal>
+
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        backgroundColor: '#14151e',
+                        color: '#fff',
+                        fontSize: '0.8rem'
+                    },
+                }}
+            />
 
             <ConversationNavbar>
                 <div>
