@@ -3,8 +3,8 @@ import { useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // * REDUX SLICE * //
-import { fetchFriendRequests, acceptFriendRequest, rejectFriendRequest, reset } from '../../features/friends/friendsSlice';
-import { SocketContext, socket } from '../../context/SocketContext';
+import { fetchFriendRequests, acceptFriendRequest, deleteFriendRequest, reset } from '../../features/friends/friendsSlice';
+import { SocketContext } from '../../context/SocketContext';
 
 // * COMPONENTS * //
 import { Friend } from './Friend';
@@ -20,7 +20,7 @@ const FriendsList = () => {
     const socket = useContext(SocketContext);
 
     const { user } = useSelector(state => state.auth);
-    const { loading, success } = useSelector((state) => state.friends);
+    const { isLoading, success } = useSelector((state) => state.friends);
     const { comingFriendRequests, outgoingFriendRequests } = useSelector(state => state.friends.requests);
 
     useEffect(() => {
@@ -28,14 +28,16 @@ const FriendsList = () => {
         if (success) dispatch(reset());
     }, []);
 
-    const handleReject = (id) => { dispatch(rejectFriendRequest(id)); };
+    const handleReject = (id) => { dispatch(deleteFriendRequest(id)); };
     const handleAccept = (id) => {
         dispatch(acceptFriendRequest(id));
         socket.emit('accept_friend_request_notification', user.details.username, id);
     };
 
-    if (loading) return (
+    if (isLoading) return (
         <>
+            <Loading />
+            <Loading />
             <Loading />
             <Loading />
             <Loading />
