@@ -65,7 +65,6 @@ const getMe = asyncHandler(async (req, res) => {
 // @access  private
 const getUser = asyncHandler(async (req, res) => {
     const { UserID } = req.params;
-    console.log(UserID);
     const user = await userModel
         .findById(UserID)
         .select('username')

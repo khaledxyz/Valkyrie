@@ -19,8 +19,6 @@ const authenticate = asyncHandler(async (req, res, next) => {
             next();
         }
         catch (error) {
-            console.log(token)
-            console.log(error);
             res.status(401);
             throw new Error('Not authorized. Invalid token signature.');
         }
