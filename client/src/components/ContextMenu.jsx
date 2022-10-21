@@ -22,6 +22,16 @@ const StyledContextMenu = styled.div`
     box-shadow: var(--box-shadow);
 `;
 
+
+const variants = {
+    danger: {
+        hoverBackground: 'var(--error-danger)',
+        hoverColor: 'var(--lavender-blush)',
+        color: 'var(--error-danger)',
+    }
+};
+
+
 export const ContextItem = styled.div`
     cursor: pointer;
     width: 100%;
@@ -34,9 +44,12 @@ export const ContextItem = styled.div`
     border-radius: 3px;
 
     font-size: 0.9rem;
-    color: var(--lavender-blush);
+    color: ${({ variant }) => variants[variant] ? variants[variant].color : cssVar('--lavender-blush')};
 
-    &:hover{background-color: var(--azure-radiance);}
+    &:hover{
+        background-color: ${({ variant }) => variants[variant] ? variants[variant].hoverBackground : cssVar('--azure-radiance')};
+        color: ${({ variant }) => variants[variant] ? variants[variant].hoverColor : cssVar('--lavender-blush')};
+    }
 `
 
 const ContextMenu = ({ children, contextMenu, position }) => {
