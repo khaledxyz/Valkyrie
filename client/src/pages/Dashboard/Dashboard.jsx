@@ -1,57 +1,22 @@
 // * DEPENDENCIES * //
 import { useState, useEffect, useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import toast, { Toaster } from 'react-hot-toast';
 
 // * REDUX SLICE * //
-import { fetchFriends } from '../../features/friends/friendsSlice';
-import { reset } from '../../features/conversation/conversationSlice';
-import { SocketContext, socket } from '../../context/SocketContext';
+import { SocketContext } from '../../context/SocketContext';
 
 // * COMPONENTS * //
+import StyledDashboard, { App, Notification } from './StyledDashboard';
+
 import ServerList from '../../components/ServerList/ServerList';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import FriendsTab from '../../components/FriendsTab/FriendsTab';
 import Conversation from '../../components/Conversation/Conversation';
 import GuildConversation from '../../components/Conversation/GuildConversation';
 
-const StyledDashboard = styled.div`
-    display: flex;
-
-    width: 100vw;
-    height: 100vh;
-
-    .app {
-        width: 100%;
-        height: 100VH;
-        background-color: var(--down-river);
-    }
-
-    .notification{
-        z-index: 1;
-        position: absolute;
-
-        font-size: 0.7rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        top: 55px;
-        left: 45px;
-
-        width: 15px;
-        height: 15px;
-
-        border-radius: 50%;
-        background-color: var(--error-danger);
-        outline: 5px solid var(--ebony);
-    }
-`
-
 const Dashboard = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const notificationAudio = new Audio('/notification.mp3');
 
@@ -69,31 +34,38 @@ const Dashboard = () => {
             notificationAudio.play();
         });
 
+        socket.on('friend_request_notification', () => toast('You have received a friend request', { icon: '👏' }));
+        socket.on('accept_friend_request_notification', username => toast.success(`${username} has accepted your request`));
+
         return () => {
             socket.off('received_message_notification');
+            socket.off('friend_request_notification');
+            socket.off('accept_friend_request_notification');
         };
     }, [socket, user]);
 
-    useEffect(() => {
-        if (!checkUser) return navigate('/login');
-        dispatch(fetchFriends());
-        dispatch(reset());
-    }, []);
+    useEffect(() => { if (!checkUser) return navigate('/login') }, []);
 
     return (
         <SocketContext.Provider value={socket}>
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{ style: { backgroundColor: '#14151e', color: '#fff', fontSize: '0.8rem' } }}
+            />
+
             <StyledDashboard>
-                {notifications.length > 0 && <div className="notification">{notifications.length}</div>}
+                {notifications.length > 0 && <Notification>{notifications.length}</Notification>}
                 <ServerList />
                 <Sidebar />
 
-                <div className="app">
+                <App>
                     <Routes>
                         <Route path={':guildID/:channelID'} element={<GuildConversation />} />
                         <Route path={'@me/:friendID'} element={<Conversation />} />
                         <Route path={'@me'} element={<FriendsTab />} />
                     </Routes>
-                </div>
+                </App>
             </StyledDashboard>
         </SocketContext.Provider>
     );
