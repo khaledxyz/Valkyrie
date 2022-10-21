@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 5000;
 
 // * Middleware * //
 app.use(cors({ origin: process.env.CLIENT_URL }));
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "3mb" }));
+app.use(express.urlencoded({ extended: false, limit: "3mb" }));
 app.use(errorHandler);
 
 // * Connection * //
