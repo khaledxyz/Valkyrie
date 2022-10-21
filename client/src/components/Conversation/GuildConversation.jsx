@@ -31,7 +31,6 @@ const GuildConversation = () => {
     useEffect(() => {
         socket.emit('join_channel', channelID);
 
-        socket.on('joined_channel', () => console.log('joined channel'));
         socket.on('received_message', message => dispatch(updater(message)));
 
         dispatch(getGuild(guildID));
@@ -39,10 +38,7 @@ const GuildConversation = () => {
         scrollToBottom();
         inputRef.current.focus();
 
-        return () => {
-            socket.off('joined_channel');
-            socket.off('received_message');
-        };
+        return () => { socket.off('received_message'); };
     }, [guildID, channelID]);
 
 
