@@ -110,14 +110,14 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
     await userModel.updateOne({ _id: friend._id }, { $push: { friends: user._id } });
     await friendReqModel.deleteOne({ _id: userFriendRequest[0]._id });
 
-    res.status(200).json({ message: 'Friend request accepted.' });
+    res.status(200).json(req.params.FriendID);
 });
 
 // * DELETE FRIEND REQUEST * //
 // @desc    Delete friend request
 // @route   DELETE /api/friend-requests/:FriendID
 // @access  private
-const rejectFriendRequest = asyncHandler(async (req, res) => {
+const deleteFriendRequest = asyncHandler(async (req, res) => {
     const user = await userModel.findById(req.user.id);
     let friendRequest = await friendReqModel.find({ sender: req.params.FriendID, receiver: user._id });
 
@@ -139,7 +139,7 @@ const rejectFriendRequest = asyncHandler(async (req, res) => {
 
     // Deletes friend request
     await friendReqModel.deleteOne({ _id: friendRequest[0]._id });
-    res.status(200).json({ message: 'Friend request rejected.' });
+    res.status(200).json(req.params.FriendID);
 });
 
-module.exports = { getFriendRequests, createFriendRequest, acceptFriendRequest, rejectFriendRequest };
+module.exports = { getFriendRequests, createFriendRequest, acceptFriendRequest, deleteFriendRequest };

@@ -40,7 +40,7 @@ const friendsSlice = createSlice({
                 state.loading = false;
             })
 
-            // Create friend requests
+            // Create friend request
             .addCase(createFriendRequest.pending, (state) => { state.loading = true; })
             .addCase(createFriendRequest.fulfilled, (state, action) => {
                 state.requests.outgoingFriendRequests = [...state.requests.outgoingFriendRequests, action.payload.friend];
@@ -51,6 +51,21 @@ const friendsSlice = createSlice({
             .addCase(createFriendRequest.rejected, (state, action) => {
                 state.loading = false;
                 state.Error = action.payload;
+            })
+
+            // Accept friend request
+            .addCase(acceptFriendRequest.pending, (state) => { state.loading = true; })
+            .addCase(acceptFriendRequest.fulfilled, (state, action) => {
+                state.requests.comingFriendRequests = state.requests.comingFriendRequests.filter(request => request._id !== action.payload);
+                state.loading = false;
+            })
+
+            // Delete friend request
+            .addCase(deleteFriendRequest.pending, (state) => { state.loading = true; })
+            .addCase(deleteFriendRequest.fulfilled, (state, action) => {
+                state.requests.outgoingFriendRequests = state.requests.outgoingFriendRequests.filter(request => request._id !== action.payload);
+                state.requests.comingFriendRequests = state.requests.comingFriendRequests.filter(request => request._id !== action.payload);
+                state.loading = false;
             })
 
             // Delete friend
@@ -96,16 +111,9 @@ export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest
 });
 
 // Reject friend request
-export const rejectFriendRequest = createAsyncThunk('friends/rejectFriendRequest', async (FriendID, thunkAPI) => {
+export const deleteFriendRequest = createAsyncThunk('friends/deleteFriendRequest', async (FriendID, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
-    try { return await friendsService.rejectFriendRequest(token, FriendID) }
-    catch (Error) { console.log(Error) };
-});
-
-// Cancel friend request
-export const cancelFriendRequest = createAsyncThunk('friends/cancelFriendRequest', async (FriendID, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-    try { return await friendsService.cancelFriendRequest(token, FriendID) }
+    try { return await friendsService.deleteFriendRequest(token, FriendID) }
     catch (Error) { console.log(Error) };
 });
 
