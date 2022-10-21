@@ -19,6 +19,12 @@ export const getChannelMessages = createAsyncThunk('guilds/getChannelMessages', 
     catch (Error) { console.log(Error) };
 });
 
+export const deleteGuild = createAsyncThunk('guilds/deleteGuild', async (guild, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+    try { return await guildsService.deleteGuild(guild, token) }
+    catch (Error) { console.log(Error) };
+});
+
 export const createGuildMessage = createAsyncThunk('guilds/createGuildMessage', async (message, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
     try { return await guildsService.createGuildMessage(message, token) }
@@ -44,11 +50,12 @@ const guildsSlice = createSlice({
         currentGuild: [],
         messages: [],
         isLoading: false,
+        success: false
     },
     reducers: {
         reset: (state) => {
-            state.guilds = [];
             state.isLoading = false;
+            state.success = false;
         },
         updater: (state, action) => {
             state.messages = [...state.messages, action.payload];
@@ -86,7 +93,11 @@ const guildsSlice = createSlice({
 
             // Create guild
             .addCase(createGuild.pending, (state) => { state.isLoading = true })
-            .addCase(createGuild.fulfilled, (state, action) => { state.guilds = [...state.guilds, action.payload] })
+            .addCase(createGuild.fulfilled, (state, action) => {
+                state.guilds = [...state.guilds, action.payload];
+                state.isLoading = false;
+                state.success = true;
+            })
             .addCase(createGuild.rejected, (state) => { state.isLoading = false })
 
             // Create guild channel

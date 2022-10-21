@@ -75,7 +75,6 @@ const postGuild = asyncHandler(async (req, res) => {
     });
 
     await userModel.findOneAndUpdate({ _id: req.user.id }, { $push: { guilds: guild._id } });
-
     res.status(201).json(guild);
 });
 
@@ -203,4 +202,29 @@ const createChannel = asyncHandler(async (req, res) => {
     res.status(200).json(channel)
 });
 
-module.exports = { getGuild, getGuilds, postGuild, joinGuild, getChannels, createChannel, createInvite };
+// * DELETE GUILD * //
+// @desc    Delete guild 
+// @route   DELETE /api/guilds/:id/channels
+// @access  private
+const deleteGuild = asyncHandler(async (req, res) => {
+    const guild = await guildModel.findById(req.params.id);
+    const user = req.user;
+
+    if (!user) return;
+
+    if (!guild) {
+        res.status(404);
+        throw new Error('Something went wrong.');
+    };
+
+    if (user._id.toString() !== guild.owner.toString()) {
+        res.status(403);
+        throw new Error('Not authorized. You don\'t have permissions.');
+    };
+
+    await guildModel.deleteOne({ _id: guild._id });
+
+    res.status(200).json(guild._id)
+});
+
+module.exports = { getGuild, getGuilds, postGuild, joinGuild, getChannels, createChannel, createInvite, deleteGuild };

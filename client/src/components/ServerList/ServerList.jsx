@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid'
+import toast, { Toaster } from 'react-hot-toast';
 
 // * REDUX SLICE * //
-import { getAllGuilds, createGuild } from '../../features/guilds/guildsSlice';
+import { getAllGuilds, createGuild, deleteGuild, reset } from '../../features/guilds/guildsSlice';
 import { createInvite } from '../../features/invites/invitesSlice';
 
 // * COMPONENTS * //
@@ -27,16 +28,25 @@ const ServerList = () => {
     const location = useLocation();
     const dispatch = useDispatch();
 
-    const { guilds } = useSelector(state => state.guilds);
+    const { guilds, success } = useSelector(state => state.guilds);
+    const { user } = useSelector(state => state.auth);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contextMenu, setContextMenu] = useState(false);
     const [guildName, setGuildName] = useState(null);
     const [guildIcon, setGuildIcon] = useState(null);
+    const [guildIconSize, setGuildIconSize] = useState();
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [contextData, setContextData] = useState();
+    const maxSize = 2.1; //mb
 
     const handleImage = (files) => {
         const file = files[0];
+        setGuildIconSize(file.size);
+
+        if (file.size / 1000000 > maxSize) {
+            toast.error('The image is too big!');
+            return;
+        };
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -44,6 +54,16 @@ const ServerList = () => {
     };
 
     const handleSubmit = () => {
+        if (!guildName) {
+            toast.error('Please enter a name.');
+            return;
+        };
+
+        if (guildIconSize / 1000000 > maxSize) {
+            toast.error('The image is too big!');
+            return;
+        };
+
         const guildData = {
             name: guildName,
             icon: guildIcon
@@ -52,19 +72,28 @@ const ServerList = () => {
         dispatch(createGuild(guildData));
         setGuildIcon(null);
         setGuildName(null);
-        dispatch(getAllGuilds());
+    };
+
+    const deleteLeave = () => {
+        if (contextData.owner === user.details._id) {
+            dispatch(deleteGuild(contextData));
+            return;
+        };
+
+        dispatch(leaveGuild());
     };
 
     const handleContextMenu = (e, guildID) => {
         e.preventDefault();
         setContextMenu(true);
-        setContextData(guildID);
+        const guild = guilds.find(guild => guild._id === guildID);
+        setContextData(guild);
         setPosition({ x: e.pageX, y: e.pageY });
     };
 
     const inviteFriends = () => {
         const inviteObj = {
-            guildID: contextData,
+            guildID: contextData._id,
             invite: nanoid(10)
         };
 
@@ -78,6 +107,14 @@ const ServerList = () => {
         addEventListener('click', handleClick);
         return () => addEventListener('click', handleClick);
     }, []);
+
+    useEffect(() => {
+        if (success) {
+            dispatch(reset());
+            setIsModalOpen(false);
+            navigate(`/channels/${guilds[guilds.length - 1]._id}`);
+        };
+    }, [success]);
 
     const getInitials = (name) => {
         name = name.split(' ');
@@ -107,7 +144,7 @@ const ServerList = () => {
             >
                 <Input
                     type={'file'}
-                    label={'Image'}
+                    label={`Image - max size ${Math.trunc(+maxSize)}MB`}
                     required={false}
                     onChange={(e) => handleImage(e.target.files)}
                 ></Input>
@@ -125,8 +162,16 @@ const ServerList = () => {
                 position={position}
             >
                 <ContextItem onClick={() => inviteFriends()}>Invite Friends</ContextItem>
-                <ContextItem onClick={() => navigator.clipboard.writeText(contextData)}>Copy ID</ContextItem>
+                <ContextItem onClick={() => navigator.clipboard.writeText(contextData._id)}>Copy ID</ContextItem>
+                <Separator />
+                <ContextItem variant={'danger'} onClick={deleteLeave} >{contextData?.owner === user.details._id ? 'Delete Server' : 'Leave Server'}</ContextItem>
             </ContextMenu>
+
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{ style: { backgroundColor: '#14151e', color: '#fff', fontSize: '0.8rem' } }}
+            />
 
             <div className="Server-list-wrapper">
                 <aside className="Server-list">

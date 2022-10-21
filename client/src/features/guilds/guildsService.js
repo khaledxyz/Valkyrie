@@ -21,6 +21,13 @@ const getChannelMessages = async (channelID, token) => {
     return res.data;
 };
 
+const deleteGuild = async (guild, token) => {
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    console.log(guild)
+    const res = await axiosInstance.delete(`/api/guilds/${guild._id}`, config);
+    return res.data;
+};
+
 const createGuildMessage = async (message, token) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
     const res = await axiosInstance.post(`/api/messages/guild-messages`, message, config);
@@ -41,5 +48,5 @@ const createChannel = async (token, channel) => {
     return res.data;
 };
 
-const guildsService = { getAllGuilds, getGuild, getChannelMessages, createGuildMessage, createGuild, createChannel };
+const guildsService = { getAllGuilds, getGuild, getChannelMessages, deleteGuild, createGuildMessage, createGuild, createChannel };
 export default guildsService;
