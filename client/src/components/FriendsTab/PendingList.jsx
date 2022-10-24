@@ -20,7 +20,7 @@ const FriendsList = () => {
     const socket = useContext(SocketContext);
 
     const { user } = useSelector(state => state.auth);
-    const { isLoading, success } = useSelector((state) => state.friends);
+    const { loading, success } = useSelector((state) => state.friends);
     const { comingFriendRequests, outgoingFriendRequests } = useSelector(state => state.friends.requests);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const FriendsList = () => {
         socket.emit('accept_friend_request_notification', user.details.username, id);
     };
 
-    if (isLoading) return (
+    if (loading) return (
         <>
             <Loading />
             <Loading />

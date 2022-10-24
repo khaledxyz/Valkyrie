@@ -16,7 +16,7 @@ import { Friend } from './Friend';
 const FriendsList = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { friends, isLoading, success } = useSelector((state) => state.friends);
+    const { friends, loading, success } = useSelector((state) => state.friends);
 
     useEffect(() => {
         dispatch(fetchFriends());
@@ -28,7 +28,7 @@ const FriendsList = () => {
         dispatch(deleteFriend(friend._id));
     };
 
-    if (isLoading) return (
+    if (loading) return (
         <>
             <Loading />
             <Loading />
