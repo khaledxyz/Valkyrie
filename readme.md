@@ -1,4 +1,4 @@
-# Valkyrie - ⚠️ The project is still in alpha
+# Valkyrie
 ![Valkyrie Banner](assets/valk_banner.png?raw=true "Valkyrie Banner")
 
 ## Set Up
