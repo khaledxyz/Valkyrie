@@ -102,7 +102,7 @@ const guildsSlice = createSlice({
 
             // Create guild channel
             .addCase(createChannel.pending, (state) => { state.isLoading = true })
-            .addCase(createChannel.fulfilled, (state, action) => { state.channels = [...state.channels, action.payload] })
+            .addCase(createChannel.fulfilled, (state, action) => { state.currentGuild.channels = [...state.currentGuild.channels, action.payload] })
             .addCase(createChannel.rejected, (state) => { state.isLoading = false })
     }
 });
