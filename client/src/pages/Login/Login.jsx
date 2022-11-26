@@ -37,8 +37,6 @@ const Login = () => {
     useEffect(() => {
         inputRef.current.focus();
         if (user) { navigate('/channels/@me') };
-        if (error) { console.log(error) };
-        dispatch(resetAuth());
     }, [user, success, error]);
 
     return (
@@ -54,8 +52,9 @@ const Login = () => {
                 </div>
                 <div className='Auth__form-inputs'>
                     <Input
+                        style={error ? { outline: '2px solid red' } : null}
                         type={'text'}
-                        label={'Email'}
+                        label={error ? `Email - ${error}` : 'Email'}
                         required={true}
                         onChange={e => setEmail(e.target.value)}
                         email={email}
@@ -63,8 +62,9 @@ const Login = () => {
                     >
                     </Input>
                     <Input
+                        style={error ? { outline: '2px solid red' } : null}
                         type={'password'}
-                        label={'password'}
+                        label={error ? `Email - ${error}` : 'Password'}
                         required={true}
                         onChange={e => setPassword(e.target.value)}
                         password={password}

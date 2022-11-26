@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid'
 import toast, { Toaster } from 'react-hot-toast';
+import { PulseLoader } from 'react-spinners';
 
 // * REDUX SLICE * //
 import { getAllGuilds, createGuild, deleteGuild, reset } from '../../features/guilds/guildsSlice';
@@ -28,7 +29,9 @@ const ServerList = () => {
     const location = useLocation();
     const dispatch = useDispatch();
 
-    const { guilds, success } = useSelector(state => state.guilds);
+    const spinner = <PulseLoader color="#fff" cssOverride={null} margin={2} size={5} />
+
+    const { guilds, success, isLoading } = useSelector(state => state.guilds);
     const { user } = useSelector(state => state.auth);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contextMenu, setContextMenu] = useState(false);
@@ -139,7 +142,7 @@ const ServerList = () => {
                 isModalOpen={isModalOpen}
                 close={() => setIsModalOpen(false)}
                 title={'Create a new server'}
-                action={'Create'}
+                action={isLoading ? spinner : 'Create'}
                 handleSubmit={handleSubmit}
             >
                 <Input

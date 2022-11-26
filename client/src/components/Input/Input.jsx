@@ -1,11 +1,12 @@
 import './Input.scss';
 
-const Input = ({ type, label, placeholder, required, onChange, value, inputRef }) => {
+const Input = ({ style, type, label, placeholder, required, onChange, value, inputRef }) => {
 
     return (
         <>
             <h6 className={`label`}>{label}</h6>
             <input
+                style={style}
                 className={`Input`}
                 type={type}
                 placeholder={placeholder}

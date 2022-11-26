@@ -53,7 +53,7 @@ const Signup = () => {
                 </div>
                 <div className='Auth__form-inputs'>
                     <Input
-                        type={'text'}
+                        type={'email'}
                         label={'Email'}
                         required={true}
                         onChange={e => setEmail(e.target.value)}

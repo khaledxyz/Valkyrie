@@ -29,8 +29,9 @@ const logIn = ('/', asyncHandler(async (req, res) => {
         });
     };
 
-    res.status(401);
-    throw new Error('Wrong Email or Password');
+    const message = 'Wrong Email or Password.';
+    res.status(401).json(message);
+    throw new Error(message);
 }));
 
 // * LOG OUT * //

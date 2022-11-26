@@ -5,22 +5,28 @@ import { axiosInstance } from '../app/axios';
 const user = JSON.parse(localStorage.getItem("user"));
 
 // Action Creator - login
-export const login = createAsyncThunk('auth/login', async (user) => {
+export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
         const res = await axiosInstance.post('/api/auth', user);
         if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
         return res.data;
     }
-    catch (Error) { console.log(Error) };
+    catch (Error) {
+        const message = (Error.response.data);
+        return thunkAPI.rejectWithValue(message);
+    };
 });
 
 // Action Creator - signup
-export const signup = createAsyncThunk('auth/signup', async (user) => {
+export const signup = createAsyncThunk('auth/signup', async (user, thunkAPI) => {
     try {
         const res = await axiosInstance.post('/api/users', user);
         if (res.data) return res.data;
     }
-    catch (Error) { console.log(Error) };
+    catch (Error) {
+        const message = (Error.response.data);
+        return thunkAPI.rejectWithValue(message);
+    };
 });
 
 const authSlice = createSlice({
@@ -37,7 +43,11 @@ const authSlice = createSlice({
             state.success = false;
             state.error = null;
         },
-        logout: () => {
+        logout: (state, action) => {
+            state.user = null;
+            state.loading = false;
+            state.success = false;
+            state.error = action.payload;
         }
     },
     extraReducers: builder => {
@@ -51,11 +61,11 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.success = true;
             })
-            .addCase(login.rejected, (state) => {
+            .addCase(login.rejected, (state, action) => {
                 state.user = null
                 state.loading = false;
                 state.success = false;
-                state.error = true;
+                state.error = action.payload;
             })
 
             // Signup

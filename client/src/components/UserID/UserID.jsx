@@ -1,13 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { TbLogout, TbSettings } from 'react-icons/tb';
-import './UserID.scss';
 import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css'; // optional
+import 'tippy.js/dist/tippy.css';
+
+import './UserID.scss';
+
+import { logout } from '../../features/authSlice';
 
 import Button from '../Button';
 import { ProfileIcon } from '../ProfileIcon';
-import { useNavigate } from 'react-router-dom';
 
 const UserID = () => {
     const dispatch = useDispatch();
@@ -27,8 +30,8 @@ const UserID = () => {
     };
 
     const logOut = () => {
-        localStorage.clear();
         dispatch(logout());
+        localStorage.clear();
         navigate('/login');
     };
 
