@@ -19,7 +19,8 @@ const GuildSidebar = () => {
     const navigate = useNavigate();
     const { guildID } = useParams();
 
-    const { channels } = useSelector((state) => state.guilds.currentGuild);
+    const { owner, channels } = useSelector((state) => state.guilds.currentGuild);
+    const { user } = useSelector((state) => state.auth);
     const [channelName, setChannelName] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -59,8 +60,13 @@ const GuildSidebar = () => {
                 ></Input>
             </Modal>
 
-            <SidebarButton onClick={() => setIsModalOpen(true)}><BsPlusLg />New channel</SidebarButton>
-            <Separator />
+            {
+                user.details._id === owner ?
+                    <>
+                        <SidebarButton onClick={() => setIsModalOpen(true)}><BsPlusLg />New channel</SidebarButton>
+                        <Separator />
+                    </> : null
+            }
 
             {channels && channels?.map((channel) => (
                 <Channel

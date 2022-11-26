@@ -64,7 +64,7 @@ const Login = () => {
                     <Input
                         style={error ? { outline: '2px solid red' } : null}
                         type={'password'}
-                        label={error ? `Email - ${error}` : 'Password'}
+                        label={error ? `Password - ${error}` : 'Password'}
                         required={true}
                         onChange={e => setPassword(e.target.value)}
                         password={password}
